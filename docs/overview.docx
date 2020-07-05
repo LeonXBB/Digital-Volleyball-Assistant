@@ -131,7 +131,37 @@ We need to go deeper. This is description of (almost) each point, including sub-
 
         Now, as always:
 
-        /match - folder containing files and folder(s) related specifically to match. 
+        /match - folder containing files and folder(s) related specifically to match. Note: As mentioned before, the fourth architecture of the app was weird. It consisted of different packages / modules, every one of which would hold code for different parts of the program, such as �match - referee�, or �non-match � player-profile� etc, and the main program, which would -load, -unload, -rotate them and so for. Now, /match folder is sort of following this idea. Base of any module are three files: core.py, events.py, objects.py. In /py we are keeping general code, while in py/match we�re saving code related directly to match flow. Why is it just /py/match and not /py/match-referee? Well, first, it is so for now, and second, the difference between match flow for referees, head coaches, and staff is not that big, there would be more cons than pros to disconnect it. However, in this module idea I�ve been using something like �match-base� which served as inheritance base for other �match-� modules�
+
+        /py/requests - holds requests sending and processing files. See below for more info.
+
+        core.py - holds core app functions.
+
+	    events.py - holds app's events.
+
+        objects.py - holds app's objects (Log and Request)
+
+        /match has the following list:
+			
+        	/protocol 
+			match_config.py
+			core.py
+			events.py
+			objects.py
+			
+			/protocol - stores protocol-related files:
+			
+				image.png - protocol blank image
+				borders.py - protocol borders zones (see Modding in user manual for more details)		
+
+	
+			match.config - stores match rules.
+			
+			core.py - match-related functions.
+
+			events.py - match-related events.
+
+			objects.py - match-related objects.
 
 
 Anyway, let's inspect them in detail, shall we? The following is the description of each category, what it is, what it does, why so etc. For an actual reference list, look below.
