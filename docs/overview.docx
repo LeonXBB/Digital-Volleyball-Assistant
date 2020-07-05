@@ -1,4 +1,4 @@
-TODO: make it an actual docx with hyperlinks and crossreferences to different elements (classes, functions, parameters etc).
+#TODO: make it an actual docx with hyperlinks and crossreferences to different elements (classes, functions, parameters etc).
 
 As in its name, this app is designed to help volleyball enthusiasts and professionals, such as coaches, players, officials etc with sport-related activities, both during and 
 off-match. 
@@ -31,9 +31,40 @@ There are several important cornstone-concepts of the code's architecture:
 
 * CORE FUNCTIONS 
 
-Basically, these are all the cornstones...
+So, basically, these are all the cornstones...
 
-Before we start, let's go through the directory structure. 
+Before we start, let's go through the directory structure. In the root directory we have the following list:
+
+    /docs 
+    /gfx
+    /logs
+    /meta 
+    /py
+    DVA.exe 
+    DVA.pyw 
+    icon.ico
+
+If you work in developer's version, i.e. you're me, you also have 
+
+    run.pyw
+    run.spec
+
+We need to go deeper. This is description of (almost) each point, including sub-structure.
+
+    run.pyw - this is a loading script for our main code. Long story short: customization files (app_ and match_config, localization, and protocol image borders) were first 
+    creared with py extensions. The reason for that is that yours truly was not aware of the fact that py.modules are imported during compilation and not runtime. As customization
+    requires to apply changes whenever they done (saved, to be precise), and changing the structure of importing those files would be very time consuming, the quick-fix was found
+    in form of "shell-script" that only has one job - run the main script with all of its dependencies imported during runtime.
+
+    run.spec - "pre-cooked" spec file for faster compiling run.pyw 
+
+    icon.ico - icon of the app.  
+    
+    DVA.pyw - main script which creates window, load logs etc. 
+
+    DVA.exe - result of compiling run.spec. App's main and only executable.
+
+    
 
 Anyway, let's inspect them in detail, shall we? The following is the description of each category, what it is, what it does, why so etc. For an actual reference list, look below.
 
