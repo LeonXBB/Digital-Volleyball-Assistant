@@ -97,7 +97,7 @@ We need to go deeper. This is description of (almost) each point, including sub-
         there's some interval to wait, such as 1)before court entry, 2)before coin toss, 3)before set start, 4)before time out end, and has a timer, so interval_instructions.py
         stores instructions in str form to be executed by code in frontend.py
 
-        frontend.py - backbone of all GUI in the programm. It has code 
+        frontend.py - backbone of all GUI in the programm. It has code for 
 
 
 Anyway, let's inspect them in detail, shall we? The following is the description of each category, what it is, what it does, why so etc. For an actual reference list, look below.
