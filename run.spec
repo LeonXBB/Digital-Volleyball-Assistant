@@ -32,4 +32,4 @@ exe = EXE(pyz, Tree('I:\\DVA_0.1.0'),
           upx=True,
           upx_exclude=[],
           runtime_tmpdir=None,
-          console=False , icon='I:\\meta\\icon.ico')
+          console=False , icon='icon.ico')
