@@ -164,11 +164,54 @@ We need to go deeper. This is description of (almost) each point, including sub-
 			objects.py - match-related objects.
 
 
-Anyway, let's inspect them in detail, shall we? The following is the description of each category, what it is, what it does, why so etc. For an actual reference list, look below.
-
+Now, finally, we can inspect those concepts in detail, so shall we? The following is the description of 
+each category, what it is, what it does, why so etc. For an actual reference list, look below.
 Let's start with the simpliest now. 
 
 CORE FUNCTIONS
 
-Basically
+Basically, it's functions that do not belong to any package's object or event, and thus are brought 
+together here. They're more 'general', and user usually does not interact with them but with the code that
+interacts with them.
+The word 'core' cause it sounds cool. 
+
+Example: 
+
+Calculating name strings. 
+
+From server we're getting, among other things, list of people involved in a request with their names and last 
+name. But there are different rules for processing paperwork in different countries. For example, in Northern 
+America it's always LASTNAME, FIRSTNAME. Last name all capital, comma, whitespace, first name all capital. In 
+my city league though (Eastern Europe) it's Last name, and then, if the last name is not unique in the document, 
+comma, whitespace, and start adding by one letter to each person untill the name string does not become unique,
+but don't finish on vowel. Put a period at the end except for if all letters of the first name have been used. 
+
+We're using this function when we're processing request reply and save the results in Person objects for the 
+correct displaying people's name according to paperwork rules in different people lists throughout the app 
+(substitutions list, for example).
+
+INTERVAL INSTRUCTIONS
+
+Basically, it's a list of strings with some command that will be passed to exec() function as an argument when
+the time of the interval with that id passes. Look /gfx/interval_instructions.py in directory structure or
+references for more information.
+
+PROTOCOL BORDERS
+
+After the end of a match, the app generates a protocol image which is to be used as any volleyball match
+protocol. This file contains information about top-left and bottom right coordinates of the area in which 
+text data relative to name needs to be inserted. Look Modding section of the user manual, or 
+/py/match/protocol/borders.py in directory structure or references for more information.
+
+LOCALIZATION 
+
+Localization is stored in /meta/localization.py divided in list named after context of their usage. Those
+lists themselves are divided into sub-list each of which contains strings in their respective language.
+language_code from /meta/app_config specifies which sub-list will be used. General way of importing string is
+*list group name*[language_code][needed_string_index]
+Please, note that all formatting is done manually. Some strings are divided into two to put variable's value
+inside them. Look Modding section of the user manual, or /meta/localization.py in directory structure or 
+references for more information.
+
+MATCH CONFIG
 
