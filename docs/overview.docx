@@ -1,4 +1,45 @@
 TODO: make it an actual docx with hyperlinks and crossreferences to different elements (classes, functions, parameters etc).
 
-First, a few words about general architectural design.
+As in its name, this app is designed to help volleyball enthusiasts and professionals, such as coaches, players, officials etc with sport-related activities, both during and 
+off-match. 
+
+This document is design to provide programming-savvy users with general architectural overview and specific references.
+
+First, let me tell that the following is the fifth architectural design used in the development of this app. The first one was a complete mess, the second one was a structured mess, 
+the third one was a relatively good construction based on said structured mess, the fourth one was some weird futuristic concept that was decided to try due to the pause in the 
+development of the third one (hello, quarantine), and the current fifth one is another form of the third one but written from scratch due to said pause.
+As you can see, I'm happy to finally write this.
+
+Now, a few words about what's what and how it works.
+
+There are several important cornstone-concepts of the code's architecture:
+
+* OBJECTS, including
+    * EVENTS
+    * VISUAL ELEMENTS 
+    * REQUESTS
+    * LOGS
+
+* SCREENS
+
+* DATA CONFIG, including
+    *APP CONFIG
+    *MATCH CONFIG
+    *LOCALIZATION
+    *PROTOCOL IMAGE BORDERS
+    *INTERVAL INSTRUCTIONS
+
+* CORE FUNCTIONS 
+
+Basically, these are all the cornstones...
+
+Before we start, let's go through the directory structure. 
+
+Anyway, let's inspect them in detail, shall we? The following is the description of each category, what it is, what it does, why so etc. For an actual reference list, look below.
+
+Let's start with the simpliest now. 
+
+CORE FUNCTIONS
+
+Basically
 
