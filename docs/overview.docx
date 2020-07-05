@@ -97,7 +97,41 @@ We need to go deeper. This is description of (almost) each point, including sub-
         there's some interval to wait, such as 1)before court entry, 2)before coin toss, 3)before set start, 4)before time out end, and has a timer, so interval_instructions.py
         stores instructions in str form to be executed by code in frontend.py
 
-        frontend.py - backbone of all GUI in the programm. It has code for 
+        frontend.py - backbone of all GUI in the programm. It has code for:
+            
+            Kivy application itself, 
+            its screenmanager, 
+            all the screens in said screenmanager, 
+                including base screens for inheiritance, 
+                and user-status versions, 
+            all methods of said screens, such as __init__, loading (in terms of not physical loading of a screen, but rather logical loading, i.e. what should be done in case of 
+                any backend / frontend changes that concern the screen irrelative to current screen \ switching between screens, these functions may be called when not in a screen 
+                at all, or when already in a screen - for example, the user is in the sanctions screen and selects a player who already has a warning. Warning button becomes 
+                hidden.), as well as widget manipulation, 
+            and popup manager, 
+                including design and functions for popup windows,
+            as well as background picture,
+            team widget - specific class for connecting volleyball positions numbers with Python and Kivy indexing, and applying this connecting in future code.
+            two Kivy mixing behavior classes, 
+            and, finally, two separate functions for scrolling processing.
+
+        /match - folder that contains different images and sub-folders, such as sanction cards pictures, arrows picture for cancelling / restoring events, and serve_ball.png,
+        which is also our icon.
+
+        /background_pictures - folder that contains...you name it...background pictures! To use your own background picture, add a file into here with '.jpg' extension, call it
+        'background_' + *your_picture_name*, and then change app_background_picture variable in meta/app_config.py to *your_picture_name*.
+    
+    /py - folder for backend code. It consists of:
+
+        /match
+        /requests
+        core.py
+        events.py 
+        objects.py
+
+        Now, as always:
+
+        /match - folder containing files and folder(s) related specifically to match. 
 
 
 Anyway, let's inspect them in detail, shall we? The following is the description of each category, what it is, what it does, why so etc. For an actual reference list, look below.
