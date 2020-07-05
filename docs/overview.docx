@@ -12,6 +12,8 @@ As you can see, I'm happy to finally write this.
 
 Now, a few words about what's what and how it works.
 
+The app is creared using Python, Kivy, and PIL. 
+
 There are several important cornstone-concepts of the code's architecture:
 
 * OBJECTS, including
@@ -64,7 +66,39 @@ We need to go deeper. This is description of (almost) each point, including sub-
 
     DVA.exe - result of compiling run.spec. App's main and only executable.
 
-    
+    /docs - folder that contains this overview / references list, user instruction, and license information.
+
+    /logs - folder that contains .txt file(s) for logs. Currently, we have two logs - for events and requests. Events' log is being creared and fullfilled in different ways, 
+    including requests' log but only exists during runtime and has no .txt representation. Requests' log, on another hand, may or may not have .txt file, depending on if any 
+    request has occured.
+
+    /meta - folder for meta stuff (as in the name). Currently contains localization and app config. 
+
+    /gfx - folder that contains everything related to graphics, including visual files, design code, and some processing code, including complicated processing code.
+    The folder itself has the following structure:
+
+        /background_pictures
+        /match
+        frontend.py 
+        interval_instructions.py 
+        visual_elements.py
+        loading.gif
+
+        Now, about every file, as usual:
+
+        loading.gif - gif image that will be supposed to popup during time-consuming processes and 1)notify the user what's going on and that the programm did not freeze, 2)block
+        user from chaotically clicking and actually freezing the programm, 3)just generaly make the programm looks nicer. As for now, the only one time-consuming process is 
+        generation of protocol image, and it does not work there due to some technical difficulties. But it will in the future! 
+
+        visual_elements.py - file that contains code of VisualElement class and all the classes that inheirit from it including their methods. For explanaition of what Visual
+        Element is, look below the directory structure.
+
+        interval_instructions.py - file containing instructions for interval window in form of string. Basically, in the programm there's an interval window that popups when
+        there's some interval to wait, such as 1)before court entry, 2)before coin toss, 3)before set start, 4)before time out end, and has a timer, so interval_instructions.py
+        stores instructions in str form to be executed by code in frontend.py
+
+        frontend.py - backbone of all GUI in the programm. It has code 
+
 
 Anyway, let's inspect them in detail, shall we? The following is the description of each category, what it is, what it does, why so etc. For an actual reference list, look below.
 
