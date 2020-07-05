@@ -1,1 +1,4 @@
-test
+TODO: make it an actual docx with hyperlinks and crossreferences to different elements (classes, functions, parameters etc).
+
+First, a few words about general architectural design.
+
