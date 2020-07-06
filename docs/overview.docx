@@ -195,14 +195,35 @@ now copies information from the log, appropriate changes...
 
 In two of these three cases, the algorithm is the following:
 
-Respective method of respective user object is called. 
+* User does something in GUI.
+* Respective method of respective user object is called. 
+
     (Note: I'm using phrase 'user object' very freely here.
     There's no objects connected to user. The user is only represented by variable 'user-status' which is used
     to determine their status as in 'referee'/'head coach'/'viewer' etc and to load correct app mode. If we're
     talking about match mode, there's objects for humans, as well as Match, Set, Substitution, Sanction etc.
     They are created for the purposes of naturality and linking into a code.)
 
-Method 'make_substitution'
+* This method deals with call-specific details (like, releasing mistake button in the match screen if the method
+  is player.mistake())
+* Also, this methond send signal to event manager that respective event needs to be created.
+* Specific event class does not have its own __init__ function but inheirits from Event class itself which does.
+* Event class does some processing with logs, requests, and so on, depending on different parameters, and calls
+  create() function of said specific event class which does all the frontend, backend, and objects 
+  manipulations.
+* Then, if necessary, event manager does post-event processing.
+
+If we're using logs instead, then we pass different parameters to event manager and event class itself while
+creare() function remains the same.
+This allows us to ensure the same effects and behavior when we're doing the same action in different ways.
+
+So, basically, this is it. An Event is an object that represents the effects of the action (event) that has 
+happened and allows us to centralize its processing, irregardless of source of origin, user-status etc.
+
+EVENT MANAGER
+
+
+
 
 CORE FUNCTIONS
 
