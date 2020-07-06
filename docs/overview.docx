@@ -361,15 +361,17 @@ Look py/core.py or py/match/core.py in directory structure or references for mor
 INTERVAL INSTRUCTIONS
 
 Basically, it's a list of strings with some command that will be passed to exec() function as an argument when
-the time of the interval with that id passes. Look /gfx/interval_instructions.py in directory structure or
-references for more information.
+the time of the interval with that id passes. 
+
+Look /gfx/interval_instructions.py in directory structure or references for more information.
 
 PROTOCOL BORDERS
 
 After the end of a match, the app generates a protocol image which is to be used as any volleyball match
 protocol. This file contains information about top-left and bottom right coordinates of the area in which 
-text data relative to name needs to be inserted. Look Modding section of the user manual, or 
-/py/match/protocol/borders.py in directory structure or references for more information.
+text data relative to name needs to be inserted. 
+
+Look Modding section of the user manual, or /py/match/protocol/borders.py in directory structure or references for more information.
 
 LOCALIZATION 
 
@@ -378,8 +380,9 @@ lists themselves are divided into sub-list each of which contains strings in the
 language_code from /meta/app_config specifies which sub-list will be used. General way of importing string is
 *list group name*[language_code][needed_string_index]
 Please, note that all formatting is done manually. Some strings are divided into two to put variable's value
-inside them. Look Modding section of the user manual, or /meta/localization.py in directory structure or 
-references for more information.
+inside them. 
+
+Look Modding section of the user manual, or /meta/localization.py in directory structure or references for more information.
 
 MATCH CONFIG
 
