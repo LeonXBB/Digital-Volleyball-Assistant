@@ -1,17 +1,21 @@
 Note 1: Excuse my anglais.
 Note 2: Do as I say, not as I do.
 Note 3:
-TODO: make it an actual docx with hyperlinks and crossreferences to different elements (classes, functions, parameters etc).
+TODO: make it an actual docx with hyperlinks and crossreferences to different elements (classes, functions, 
+parameters etc). Also, do some general formatting.
 
 
-As in its name, this app is designed to help volleyball enthusiasts and professionals, such as coaches, players, officials etc with sport-related activities, both during and 
-off-match. 
+As in its name, this app is designed to help volleyball enthusiasts and professionals, such as coaches, 
+players, officials etc with sport-related activities, both during and off-match. 
 
-This document is design to provide programming-savvy users with general architectural overview and specific references.
+This document is design to provide programming-savvy users with general architectural overview and specific 
+references.
 
-First, let me tell that the following is the fifth architectural design used in the development of this app. The first one was a complete mess, the second one was a structured mess, 
-the third one was a relatively good construction based on said structured mess, the fourth one was some weird futuristic concept that was decided to try due to the pause in the 
-development of the third one (hello, quarantine), and the current fifth one is another form of the third one but written from scratch due to said pause.
+First, let me tell that the following is the fifth architectural design used in the development of this app. 
+The first one was a complete mess, the second one was a structured mess, the third one was a relatively good 
+construction based on said structured mess, the fourth one was some weird futuristic concept that was decided 
+to try due to the pause in the development of the third one (hello, quarantine), and the current fifth one is 
+another form of the third one but written from scratch due to said pause. 
 As you can see, I'm happy to finally write this.
 
 Now, a few words about what's what and how it works.
@@ -27,7 +31,9 @@ There are several important cornstone-concepts of the code's architecture:
     * REQUESTS
     * LOGS
 
-* SCREENS
+* GFX, including
+    * SCREENS
+    * POPUPS
 
 * DATA CONFIG, including
     *APP CONFIG
@@ -58,10 +64,11 @@ If you work in developer's version, i.e. you're me, you also have
 
 We need to go deeper. This is description of (almost) each point, including sub-structure.
 
-    run.pyw - this is a loading script for our main code. Long story short: customization files (app_ and match_config, localization, and protocol image borders) were first 
-    creared with py extensions. The reason for that is that yours truly was not aware of the fact that py.modules are imported during compilation and not runtime. As customization
-    requires to apply changes whenever they done (saved, to be precise), and changing the structure of importing those files would be very time consuming, the quick-fix was found
-    in form of "shell-script" that only has one job - run the main script with all of its dependencies imported during runtime.
+    run.pyw - this is a loading script for our main code. Long story short: customization files (app_ and match_config, localization, and 
+    protocol image borders) were first creared with py extensions. The reason for that is that yours truly was not aware of the fact that 
+    py.modules are imported during compilation and not runtime. As customization requires to apply changes whenever they done (saved, to be 
+    precise), and changing the structure of importing those files would be very time consuming, the quick-fix was found in form of 
+    "shell-script" that only has one job - run the main script with all of its dependencies imported during runtime.
 
     run.spec - "pre-cooked" spec file for faster compiling run.pyw 
 
@@ -73,13 +80,14 @@ We need to go deeper. This is description of (almost) each point, including sub-
 
     /docs - folder that contains this overview / references list, user instruction, and license information.
 
-    /logs - folder that contains .txt file(s) for logs. Currently, we have two logs - for events and requests. Events' log is being creared and fullfilled in different ways, 
-    including requests' log but only exists during runtime and has no .txt representation. Requests' log, on another hand, may or may not have .txt file, depending on if any 
-    request has occured.
+    /logs - folder that contains .txt file(s) for logs. Currently, we have two logs - for events and requests. Events' log is being creared and 
+    fullfilled in different ways, including requests' log but only exists during runtime and has no .txt representation. Requests' log, on
+    another hand, may or may not have .txt file, depending on if any request has occured.
 
     /meta - folder for meta stuff (as in the name). Currently contains localization and app config. 
 
-    /gfx - folder that contains everything related to graphics, including visual files, design code, and some processing code, including complicated processing code.
+    /gfx - folder that contains everything related to graphics, including visual files, design code, and some processing code, including 
+    complicated processing code.
     The folder itself has the following structure:
 
         /background_pictures
@@ -91,16 +99,18 @@ We need to go deeper. This is description of (almost) each point, including sub-
 
         Now, about every file, as usual:
 
-        loading.gif - gif image that will be supposed to popup during time-consuming processes and 1)notify the user what's going on and that the programm did not freeze, 2)block
-        user from chaotically clicking and actually freezing the programm, 3)just generaly make the programm looks nicer. As for now, the only one time-consuming process is 
-        generation of protocol image, and it does not work there due to some technical difficulties. But it will in the future! 
+        loading.gif - gif image that will be supposed to popup during time-consuming processes and 1)notify the user what's going on and that 
+        the programm did not freeze, 2)block user from chaotically clicking and actually freezing the programm, 3)just generaly make the 
+        programm looks nicer. As for now, the only one time-consuming process is generation of protocol image, and it does not work there due 
+        to some technical difficulties. But it will in the future! 
 
-        visual_elements.py - file that contains code of VisualElement class and all the classes that inheirit from it including their methods. For explanaition of what Visual
-        Element is, look below the directory structure.
+        visual_elements.py - file that contains code of VisualElement class and all the classes that inheirit from it including their methods. 
+        For explanaition of what Visual Element is, look below the directory structure.
 
-        interval_instructions.py - file containing instructions for interval window in form of string. Basically, in the programm there's an interval window that popups when
-        there's some interval to wait, such as 1)before court entry, 2)before coin toss, 3)before set start, 4)before time out end, and has a timer, so interval_instructions.py
-        stores instructions in str form to be executed by code in frontend.py
+        interval_instructions.py - file containing instructions for interval window in form of string. Basically, in the programm there's an 
+        interval window that popups when there's some interval to wait, such as 1)before court entry, 2)before coin toss, 3)before set start, 
+        4)before time out end, and has a timer, so interval_instructions.py stores instructions in str form to be executed by code in 
+        frontend.py.
 
         frontend.py - backbone of all GUI in the programm. It has code for:
             
@@ -110,22 +120,25 @@ We need to go deeper. This is description of (almost) each point, including sub-
                 including base screens for inheiritance, 
                 and user-status versions, 
             list of widget references of said screens (see references for more info)
-            all methods of said screens, such as __init__, loading (in terms of not physical loading of a screen, but rather logical loading, i.e. what should be done in case of 
-                any backend / frontend changes that concern the screen irrelative to current screen \ switching between screens, these functions may be called when not in a screen 
-                at all, or when already in a screen - for example, the user is in the sanctions screen and selects a player who already has a warning. Warning button becomes 
+            all methods of said screens, such as __init__, loading (in terms of not physical loading of a screen, but rather logical loading, 
+                i.e. what should be done in case of any backend / frontend changes that concern the screen irrelative to current 
+                screen \ switching between screens, these functions may be called when not in a screen at all, or when already in a screen - 
+                for example, the user is in the sanctions screen and selects a player who already has a warning. Warning button becomes 
                 hidden.), as well as widget manipulation, 
             and popup manager, 
                 including design and functions for popup windows,
             as well as background picture,
-            team widget - specific class for connecting volleyball positions numbers with Python and Kivy indexing, and applying this connecting in future code.
+            team widget - specific class for connecting volleyball positions numbers with Python and Kivy indexing, and applying this 
+                connecting in future code.
             two Kivy mixing behavior classes, 
             and, finally, two separate functions for scrolling processing.
 
-        /match - folder that contains different images and sub-folders, such as sanction cards pictures, arrows picture for cancelling / restoring events, and serve_ball.png,
-        which is also our icon.
+        /match - folder that contains different images and sub-folders, such as sanction cards pictures, arrows picture for 
+        cancelling / restoring events, and serve_ball.png, which is also our icon.
 
-        /background_pictures - folder that contains...you name it...background pictures! To use your own background picture, add a file into here with '.jpg' extension, call it
-        'background_' + *your_picture_name*, and then change app_background_picture variable in meta/app_config.py to *your_picture_name*.
+        /background_pictures - folder that contains...you name it...background pictures! To use your own background picture, add a file into 
+        here with '.jpg' extension, call it 'background_' + *your_picture_name*, and then change app_background_picture variable in 
+        meta/app_config.py to *your_picture_name*.
     
     /py - folder for backend code. It consists of:
 
@@ -137,7 +150,15 @@ We need to go deeper. This is description of (almost) each point, including sub-
 
         Now, as always:
 
-        /match - folder containing files and folder(s) related specifically to match. Note: As mentioned before, the fourth architecture of the app was weird. It consisted of different packages / modules, every one of which would hold code for different parts of the program, such as �match - referee�, or �non-match � player-profile� etc, and the main program, which would -load, -unload, -rotate them and so for. Now, /match folder is sort of following this idea. Base of any module are three files: core.py, events.py, objects.py. In /py we are keeping general code, while in py/match we�re saving code related directly to match flow. Why is it just /py/match and not /py/match-referee? Well, first, it is so for now, and second, the difference between match flow for referees, head coaches, and staff is not that big, there would be more cons than pros to disconnect it. However, in this module idea I�ve been using something like �match-base� which served as inheritance base for other �match-� modules�
+        /match - folder containing files and folder(s) related specifically to match. Note: As mentioned before, the fourth architecture of the 
+        app was weird. It consisted of different packages / modules, every one of which would hold code for different parts of the program, 
+        such as match - referee, or non-match - player-profile etc, and the main program, which would -load, -unload, -rotate them and so for. 
+        Now, /match folder is sort of following this idea. Base of any module are three files: core.py, events.py, objects.py. In /py we are 
+        keeping general code, while in py/match we're saving code related directly to match flow. Why is it just /py/match and not 
+        /py/match-referee? Well, first, it is so for now, and second, the difference between match flow for referees, head coaches, and staff is 
+        not that big, there would be more cons than pros to disconnect it. However, in this module idea I've been using something like 
+        'match-meta' which served as inheritance base for other 'match - modules'. Also, those of you who have read my plans for far future
+        with this app, know that non-match modules will be at least 10 times more and bigger than match-modules.
 
         /py/requests - holds requests sending and processing files. See below for more info.
 
@@ -168,7 +189,6 @@ We need to go deeper. This is description of (almost) each point, including sub-
 			events.py - match-related events.
 
 			objects.py - match-related objects.
-
 
 Now, finally, we can inspect those concepts in detail, so shall we? The following is the description of 
 each category, what it is, what it does, why so etc. For an actual reference list, look below.
@@ -220,6 +240,8 @@ This allows us to ensure the same effects and behavior when we're doing the same
 So, basically, this is it. An Event is an object that represents the effects of the action (event) that has 
 happened and allows us to centralize its processing, irregardless of source of origin, user-status etc.
 
+Look py/events.py or py/match/events.py in directory structure or references for more information.
+
 EVENT MANAGER
 
 Some events are independent. Some are not. Sometimes we need to delete / restore event.
@@ -248,8 +270,68 @@ Event manager also deals with events deletion / restoration. It does so by:
 * maintaining event chains: if the event to delete / restore is dependent, it'll delete / restore all events up 
   to the independent one.
 
+Look py/events.py or py/match/events.py in directory structure or references for more information.
+
 VISUAL ELEMENTS
 
+Imagine, if Team object would have a list named 'name_labels' which would contain all the Kivy Label widgets
+which displays team's name. And, when, for example, team receives warning, we could change the color of these
+Labels to yellow. And, maybe, some other functions, more complicated. And, maybe, we could dynamically change
+some attributes of those widgets depending on our backend?
+
+Visual Element is a cool interface between frontend and backend. It has the following structure:
+
+* elements - list of widgets associated with this Visual Element.
+* parameters - list of different values (text, opacity, color etc) to be set in elements when loaded if 
+  applicable.
+* load function - applying parameters to elements 
+* elements management functions - add, delete, clear element(s). See below for more information.
+* specific functions - like penalty() for TeamName or rotate() for TeamLineUp.
+
+Note about elements management functions: 
+    
+    In the third version of the architecture Visual Elements were pretty much constant. team.Name = TeamName()
+    was created once and then, when needed to be update due to, say, sides change after set end, elements
+    would be updated and Visual Element would be re-loaded.
+    However, during writing of the code, it was noticed that re-initialisation of Visual Elements has no 
+    downsides and is somehow easier to work with. Thus, now changing elements list is done by creating new
+    Visual Element.
+    
+    There also were is_active parameter, and unload() function, which are now deleted.
+
+Look gfx/visual_elements.py in directory structure or references for more information.
+
+REQUESTS 
+
+App's requests are pretty much standard Python requests library with some interface build around it.
+
+It can work with meta data, add itself into the log, and has two different ways of working with no connections:
+either throw a popup, or add them into queue and send when Internet re-appears.
+
+Requests folder has two files for each request: init and process. The former stores request preparation code
+which is executed before sending, the latter stores reply body's processing code which is executed after.
+
+Internet address to which requests are send is stored in app_config.
+
+Look py/core.py or py/match/core.py in directory structure or references for more information.
+
+LOGS 
+
+Logs in the app are very simple. 
+
+They consits of two sublogs. The first one, just a log, stores approximate return of the __dir__ function of
+the object to store, while the deep log stores the actual object.
+
+Logs obviously have functions to add (both to normal log and deeply) but have no delete element(s) function
+in themselves. They do have functions though to return either specific or all elements with the given values 
+of specific indexes. Also, optionally, they can be saved into .txt file or just be kept in memort during 
+runtime.
+
+Note: If there's an unfinished match, events from it will be loaded into Events log which will be created on
+app load and all the events will be passed through event manager, thus restoring state of the app (and match)
+which it had before execution stopped.
+
+Look py/objects.py or /logs in directory structure or references for more information.
 
 
 CORE FUNCTIONS
@@ -273,6 +355,8 @@ but don't finish on vowel. Put a period at the end except for if all letters of 
 We're using this function when we're processing request reply and save the results in Person objects for the 
 correct displaying people's name according to paperwork rules in different people lists throughout the app 
 (substitutions list, for example).
+
+Look py/core.py or py/match/core.py in directory structure or references for more information.
 
 INTERVAL INSTRUCTIONS
 
