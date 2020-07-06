@@ -222,6 +222,33 @@ happened and allows us to centralize its processing, irregardless of source of o
 
 EVENT MANAGER
 
+Some events are independent. Some are not. Sometimes we need to delete / restore event.
+This is what event manager is for.
+
+Dependent events are events that are not first in events chain, and that are creared not by user but app's 
+logic. An example:
+
+User issues a penalty to a player (SanctionIssued) -> If this is standard rules, point is assigned to another
+team (Point_sReceived) -> If this is the last point of the set (set point), the set ends (yeah, I know about
+referees' recommendation not to issue penalty on set point) (SetEnd) -> If this is the last set, the match 
+ends (MatchEnd).
+
+In this example, SanctionIssued is an independent event, while Point_sReceived, SetEnd, and MatchEnd are
+dependent events. Some events are always in / dependent, some are mixed.
+
+Handeling event chains from Event class itself is difficult cause they require different processing and is
+just better when done via event manager.
+
+Event manager also deals with events deletion / restoration. It does so by:
+
+* calling event's __delete__ and restore (which is basically create function with different wrapping)
+  functions.
+* keeping and updating two lists: cancelled_events_ids, and created_events_ids which are then being used to
+  determine which events to delete / restore (the last ones).
+* maintaining event chains: if the event to delete / restore is dependent, it'll delete / restore all events up 
+  to the independent one.
+
+VISUAL ELEMENTS
 
 
 
