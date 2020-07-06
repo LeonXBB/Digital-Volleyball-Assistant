@@ -1,4 +1,8 @@
-#TODO: make it an actual docx with hyperlinks and crossreferences to different elements (classes, functions, parameters etc).
+Note 1: Excuse my anglais.
+Note 2: Do as I say, not as I do.
+Note 3:
+TODO: make it an actual docx with hyperlinks and crossreferences to different elements (classes, functions, parameters etc).
+
 
 As in its name, this app is designed to help volleyball enthusiasts and professionals, such as coaches, players, officials etc with sport-related activities, both during and 
 off-match. 
@@ -18,6 +22,7 @@ There are several important cornstone-concepts of the code's architecture:
 
 * OBJECTS, including
     * EVENTS
+    * EVENT MANAGER
     * VISUAL ELEMENTS 
     * REQUESTS
     * LOGS
@@ -104,6 +109,7 @@ We need to go deeper. This is description of (almost) each point, including sub-
             all the screens in said screenmanager, 
                 including base screens for inheiritance, 
                 and user-status versions, 
+            list of widget references of said screens (see references for more info)
             all methods of said screens, such as __init__, loading (in terms of not physical loading of a screen, but rather logical loading, i.e. what should be done in case of 
                 any backend / frontend changes that concern the screen irrelative to current screen \ switching between screens, these functions may be called when not in a screen 
                 at all, or when already in a screen - for example, the user is in the sanctions screen and selects a player who already has a warning. Warning button becomes 
@@ -166,7 +172,37 @@ We need to go deeper. This is description of (almost) each point, including sub-
 
 Now, finally, we can inspect those concepts in detail, so shall we? The following is the description of 
 each category, what it is, what it does, why so etc. For an actual reference list, look below.
-Let's start with the simpliest now. 
+Let's start from up to down.
+
+EVENTS 
+
+Imagine this:
+
+Matchtime. Head coach informs match officials that he's making a substitution. They do it using their 
+tablet and user-profiles. Appropriate changes to backend (switch players in team.players) and frontend (update
+ team line up numbers in match screen) are made (these are not all changes). Substitution object is created. 
+
+Now, imagine this:
+
+Matchtime. Head coach makes a substitution using their tablet. Appropriate changes to backend and frontend are 
+made (these are not all changes). Substitution object is created. Information then is sent to officials tablets
+using requests.
+
+Now, imagine this:
+
+Matchtime. The app has crashed midway for whatever reason but the substitution was already made before. The app
+now copies information from the log, appropriate changes...
+
+In two of these three cases, the algorithm is the following:
+
+Respective method of respective user object is called. 
+    (Note: I'm using phrase 'user object' very freely here.
+    There's no objects connected to user. The user is only represented by variable 'user-status' which is used
+    to determine their status as in 'referee'/'head coach'/'viewer' etc and to load correct app mode. If we're
+    talking about match mode, there's objects for humans, as well as Match, Set, Substitution, Sanction etc.
+    They are created for the purposes of naturality and linking into a code.)
+
+Method 'make_substitution'
 
 CORE FUNCTIONS
 
