@@ -335,7 +335,73 @@ Look py/objects.py or /logs in directory structure or references for more inform
 
 SCREENS
 
-Screens 
+Screens in the app's GUI are basically Kivy's screens with some notes.
+
+Each screen has at least __init__ function in which all the design is stored in inserting level as well as 
+widget bonding if any.
+
+It also has on_load function which basically loads screen's logic. (see /gfx.frontend.py in directory 
+structure for more information), as well as digets manipulation processing functions, both related to 
+backend and frontend.
+
+Instead of using variables names directly, every function except __init__ uses and should do so elements' 
+names in frontend references dictionary list stored in App class. It is this way so that if we change
+screen's design structure, we can just change the dictionary and not replace all the references to that 
+widget. Not applicable to __init__ function due to said dictionary not existing on that point.
+
+Look gfx/frontend.py in directory structure or references for more information.
+
+POPUPS
+
+Popups are similar to Kivy's popups and screens. 
+
+Class PopUpWindow stored in gfx/frontend.py provides sort of interface / manager for popups and allows for
+calling and (optionally) loading selected popup window.
+
+One particular popup is IntervalWindow which exists to show timer counting down to some event. It executes
+code stored in gfx/interval_instructions.py when the time comes. Referee's interface of this window has
+'Skip' button.
+
+Unlike screens, popups, being created 'on fly' don't have their widgets put into references list and address
+their widgets in their functions by calling them directly.
+
+Look gfx/frontend.py in directory structure or references for more information.
+
+APP CONFIG
+
+App config is a py file that stores all meta app information.
+It is located in meta/app_config.py.
+
+MATCH CONFIG
+
+Match config is a py file that stores all rules of current rules set to be used in match flow.
+It is located in py/match/match_config.py.
+
+LOCALIZATION 
+
+Localization is stored in /meta/localization.py divided in list named after context of their usage. Those
+lists themselves are divided into sub-list each of which contains strings in their respective language.
+language_code from /meta/app_config specifies which sub-list will be used. General way of importing string is
+*list group name*[language_code][needed_string_index]
+Please, note that all formatting is done manually. Some strings are divided into two to put variable's value
+inside them. 
+
+Look Modding section of the user manual, or /meta/localization.py in directory structure or references for more information.
+
+PROTOCOL BORDERS
+
+After the end of a match, the app generates a protocol image which is to be used as any volleyball match
+protocol. This file contains information about top-left and bottom right coordinates of the area in which 
+text data relative to name needs to be inserted. 
+
+Look Modding section of the user manual, or /py/match/protocol/borders.py in directory structure or references for more information.
+
+INTERVAL INSTRUCTIONS
+
+Basically, it's a list of strings with some command that will be passed to exec() function as an argument when
+the time of the interval with that id passes. 
+
+Look /gfx/interval_instructions.py in directory structure or references for more information.
 
 CORE FUNCTIONS
 
@@ -360,32 +426,3 @@ correct displaying people's name according to paperwork rules in different peopl
 (substitutions list, for example).
 
 Look py/core.py or py/match/core.py in directory structure or references for more information.
-
-INTERVAL INSTRUCTIONS
-
-Basically, it's a list of strings with some command that will be passed to exec() function as an argument when
-the time of the interval with that id passes. 
-
-Look /gfx/interval_instructions.py in directory structure or references for more information.
-
-PROTOCOL BORDERS
-
-After the end of a match, the app generates a protocol image which is to be used as any volleyball match
-protocol. This file contains information about top-left and bottom right coordinates of the area in which 
-text data relative to name needs to be inserted. 
-
-Look Modding section of the user manual, or /py/match/protocol/borders.py in directory structure or references for more information.
-
-LOCALIZATION 
-
-Localization is stored in /meta/localization.py divided in list named after context of their usage. Those
-lists themselves are divided into sub-list each of which contains strings in their respective language.
-language_code from /meta/app_config specifies which sub-list will be used. General way of importing string is
-*list group name*[language_code][needed_string_index]
-Please, note that all formatting is done manually. Some strings are divided into two to put variable's value
-inside them. 
-
-Look Modding section of the user manual, or /meta/localization.py in directory structure or references for more information.
-
-MATCH CONFIG
-
