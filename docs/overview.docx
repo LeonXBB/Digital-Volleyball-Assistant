@@ -474,4 +474,12 @@ Used by:
     run.pyw
 Uses:
     Config from Kivy.config 
+    app_icon_path, app_resizable, app_width, app_height from meta.app_config
+
+
+meta.app_config
+
+
+Used by:
+    DVA.pyw
 
