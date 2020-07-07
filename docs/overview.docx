@@ -472,4 +472,6 @@ Step by step:
 
 Used by:
     run.pyw
+Uses:
+    Config from Kivy.config 
 
