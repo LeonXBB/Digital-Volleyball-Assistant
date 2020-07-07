@@ -46,6 +46,8 @@ There are several important cornstone-concepts of the code's architecture:
 
 So, basically, these are all the cornstones...
 
+
+
 Before we start, let's go through the directory structure. In the root directory we have the following list:
 
     /docs 
@@ -189,6 +191,8 @@ We need to go deeper. This is description of (almost) each point, including sub-
 			events.py - match-related events.
 
 			objects.py - match-related objects.
+
+
 
 Now, finally, we can inspect those concepts in detail, so shall we? The following is the description of 
 each category, what it is, what it does, why so etc. For an actual reference list, look below.
@@ -426,3 +430,44 @@ correct displaying people's name according to paperwork rules in different peopl
 (substitutions list, for example).
 
 Look py/core.py or py/match/core.py in directory structure or references for more information.
+
+
+
+CODE REFERENCES
+
+
+run.pyw
+
+
+Info: 
+    run.py is a so-called "shell-script" created because there's a need to import main script's dependencies
+    during runtime and not compiling. It does so by running DVA.pyw in Python without compiling it. 
+    Executables created with pyinstaller have their own Python interpreter in them so it is irrelavent whether
+    user has Python installed or not. Kivy is imported implicitly.
+Structure (excluding imports):
+    directory: str
+Step by step:
+    First, 'directory' variable is created which contains current directory (directory = os.getcwd())
+    Then, the exact command that's being executed is 
+    'subprocess.run(f'cmd /c "python {directory}\DVA.pyw"', shell=True)'. Shell is set to True because
+    otherwise Kivy's terminal window appears.
+Uses: 
+    subprocess
+    os
+    DVA.pyw
+
+
+DVA.pyw
+
+
+Info:
+    Main script of the app. It is responsible for starting the application, creating and configuring GUI 
+    window, as well as loading and (if necessary) restoring logs, as well as creating screen manager for the
+    GUI.
+Structure (excluding imports):
+    logs: list
+    sm: ScreenManager
+    Digital_Volleyball_Assistant: Application 
+Step by step:
+
+

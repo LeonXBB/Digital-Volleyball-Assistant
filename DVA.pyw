@@ -1,10 +1,10 @@
 from kivy.config import Config
-import os
+from meta.app_config import app_icon_path, app_resizable, app_width, app_height
 
-Config.set('graphics', 'resizable', False)
-Config.set('graphics', 'width', '700')
-Config.set('graphics', 'height', '500')
-Config.set('kivy', 'window_icon', os.getcwd() + '/gfx/match/serve_ball.png')
+Config.set('graphics', 'resizable', app_resizable)
+Config.set('graphics', 'width', app_width)
+Config.set('graphics', 'height', app_height)
+Config.set('kivy', 'window_icon', app_icon_path)
 
 from gfx.frontend import Application, ScreenManager
 from py.core import load_log
