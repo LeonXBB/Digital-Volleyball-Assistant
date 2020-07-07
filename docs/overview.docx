@@ -200,7 +200,7 @@ Imagine this:
 
 Matchtime. Head coach informs match officials that he's making a substitution. They do it using their 
 tablet and user-profiles. Appropriate changes to backend (switch players in team.players) and frontend (update
- team line up numbers in match screen) are made (these are not all changes). Substitution object is created. 
+team line up numbers in match screen) are made (these are not all changes). Substitution object is created. 
 
 Now, imagine this:
 
@@ -333,6 +333,9 @@ which it had before execution stopped.
 
 Look py/objects.py or /logs in directory structure or references for more information.
 
+SCREENS
+
+Screens 
 
 CORE FUNCTIONS
 
