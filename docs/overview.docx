@@ -469,17 +469,48 @@ Structure (excluding imports):
     sm: ScreenManager
     Digital_Volleyball_Assistant: Application 
 Step by step:
-
+    First, we're setting window's  graphical parameters, including its resizableness and icon, according to
+    app config.
+    Then, we create logs list and screen manager. They need to be available as they are called from other 
+    places, so they not under '__main__' name.
+    After that, if said name is actually '__main__', we load logs using respective core funtion, and creating
+    and running the app itself.
 Used by:
-    run.pyw
+    run.pyw (script itself)
 Uses:
     Config from Kivy.config 
     app_icon_path, app_resizable, app_width, app_height from meta.app_config
+    Application, ScreenManager from gfx.frontend
+    load_log from py.core 
+
+
+gfx.frontend
+
+
+    class Application(App)
+
+    Used by:    
+        DVA.pyw (class itself)
+
+
+    class ScreenManager(ScreenManager) 
+
+    Used by: 
+        DVA.pyw (class itself)
+
+
+py.core 
+
+    def load_log
+
+    Parameters:
+        log_name: str
+        save_to_file: bool
 
 
 meta.app_config
 
 
 Used by:
-    DVA.pyw
+    DVA.pyw (app_icon_path, app_resizable, app_width, app_height)
 
