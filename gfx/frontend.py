@@ -1,3 +1,13 @@
+'''
+This is file for storing code related to app's frontend. Currently it stores code of the Kivy App 
+itself, its Screen Manager, all the screens and their functions, Popup windows and their manager,
+background picture, special interface widget to allow applying volleyball position indexing with 
+Kivy indexing, two classes of Kivy mixed behavior widgets, and two functions related to mouse 
+scrolling, as well as indexes list for the latter.
+
+Most imports are done at the module level to avoid importing same things over and over again.
+'''
+
 from os import path, getcwd
 from io import BytesIO
 from functools import partial
