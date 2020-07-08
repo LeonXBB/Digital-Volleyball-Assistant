@@ -438,79 +438,112 @@ CODE REFERENCES
 
 run.pyw
 
-
-Info: 
-    run.py is a so-called "shell-script" created because there's a need to import main script's dependencies
-    during runtime and not compiling. It does so by running DVA.pyw in Python without compiling it. 
-    Executables created with pyinstaller have their own Python interpreter in them so it is irrelavent whether
-    user has Python installed or not. Kivy is imported implicitly.
-Structure (excluding imports):
-    directory: str
-Step by step:
-    First, 'directory' variable is created which contains current directory (directory = os.getcwd())
-    Then, the exact command that's being executed is 
-    'subprocess.run(f'cmd /c "python {directory}\DVA.pyw"', shell=True)'. Shell is set to True because
-    otherwise Kivy's terminal window appears.
-Uses: 
-    subprocess
-    os
-    DVA.pyw
+    Info: 
+        run.py is a so-called "shell-script" created because there's a need to import main script's 
+        dependencies during runtime and not compiling. It does so by running DVA.pyw in Python without 
+        compiling it. 
+        Executables created with pyinstaller have their own Python interpreter in them so it is irrelavent 
+        whether user has Python installed or not. Kivy is imported implicitly.
+    
+    Structure (excluding imports):
+        directory: str
+    
+    Step by step:
+        First, 'directory' variable is created which contains current directory (directory = os.getcwd())
+        Then, the exact command that's being executed is 
+        'subprocess.run(f'cmd /c "python {directory}\DVA.pyw"', shell=True)'. Shell is set to True because
+        otherwise Kivy's terminal window appears.
+    
+    Uses: 
+        subprocess
+        os
+        DVA.pyw
 
 
 DVA.pyw
 
-
-Info:
-    Main script of the app. It is responsible for starting the application, creating and configuring GUI 
-    window, as well as loading and (if necessary) restoring logs, as well as creating screen manager for the
-    GUI.
-Structure (excluding imports):
-    logs: list
-    sm: ScreenManager
-    Digital_Volleyball_Assistant: Application 
-Step by step:
-    First, we're setting window's  graphical parameters, including its resizableness and icon, according to
-    app config.
-    Then, we create logs list and screen manager. They need to be available as they are called from other 
-    places, so they not under '__main__' name.
-    After that, if said name is actually '__main__', we load logs using respective core funtion, and creating
-    and running the app itself.
-Used by:
-    run.pyw (script itself)
-Uses:
-    Config from Kivy.config 
-    app_icon_path, app_resizable, app_width, app_height from meta.app_config
-    Application, ScreenManager from gfx.frontend
-    load_log from py.core 
-
+    Info:
+        Main script of the app. It is responsible for starting the application, creating and configuring GUI 
+        window, as well as loading and (if necessary) restoring logs, as well as creating screen manager for 
+        the GUI.
+    
+    Structure (excluding imports):
+        logs: list
+        sm: ScreenManager
+        Digital_Volleyball_Assistant: Application 
+    
+    Step by step:
+        First, we're setting window's  graphical parameters, including its resizableness and icon, according 
+        to app config.
+        Then, we create logs list and screen manager. They need to be available as they are called from other 
+        places, so they not under '__main__' name.
+        After that, if said name is actually '__main__', we load logs using respective core funtion, and 
+        creating and running the app itself.
+    
+    Used by:
+        run.pyw (script itself)
+    
+    Uses:
+        Config from Kivy.config 
+        app_icon_path, app_resizable, app_width, app_height from meta.app_config
+        Application, ScreenManager from gfx.frontend
+        load_log from py.core 
 
 gfx.frontend
 
+    Uses: 
+        path, getcwd from os
+        BytesIO from io 
+        partial from functools 
 
-    class Application(App)
+        ImageDraw, ImageFont, Image as PIL_Image from PIL
 
-    Used by:    
-        DVA.pyw (class itself)
+        App from kivy.app 
+        Clock from kivy.clock 
 
+        ButtonBehavior, FocusBehavior from kivy.uix.behaviors
+
+        Screen, ScreenManager, NoTransition from kivy.uix.screenmanager
+
+        GridLayout frontend kivy.uix.gridLayout
+        GridLayout frontend kivy.uix.gridLayout
+
+
+    class Application
+
+        Info:
+            Application class representing Kivy Application. Contains single function 'build' which is used by
+            Kivy when creating the app. 
+        Structure:
+            def build 
+        Uses:
+            App from gfx.frontend (inheiritance)
+        Used by:    
+            DVA.pyw (class itself)
+
+        def build:
+
+            Parameters:
+                self: Application
+            
+            Info:
+                This is a meta function which is required by Kivy to build an app. 
 
     class ScreenManager(ScreenManager) 
 
-    Used by: 
-        DVA.pyw (class itself)
-
+        Used by: 
+            DVA.pyw (class itself)
 
 py.core 
 
     def load_log
 
-    Parameters:
-        log_name: str
-        save_to_file: bool
-
+        Parameters:
+            log_name: str
+            save_to_file: bool
 
 meta.app_config
 
-
-Used by:
-    DVA.pyw (app_icon_path, app_resizable, app_width, app_height)
+    Used by:
+        DVA.pyw (app_icon_path, app_resizable, app_width, app_height)
 

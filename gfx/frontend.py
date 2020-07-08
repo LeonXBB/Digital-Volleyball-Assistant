@@ -1,5 +1,4 @@
-import os
-import io
+from os import path, getcwd
 from io import BytesIO
 from functools import partial
 
@@ -261,7 +260,7 @@ class AuthorizationWindow(Screen):
 
         Request(('VersionControl', None))
 
-        if os.path.isfile(os.getcwd() + '/meta/remember.me'):
+        if path.isfile(getcwd() + '/meta/remember.me'):
             if logs[1].get(2, 'Authorization', True).get('exists'):
                 DVA.user_id = 0  # TODO change when internet is enabled
                 DVA.user_status = [1]  # TODO change when internet is enabled
@@ -280,7 +279,7 @@ class AuthorizationWindow(Screen):
         if logs[1].get(2, 'Authorization', True).get('exists'): # TODO when internet is enabled, wait for execution of request?
             authorization_successful()
             if gui.get('AuthorizationWindowRememberMeCheckBox').active:
-                with open(os.getcwd() + '/meta/remember.me', 'wb') as f:
+                with open(getcwd() + '/meta/remember.me', 'wb') as f:
                     f.close()
 
 
@@ -795,33 +794,33 @@ class SanctionsWindowReferee(Screen):
             self.scrollbar = Slider(orientation='vertical', size_hint=(0.01, 0.01), opacity=0, value=10, step=1, range=[0, 10])
 
             self.sanctions_list_left.delay_warning = ToggleButton(group='sanction'+team,
-                                                             background_normal=os.getcwd() + '/gfx/match/sanctions/delay_warning.png', # Should be png.
-                                                             background_down=os.getcwd() + '/gfx/match/sanctions/delay_warning_down.png',
+                                                             background_normal=getcwd() + '/gfx/match/sanctions/delay_warning.png', # Should be png.
+                                                             background_down=getcwd() + '/gfx/match/sanctions/delay_warning_down.png',
                                                              border=[0, 0, 0, 0],
                                                              size_hint=(0.2, 1))
             self.sanctions_list_left.delay_penalty = ToggleButton(group='sanction'+team,
-                                                             background_normal=os.getcwd() + '/gfx/match/sanctions/delay_penalty.png',
-                                                             background_down=os.getcwd() + '/gfx/match/sanctions/delay_penalty_down.png',
+                                                             background_normal=getcwd() + '/gfx/match/sanctions/delay_penalty.png',
+                                                             background_down=getcwd() + '/gfx/match/sanctions/delay_penalty_down.png',
                                                              border=[0, 0, 0, 0],
                                                              size_hint=(0.2, 1))
             self.sanctions_list_left.warning = ToggleButton(group='sanction'+team,
-                                                       background_normal=os.getcwd() + '/gfx/match/sanctions/warning.png',
-                                                       background_down=os.getcwd() + '/gfx/match/sanctions/warning_down.png',
+                                                       background_normal=getcwd() + '/gfx/match/sanctions/warning.png',
+                                                       background_down=getcwd() + '/gfx/match/sanctions/warning_down.png',
                                                        border=[0, 0, 0, 0],
                                                        size_hint=(0.2, 1))
             self.sanctions_list_right.penalty = ToggleButton(group='sanction'+team,
-                                                       background_normal=os.getcwd() + '/gfx/match/sanctions/penalty.png',
-                                                       background_down=os.getcwd() + '/gfx/match/sanctions/penalty_down.png',
+                                                       background_normal=getcwd() + '/gfx/match/sanctions/penalty.png',
+                                                       background_down=.getcwd() + '/gfx/match/sanctions/penalty_down.png',
                                                        border=[0, 0, 0, 0],
                                                        size_hint=(0.2, 1))
             self.sanctions_list_right.expulsion = ToggleButton(group='sanction'+team,
-                                                         background_normal=os.getcwd() + '/gfx/match/sanctions/expulsion.png',
-                                                         background_down=os.getcwd() + '/gfx/match/sanctions/expulsion_down.png',
+                                                         background_normal=getcwd() + '/gfx/match/sanctions/expulsion.png',
+                                                         background_down=getcwd() + '/gfx/match/sanctions/expulsion_down.png',
                                                          border=[0, 0, 0, 0],
                                                          size_hint=(0.2, 1))
             self.sanctions_list_right.disqualification = ToggleButton(group='sanction'+team,
-                                                                background_normal=os.getcwd() + '/gfx/match/sanctions/disqualification.png',
-                                                                background_down=os.getcwd() + '/gfx/match/sanctions/disqualification_down.png',
+                                                                background_normal=getcwd() + '/gfx/match/sanctions/disqualification.png',
+                                                                background_down=getcwd() + '/gfx/match/sanctions/disqualification_down.png',
                                                                 border=[0, 0, 0, 0],
                                                                 size_hint=(0.2, 1))
 
@@ -1868,9 +1867,9 @@ class MatchWindowBase(Screen):
                 
                 super().__init__(cols=3)
 
-                self.add_widget(Image(source=os.getcwd() + '/gfx/match/serve_ball.png', opacity=1))
+                self.add_widget(Image(source=getcwd() + '/gfx/match/serve_ball.png', opacity=1))
                 self.add_widget(Label())
-                self.add_widget(Image(source=os.getcwd() + '/gfx/match/serve_ball.png', opacity=0))
+                self.add_widget(Image(source=getcwd() + '/gfx/match/serve_ball.png', opacity=0))
 
         def __init__(self, **kwargs):
             
@@ -1892,11 +1891,11 @@ class MatchWindowBase(Screen):
             self.set_scores_and_serve_balls.add_widget(self.set_scores_and_serve_balls.digits)
             self.set_scores_and_serve_balls.add_widget(self.ServeBalls())
 
-            self.add_widget(ButtonImage(source=os.getcwd() + '/gfx/match/arrows/arrow_back.png', size_hint=(1, 1)))
+            self.add_widget(ButtonImage(source=getcwd() + '/gfx/match/arrows/arrow_back.png', size_hint=(1, 1)))
             self.add_widget(Label(font_size=48, text='Team A'))
             self.add_widget(Label())
             self.add_widget(Label(font_size=48, text='Team B'))
-            self.add_widget(ButtonImage(source=os.getcwd() + '/gfx/match/arrows/arrow_forward.png', size_hint=(1, 1)))
+            self.add_widget(ButtonImage(source=getcwd() + '/gfx/match/arrows/arrow_forward.png', size_hint=(1, 1)))
 
             self.add_widget(Label())
             self.add_widget(Label(font_size=96, text='0'))
@@ -2826,7 +2825,7 @@ class EndWindowBase(Screen):
             load_head_coach_names()
             load_staff_names()
 
-        protocol_image = PIL_Image.open(os.getcwd()+'/py/match/protocol/image.png').convert('RGBA')
+        protocol_image = PIL_Image.open(getcwd()+'/py/match/protocol/image.png').convert('RGBA')
         image_draw = ImageDraw.ImageDraw(protocol_image)
         
         load_header()
@@ -3213,7 +3212,7 @@ class SaveProtocolFileChooser(GridLayout):
 
         self.file_chooser = FileChooserIconView()
         self.file_chooser.dirselect = True
-        self.file_chooser.path = os.getcwd()[:3]
+        self.file_chooser.path = getcwd()[:3]
         self.file_chooser.filters = ['*.']
 
         self.buttons = GridLayout(cols=3, size_hint=(1, 0.1))
@@ -3233,7 +3232,7 @@ class SaveProtocolFileChooser(GridLayout):
     def on_load(self, window):
 
         self.window = window
-        self.address = os.getcwd()
+        self.address = getcwd()
 
     def cancel_button_pressed(self, *args):
 
@@ -3293,7 +3292,7 @@ class PopUpWindow(Popup):
 
     def show_loading_gif(self, *args):
         self.background_color = [0, 0, 0, 1]
-        self.popupWindow = PopUpWindow(title='', content=Image(source=os.getcwd()+'\gfx\loading.gif'), size_hint=(1, 1), auto_dismiss=False)
+        self.popupWindow = PopUpWindow(title='', content=Image(source=getcwd()+'\gfx\loading.gif'), size_hint=(1, 1), auto_dismiss=False)
         self.popupWindow.open()
 
 
@@ -3306,7 +3305,7 @@ class BackgroundWindow(FloatLayout):
             super().__init__(**kwargs)
 
             image = Image()
-            image.source = os.getcwd() + r'\gfx\background_pictures\background_' + app_background_picture + '.jpg'
+            image.source = getcwd() + r'\gfx\background_pictures\background_' + app_background_picture + '.jpg'
             image.pos_hint = {"x": 0, "y": 0}
             image.pos_size = 1, 1
             image.allow_stretch = True
