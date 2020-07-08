@@ -505,8 +505,12 @@ gfx.frontend
 
         Screen, ScreenManager, NoTransition from kivy.uix.screenmanager
 
-        GridLayout frontend kivy.uix.gridLayout
-        GridLayout frontend kivy.uix.gridLayout
+        GridLayout from kivy.uix.gridlayout
+        BoxLayout from kivy.uix.boxlayout
+        FloatLayout from kivy.uix.floatlayout
+        RelativeLayout from kivy.uix.relativelayout
+        ScrollView from kivy.uix.scrollview
+
 
 
     class Application
