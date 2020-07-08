@@ -1,3 +1,16 @@
+'''
+Main script of the app. It is responsible for starting the application, creating and configuring GUI 
+window, as well as loading and (if necessary) restoring logs, as well as creating screen manager for the
+GUI.
+
+First, we're setting window's  graphical parameters, including its resizableness and icon, according to
+app config.
+Then, we create logs list and screen manager. They need to be available as they are called from other 
+places, so they not under '__main__' name.
+After that, if said name is actually '__main__', we load logs using respective core funtion, and creating
+and running the app itself.
+'''
+
 from kivy.config import Config
 from meta.app_config import app_icon_path, app_resizable, app_width, app_height
 
@@ -8,9 +21,8 @@ Config.set('kivy', 'window_icon', app_icon_path)
 
 from gfx.frontend import Application, ScreenManager
 from py.core import load_log
-from py.objects import Log, Request
 
-logs = [] # It needs to be in here because there are calls made to it outside of main scope.
+logs = []
 sm = ScreenManager()
 
 if __name__ == '__main__':
