@@ -496,14 +496,19 @@ gfx.frontend
         BytesIO from io 
         partial from functools 
 
-        ImageDraw, ImageFont, Image as PIL_Image from PIL
+        ImageDraw, ImageFont, Image * as PIL_Image * from PIL
+
+        py.match.match_config # We're importing it as a package because it's being used in getattr()
+        * everything* from py.match.match_config
+        * everything* from meta.app_config
+        * everything* from meta.localization
 
         App from kivy.app 
         Clock from kivy.clock 
 
         ButtonBehavior, FocusBehavior from kivy.uix.behaviors
 
-        Screen, ScreenManager, NoTransition from kivy.uix.screenmanager
+        Screen, ScreenManager * as _ScreenManager_ *, NoTransition from kivy.uix.screenmanager
 
         GridLayout from kivy.uix.gridlayout
         BoxLayout from kivy.uix.boxlayout
@@ -511,7 +516,20 @@ gfx.frontend
         RelativeLayout from kivy.uix.relativelayout
         ScrollView from kivy.uix.scrollview
 
+        Button from kivy.uix.button 
+        Label from kivy.uix.label 
+        Popup from kivy.uix.popup 
+        Slider from kivy.uix.slider 
+        Spinner from kivy.uix.spinner 
+        TabbedPanel, TabbedPanelHeader from kivy.uix.tabbedpanel
+        TextInput from kivy.uix.textinput 
+        CheckBox from kivy.uix.checkbox 
+        Image  * as core Image * from kivy.core.image
+        Image from kivy.uix.image  
+        ToggleButton from kivy.uix.togglebutton 
+        FileChooserIconView from kivy.uix.filechooser
 
+        Window from kivy.core.window
 
     class Application
 

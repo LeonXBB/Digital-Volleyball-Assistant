@@ -33,10 +33,9 @@ from kivy.core.window import Window
 
 from PIL import ImageDraw, ImageFont, Image as PIL_Image
 
-import meta.app_config
 import py.match.match_config
-from meta.app_config import *
 from py.match.match_config import *
+from meta.app_config import *
 from meta.localization import *
 
 
@@ -3427,9 +3426,6 @@ class TeamWidget(GridLayout):
                         return self.rows - 1
 
     def __init__(self, widget, *args):
-
-        from py.match.match_config import position_direction as positioning_rotation_direction, \
-            position_starting_point as current_positioning_cords
 
         super().__init__()
 
