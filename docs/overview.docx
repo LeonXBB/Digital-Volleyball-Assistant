@@ -482,11 +482,13 @@ DVA.pyw
     
     Used by:
         run.pyw (script itself)
-    
+        gfx.frontend.Application (script itself)
+
     Uses:
         Config from Kivy.config 
         app_icon_path, app_resizable, app_width, app_height from meta.app_config
         Application, ScreenManager from gfx.frontend
+        ScreenManager.__init__ from gfx.frontend.ScreenManager
         load_log from py.core 
 
 gfx.frontend
@@ -540,30 +542,89 @@ gfx.frontend
 
         Window from kivy.core.window
 
+    Used by:
+        gfx.frontend.Application (App)
+
     class Application
 
         Info:
             Application class representing Kivy Application. Contains single function 'build' which is used by
             Kivy when creating the app. 
+
         Structure:
             def build 
+
         Uses:
             App from gfx.frontend (inheiritance)
+
         Used by:    
             DVA.pyw (class itself)
 
         def build:
-
-            Parameters:
-                self: Application
             
             Info:
                 This is a meta function which is required by Kivy to build an app. 
+                It determines what and in what form will be shown on the start. 
+                In here, we're dealing with setting window's title, creating screens, adding background to 
+                them, appending them to the screen manager, and running the logic of the first screen.
+                Also, here we're creating frontend_references which is a dictionary for links to most of the 
+                widgets.
+            
+            Parameters:
+                self: Application
 
-    class ScreenManager(ScreenManager) 
+            Step by step:
+                1)Set app title according to app_config.
+                2)Create all app's window.
+                3)Create frontend_references list. 
+                4)Add screens to the screen manager.
+                5)Append background to them.
+                6)Run first screen's logic.
+
+            Return:
+                DVA.sm - a widget to display: screen manager used by the app.
+
+            Uses:
+                DVA.pyw (the script itself)
+                app_title, app_version from gfx.frontend
+
+
+    class ScreenManager
+
+        Info:
+            Class representing app's screen manager.
+
+        Structure:
+            def __init__
+
+        Uses:
+            __ScreenManager__ from gfx.frontend (inheiritance)
 
         Used by: 
             DVA.pyw (class itself)
+
+        def __init__:
+
+            Info:
+                The initialization function for the class.
+                It deals with initializating Kivy object and removing transition. 
+
+            Parameters:
+                self: ScreenManager
+            
+            Return:
+                None 
+            
+            Uses:
+                NoTransition from gfx.frontend
+            
+            Used by:
+                DVA.pyw (sm initialization)
+
+    class AuthorizationWindow
+
+        Info:
+
 
 py.core 
 

@@ -53,6 +53,29 @@ class Application(App):
 
     def build(self):
         
+        '''
+        This is a meta function which is required by Kivy to build an app. 
+        It determines what and in what form will be shown on the start. 
+        In here, we're dealing with setting window's title, creating screens, adding background to 
+        them, appending them to the screen manager, and running the logic of the first screen.
+        Also, here we're creating frontend_references which is a dictionary for links to most of the 
+        widgets.
+    
+        Parameters:
+            self: Application
+
+        Step by step:
+            1)Set app title according to app_config.
+            2)Create all app's window.
+            3)Create frontend_references list. 
+            4)Add screens to the screen manager.
+            5)Append background to them.
+            6)Run first screen's logic.
+
+        Return:
+            DVA.sm - a widget to display: screen manager used by the app.
+        '''
+
         import DVA
 
         self.title = app_title + ' ' + app_version
@@ -61,7 +84,6 @@ class Application(App):
         self.match_window_referee = MatchWindowReferee()
         self.end_match_window_referee = EndWindowReferee()
 
-        # The following is list of frontend_references which should be used in various places around the code instead of directly acessing widgets in case of changes in frontend
         DVA.frontend_references = {'AuthorizationWindow': self.authorization_window,
                                    'AuthorizationWindowLoginTextInput': self.authorization_window.design.main_widget.text_input.input_form_1.children[1],
                                    'AuthorizationWindowPasswordTextInput': self.authorization_window.design.main_widget.text_input.input_form_2.children[1],
@@ -188,6 +210,10 @@ class Application(App):
 
 
 class ScreenManager(__ScreenManager__):
+
+    '''
+    Class representing app's screen manager.
+    '''
 
     def __init__(self):
         super().__init__()
