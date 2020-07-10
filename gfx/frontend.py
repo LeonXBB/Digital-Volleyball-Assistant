@@ -216,13 +216,34 @@ class ScreenManager(__ScreenManager__):
     '''
 
     def __init__(self):
+
+        '''
+        The initialization function for the class.
+        It deals with initializating Kivy object and removing transition. 
+
+        Parameters:
+            self: ScreenManager
+
+        Return:
+            None 
+        '''
+
         super().__init__()
         self.transition = NoTransition()
 
 
 class AuthorizationWindow(Screen):
 
+    '''
+    This is a Screen class that represents AuthorizationWindow.
+    '''
+
     def __init__(self):
+
+        '''
+        This is a buidling function for the screen's design and binding.
+        It creates Kivy screen, sets its name, load its design and binds send button to respective function.
+        '''
 
         super().__init__()
 
@@ -286,7 +307,31 @@ class AuthorizationWindow(Screen):
 
         self.design.main_widget.confirm_and_send.button.send_button.bind(on_release=self.send_button)
 
-    def on_load(self, *args):
+    def on_load(self, dt):
+
+    '''
+    This is a function that loads logic of the screen.
+    Here, we checking if the user has already logged in and prefered not to do that again, 
+    and if so, we set their id and status according to the results of that authorization, as well
+    as process successfull authorization.
+    If the user didn't choose to do so, or couldn't, we switchching their screen to the authorization window.
+
+    Parameters:
+        self: AuthorizationWindow
+        dt: kivy.Clock.dt 
+
+    Step by step:
+        1)Check if remember.me file exists from previous authorization attempt.
+            2-1)If so, check if it was successfull (by checking the Request log)
+                3-1-1)If so, set their id and status according to that request.
+                4-1-1)Process successfull authorization.
+                5-1-1)Return None to avoid switching to authorization screen.
+            2-2, 3-1-2)If not, switch to authorization screen. 
+        3)Also, check app's version
+
+        Return:
+            None
+    '''
 
         import DVA
         from DVA import logs, sm, frontend_references as gui
@@ -306,8 +351,29 @@ class AuthorizationWindow(Screen):
 
     def send_button(self, button):
 
-        from DVA import logs, Request, frontend_references as gui
+        '''
+        This is a function that processes send button press.
+        It creates, sends, and logs appropriate request, and, if successfull, processes authorization, as well as creates remember.me
+        file if necessary.
+
+        Parameters:
+            self: AuthorizationWindow
+            button: gfx.frontend.Button
+
+        Step by step:
+            1)Create authorization request.
+            2)Check if it's successfull.
+                3-1)If so, process authorization.
+                4-1)Check if 'Remember Me' checkbox selected.
+                    5-1-1)If so, create 'remember.me' file.
+
+        Return:
+            None
+        '''
+
+        from DVA import logs, frontend_references as gui
         from py.core import authorization_successful
+        from py.objects import Request
 
         Request(['Authorization', None, [gui.get('AuthorizationWindowLoginTextInput').text, gui.get('AuthorizationWindowPasswordTextInput').text]])
 

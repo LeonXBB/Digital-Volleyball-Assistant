@@ -445,7 +445,7 @@ run.pyw
         Executables created with pyinstaller have their own Python interpreter in them so it is irrelavent 
         whether user has Python installed or not. Kivy is imported implicitly.
     
-    Structure (excluding imports):
+    Structure (excluding imports, parameters and sub-variables unless logiclly independent):
         directory: str
     
     Step by step:
@@ -459,7 +459,6 @@ run.pyw
         os
         DVA.pyw
 
-
 DVA.pyw
 
     Info:
@@ -467,10 +466,13 @@ DVA.pyw
         window, as well as loading and (if necessary) restoring logs, as well as creating screen manager for 
         the GUI.
     
-    Structure (excluding imports):
+    Structure (excluding imports, parameters and sub-variables unless logiclly independent):
         logs: list
         sm: ScreenManager
-        Digital_Volleyball_Assistant: Application 
+        Digital_Volleyball_Assistant: Application
+        frontend_references: dict 
+        id: int
+        user_status: list 
     
     Step by step:
         First, we're setting window's  graphical parameters, including its resizableness and icon, according 
@@ -482,7 +484,9 @@ DVA.pyw
     
     Used by:
         run.pyw (script itself)
-        gfx.frontend.Application (script itself)
+        gfx.frontend.Application.build (sm, frontend_references)
+        gfx.frontend.AuthorizationWindow.on_load (id, user_status, logs, sm, frontend_references)
+        gfx.frontend.AuthorizationWindow.send_button (logs, frontend_references)
 
     Uses:
         Config from Kivy.config 
@@ -501,6 +505,11 @@ gfx.frontend
         scrolling, as well as indexes list for the latter.
 
         Most imports are done at the module level to avoid importing same things over and over again.
+
+    Structure (excluding imports, parameters and sub-variables unless logiclly independent):
+        class Application
+        class ScreenManager
+        class AuthorizationWindow
 
     Uses: 
         path, getcwd from os
@@ -544,6 +553,11 @@ gfx.frontend
 
     Used by:
         gfx.frontend.Application (App)
+        gfx.frontend.Application.build (app_title, app_version, kivy.Clock)
+        gfx.frontend.ScreenManager (__ScreenManager__)
+        gfx.frontend.ScreenManager.__init__(NoTransition)
+        gfx.frontend.AuthorizationWindow(Screen)
+        gfx.frontend.AuthorizationWindow.__init__(app_title, app_version, GridLayout, TextInput, Label, CheckBox, Button)
 
     class Application
 
@@ -551,7 +565,7 @@ gfx.frontend
             Application class representing Kivy Application. Contains single function 'build' which is used by
             Kivy when creating the app. 
 
-        Structure:
+        Structure (excluding imports, parameters and sub-variables unless logiclly independent):
             def build 
 
         Uses:
@@ -585,16 +599,17 @@ gfx.frontend
                 DVA.sm - a widget to display: screen manager used by the app.
 
             Uses:
-                DVA.pyw (the script itself)
-                app_title, app_version from gfx.frontend
-
+                DVA.pyw (sm, frontend_references)
+                app_title, app_version, kivy.Clock from gfx.frontend
+                gfx.frontend.AuthorizationWindow
+                gfx.frontend.AuthorizationWindow.on_load
 
     class ScreenManager
 
         Info:
             Class representing app's screen manager.
 
-        Structure:
+        Structure (excluding imports, parameters and sub-variables unless logiclly independent):
             def __init__
 
         Uses:
@@ -624,7 +639,103 @@ gfx.frontend
     class AuthorizationWindow
 
         Info:
+            This is a Screen class that represents AuthorizationWindow.
+        
+        Structure (excluding imports, parameters and sub-variables unless logiclly independent):
+            def __init__
+            def on_load
+            def send_button
 
+        Uses:
+            Screen from gfx.frontend (inheiritance)
+
+        Used by:
+            gfx.frontend.Application.build
+
+        def __init__
+
+            Info:
+                This is a buidling function for the screen's design and binding.
+                It creates Kivy screen, sets its name, load its design and binds send button to respective 
+                function.
+            
+            Parameters:
+                self: AuthorizationWindow
+
+            Return:
+                None
+
+            Uses:
+                app_title, app_version, GridLayout, TextInput, Label, CheckBox, Button from gfx.frontend
+                gfx.frontend.AuthorizationWindow.send_button
+
+        def on_load
+
+            Info:
+                This is a function that loads logic of the screen.
+                Here, we checking if the user has already logged in and prefered not to do that again, 
+                and if so, we set their id and status according to the results of that authorization, as well
+                as process successfull authorization.
+                If the user didn't choose to do so, or couldn't, we switchching their screen to the 
+                authorization window.
+
+            Parameters:
+                self: AuthorizationWindow
+                dt: gfx.frontend.Clock.dt 
+
+            Step by step:
+                1)Check if remember.me file exists from previous authorization attempt.
+                    2-1)If so, check if it was successfull (by checking the Request log)
+                        3-1-1)If so, set their id and status according to that request.
+                        4-1-1)Process successfull authorization.
+                        5-1-1)Return None to avoid switching to authorization screen.
+                    2-2, 3-1-2)If not, switch to authorization screen. 
+                3)Also, check app's version
+
+            Return:
+                None
+
+            Structure:
+                DVA.user_id: int 
+                DVA.user_status: list
+
+            Uses:
+                DVA (id, user_status)
+                logs, sm, frontend_references as gui from DVA
+                authorization_successfull from py.core 
+                Request from py.object
+
+            Used by:
+                gfx.Application.build (the def itself)
+
+        def send_button
+
+            Info:
+                This is a function that processes send button press.
+                It creates, sends, and logs appropriate request, and, if successfull, processes authorization, as well as creates remember.me
+                file if necessary.
+
+            Parameters:
+                self: AuthorizationWindow
+                button: gfx.frontend.Button
+
+            Step by step:
+                1)Create authorization request.
+                2)Check if it's successfull.
+                    3-1)If so, process authorization.
+                    4-1)Check if 'Remember Me' checkbox selected.
+                        5-1-1)If so, create 'remember.me' file.
+
+            Return:
+                None
+
+            Uses:
+                logs, frontend_references from DVA
+                Request from py.objects
+                authorization_successfull from py.core
+
+            Used by:
+                gfx.frontend.AuthorizationWindow.__init__
 
 py.core 
 
@@ -633,6 +744,23 @@ py.core
         Parameters:
             log_name: str
             save_to_file: bool
+
+        Used by:
+            DVA.pyw (the script itself)
+
+    def authorization_successfull
+
+        Used by:
+            gfx.frontend.AuthorizationWindow.on_load
+            gfx.frontend.AuthorizationWindow.send_button
+
+py.objects
+
+    class Request
+
+        Used by:
+            gfx.frontend.AuthorizationWindow.on_load
+            gfx.frontend.AuthorizationWindow.send_button
 
 meta.app_config
 
