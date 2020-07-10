@@ -388,6 +388,18 @@ class CoinTossWindow(Screen):
 
     def __init__(self):
 
+        '''
+        This is a buidling function for the screen's design and binding.
+        It creates Kivy screen, sets its name, load its design and binds save button to respective 
+        function.
+            
+        Parameters:
+            self: CoinTossWindow
+
+        Return:
+            None
+        '''
+
         super().__init__()
 
         self.design = GridLayout(cols=1)
@@ -446,6 +458,18 @@ class CoinTossWindow(Screen):
 
     def init_visual_elements(self):
         
+        '''
+        This is a function that connect screen's widget to respective visual elements and loads them.
+        First, it creates TeamNames with given widgets.
+        Then, it loads them with given teams' names.
+
+        Parameters:
+            self: CoinTossWindow
+
+        Return:
+            None 
+        '''
+
         from DVA import match, frontend_references as gui
         from gfx.visual_elements import TeamName
 

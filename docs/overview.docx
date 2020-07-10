@@ -473,6 +473,7 @@ DVA.pyw
         frontend_references: dict 
         id: int
         user_status: list 
+        match: py.match.objects.Match
     
     Step by step:
         First, we're setting window's  graphical parameters, including its resizableness and icon, according 
@@ -487,6 +488,7 @@ DVA.pyw
         gfx.frontend.Application.build (sm, frontend_references)
         gfx.frontend.AuthorizationWindow.on_load (id, user_status, logs, sm, frontend_references)
         gfx.frontend.AuthorizationWindow.send_button (logs, frontend_references)
+        gfx.frontend.CoinTossWindow.init_visual_elements (match, frontend_references)
 
     Uses:
         Config from Kivy.config 
@@ -510,6 +512,7 @@ gfx.frontend
         class Application
         class ScreenManager
         class AuthorizationWindow
+        class CoinTossWindow
 
     Uses: 
         path, getcwd from os
@@ -558,6 +561,7 @@ gfx.frontend
         gfx.frontend.ScreenManager.__init__(NoTransition)
         gfx.frontend.AuthorizationWindow(Screen)
         gfx.frontend.AuthorizationWindow.__init__(app_title, app_version, GridLayout, TextInput, Label, CheckBox, Button)
+        gfx.frontend.CoinTossWindow(Screen)
 
     class Application
 
@@ -736,6 +740,73 @@ gfx.frontend
 
             Used by:
                 gfx.frontend.AuthorizationWindow.__init__
+
+    class CoinTossWindow
+
+        Info:
+            This is a Screen class that represents Coin Toss Window
+        
+        Structure (excluding imports, parameters and sub-variables unless logiclly independent):
+            def __init__
+            def init_visual_elements
+            def on_load
+            def radio_button_changed
+            def save_button
+
+        Uses:
+            Screen from gfx.frontend (inheiritance)
+
+        def __init__:
+
+            Info:
+                This is a buidling function for the screen's design and binding.
+                It creates Kivy screen, sets its name, load its design and binds save button to respective 
+                function.
+            
+            Parameters:
+                self: CoinTossWindow
+
+            Return:
+                None
+
+            Uses:
+                GridLayout, Label, ToggleButton, Button from gfx.frontend
+                gfx.frontend.CoinTossWindow.save_button
+
+        def init_visual_elements:
+
+            Info:
+                This is a function that connect screen's widget to respective visual elements and loads them.
+                First, it creates TeamNames with given widgets.
+                Then, it loads them with given teams' names.
+
+            Parameters:
+                self: CoinTossWindow
+
+            Return:
+                None 
+
+            Uses:
+                match, frontend_references as gui from DVA
+                TeamName from gfx.visual_elements
+
+        def on_load:
+
+            Info:
+                This is a function responsible for loading screen's logic.
+                In this screen, we're only initializating visual elements.
+            
+            Parameters:
+                
+        
+        def radio_button_changed:
+        
+        def save_button:
+
+gfx.visual_elements
+
+    Used by:
+        gfx.frontend_references.CoinTossWindow.init_visual_elements (TeamName)
 
 py.core 
 
