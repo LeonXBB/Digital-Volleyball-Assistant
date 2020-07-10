@@ -562,13 +562,20 @@ gfx.frontend
         gfx.frontend.ScreenManager (__ScreenManager__)
         gfx.frontend.ScreenManager.__init__(NoTransition)
         gfx.frontend.AuthorizationWindow(Screen)
-        gfx.frontend.AuthorizationWindow.__init__(app_title, app_version, GridLayout, TextInput, Label, CheckBox, Button)
+        gfx.frontend.AuthorizationWindow.__init__(authorization_window, buttons, app_title, app_version, GridLayout, TextInput, Label, CheckBox, Button)
         gfx.frontend.AuthorizationWindow.on_load(Kivy.Clock.dt)
         gfx.frontend.AuthorizationWindow.send_button(Button)
         gfx.frontend.CoinTossWindow(Screen)
-        gfx.frontend.CoinTossWindow.__init__(GridLayout, Label, ToggleButton, Button)
+        gfx.frontend.CoinTossWindow.__init__(coin_toss_window, buttons, GridLayout, Label, ToggleButton, Button)
         gfx.frontend.CoinTossWindow.radio_button_changed(ToggleButton)
         gfx.frontend.CoinTossWindow.save_button(Button)
+        gfx.frontend.TeamSetUpBase (Screen)
+        gfx.frontend.TeamSetUpBase.SharedArea (GridLayout)
+        gfx.frontend.TeamSetUpBase.SharedArea.__init__(GridLayout, Slider)
+        gfx.frontend.TeamSetUpBase.PlayerWidget (GridLayout)
+        gfx.frontend.TeamSetUpBase.PlayerWidget.__init__ (Label, CheckBox, TextInput)
+        gfx.frontend.TeamSetUpBase.Header (BoxLayout)
+        gfx.frontend.TeamSetUpBase.Header.__init__ (team_set_up, Label)
 
     class Application
 
@@ -650,8 +657,10 @@ gfx.frontend
     class AuthorizationWindow
 
         Info:
-            This is a Screen class that represents AuthorizationWindow.
-        
+            This is a Screen class that represents Authorization Window. 
+            Authorization Window is a window that either auto logs user in or provides interface for them for 
+            doing so.
+
         Structure (excluding imports, parameters and sub-variables unless logiclly independent):
             def __init__
             def on_load
@@ -677,7 +686,8 @@ gfx.frontend
                 None
 
             Uses:
-                app_title, app_version, GridLayout, TextInput, Label, CheckBox, Button from gfx.frontend
+                authorization_window, buttons, app_title, app_version, GridLayout, TextInput, Label, 
+                CheckBox, Button from gfx.frontend
                 gfx.frontend.AuthorizationWindow.send_button
 
         def on_load
@@ -751,7 +761,8 @@ gfx.frontend
     class CoinTossWindow
 
         Info:
-            This is a Screen class that represents Coin Toss Window
+            This is a Screen class that represents Coin Toss Window.
+            Coin Toss Window is a screen when user who is referee can save coin toss results.
         
         Structure (excluding imports, parameters and sub-variables unless logiclly independent):
             def __init__
@@ -777,7 +788,7 @@ gfx.frontend
                 None
 
             Uses:
-                GridLayout, Label, ToggleButton, Button from gfx.frontend
+                coin_toss_window, buttons, GridLayout, Label, ToggleButton, Button from gfx.frontend
                 gfx.frontend.CoinTossWindow.radio_button_changed
                 gfx.frontend.CoinTossWindow.save_button
 
@@ -864,7 +875,157 @@ gfx.frontend
     class TeamSetUpBase
 
         Info:
+
+            This is a base class for Team Set Up screen. It is meant to be used as an inheiritance object for 
+            user status-specific classes.
+            Team Set Up screen is a screen for user to set up teams' squads for the match, setting present /
+            absent players, shirts numbrers, captains etc.
+
+        Structure:
+
+            class SharedArea
+            class PlayerWidget
+            class Header
+            def __init__
+            def get_players_list
+            def load_players_list
+            def get_team_set_up_children
+            def init_visual_elements
+            def on_load
+            def cancel_button
+            def save_button
+
+        Uses:
+        
+            gfx.frontend.Screen (inheiritance)
+
+        Used by:
+            gfx.frontend.TeamSetUpBase.SharedArea.__init__ (gfx.frontend.TeamSetUpBase.Header, 
+            gfx.frontend.TeamSetUpBase.Header)
+
+        class SharedArea
+
+            Info:
+                This is a class for the shared area. Two objects of this will be used in referee's children
+                class to represent different teams' lists using tabs, and other childrens classes will use
+                it once as a content to insert.
+
+            Structure:
+                def __init__
+
+            Uses:
+                gfx.frontend.GridLayout (inheiritance)
+
+            def __init__
+
+                Info:
+                    This is a initialization function for this content class. It only deals with design.
+                    This design includes scrolling. It is done by invisible slider which movement is then
+                    processed.
+
+                Parameters:
+                    self: SharedArea
+
+                Return:
+                    None
+
+                Uses:
+                    TeamSetUpBase.Header
+                    TeamSetUpBase.PlayerWidget
+                    GridLayout, Slider from gfx.frontend
+
+        class PlayerWidget
+
+            Info:
+                This is a class that provides design for the actual content of the shared area, line by
+                line for each person. It also disables changing their parameters if they are chosen to be
+                absent.
+
+            Structure:
+                def __init__
+                def present_checkbox
+
+            Uses:
+                gfx.frontend.GridLayout (inheiritance)
+
+            def __init__
+
+                Info:
+                    This is an initialization function for this design class. It only deals with design.
+
+                Parameters:
+                    self: PlayerWidget
+
+                Return:
+                    None
+
+                Uses:
+                    Label, CheckBox, TextInput from gfx.frontend
+                    gfx.frontend.TeamSetUpBase.PlayerWidget.present_checkbox
+
+            def present_checkbox
+
+                Info:
+                    This is function for disabling other parameters if the person is not active. 
+                    Surprisingly, the person is considered present if the respective checkbox is selected.
+
+                Parameters:
+                    self: PlayerWidget
+                    button: gfx.frontend.Button
+
+                Step by step:
+                    1)Check if the checkbox is pressed.
+                        2-1)If so, enable another ones.
+                        2-2)If not, disable them.
+
+                Return:
+                    None
+
+                Used by:
+                    gfx.frontend.TeamSetUpBase.PlayerWidget.__init__
+
+        class Header
+
+            Info:
+                This is another design class for providing letters to explain different checkboxes.
+                It's sort of... specific.
+
+            Structure:
+                def __init__
+
+            Uses:
+                gfx.frontend.BoxLayout (inheiritance)
             
+            def __init__
+
+                Info:
+                    I told you it's specific...
+
+                Parameters:
+                    self: Header
+
+                Return:
+                    None
+
+                Uses: 
+                    Label, team_set_up from gfx.frontend
+
+
+        def __init__
+
+        def get_players_list
+
+        def load_players_list
+
+        def get_team_set_up_children
+
+        def init_visual_elements
+
+        def on_load
+
+        def cancel_button
+
+        def save_button
 
 gfx.visual_elements
 

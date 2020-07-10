@@ -235,7 +235,9 @@ class ScreenManager(__ScreenManager__):
 class AuthorizationWindow(Screen):
 
     '''
-    This is a Screen class that represents AuthorizationWindow.
+    This is a Screen class that represents Authorization Window.
+    Authorization Window is a window that either auto logs user in or provides interface for them for doing
+    so.
     '''
 
     def __init__(self):
@@ -385,6 +387,11 @@ class AuthorizationWindow(Screen):
 
 
 class CoinTossWindow(Screen):
+
+    '''
+    This is a Screen class that represents Coin Toss Window.
+    Coin Toss Window is a screen when user who is referee can save coin toss results.
+    '''
 
     def __init__(self):
 
@@ -560,10 +567,28 @@ class CoinTossWindow(Screen):
 
 class TeamSetUpBase(Screen):
     
+    '''
+    This is a base class for Team Set Up screen. It is meant to be used as an inheiritance object for 
+    user status-specific classes.
+    Team Set Up screen is a screen for user to set up teams' squads for the match, setting present /
+    absent players, shirts numbrers, captains etc.
+    '''
+
     class SharedArea(GridLayout):
+
+        '''
+        This is a class for the shared area. Two objects of this will be used in referee's children
+        class to represent different teams' lists using tabs, and other childrens classes will use
+        it once as a content to insert.
+        '''
 
         def __init__(self):
             
+            '''
+            This is a initialization function for this content class. It only deals with design.
+            This design includes scrolling. It is done by invisible slider which movement is then
+            processed.
+            '''
             super().__init__()
 
             self.rows = 2
@@ -586,7 +611,18 @@ class TeamSetUpBase(Screen):
 
     class PlayerWidget(GridLayout):
 
-        def __init__(self, **kwargs):
+        '''
+        This is a class that provides design for the actual content of the shared area, line by
+        line for each person. It also disables changing their parameters if they are chosen to be
+        absent.
+        '''
+
+        def __init__(self):
+
+            '''
+            This is an initialization function for this design class. It only deals with design.
+            '''
+
             super().__init__()
             self.cols = 5
             self.name = Label(font_size=18, text='Name of the Player', size_hint=(1.2, 1))
@@ -605,19 +641,51 @@ class TeamSetUpBase(Screen):
 
             self.is_present.bind(state=self.present_checkbox)
 
-        def present_checkbox(self, *args):
+        def present_checkbox(self, checkbox):
 
-            if args[0].active:
+            '''
+            This is function for disabling other parameters if the person is not active. 
+            Surprisingly, the person is considered present if the respective checkbox is selected.
+
+            Parameters:
+                self: PlayerWidget
+                button: gfx.frontend.Button
+
+            Step by step:
+                1)Check if the checkbox is pressed.
+                    2-1)If so, enable another ones.
+                    2-2)If not, disable them.
+
+            Return:
+                None
+            '''
+
+            if checkbox.active:
                 for i in range(3):
-                    args[0].parent.children[i].disabled = False
+                    checkbox.parent.children[i].disabled = False
             else:
                 for i in range(3):
-                    args[0].parent.children[i].disabled = True
+                    checkbox.parent.children[i].disabled = True
 
     class Header(BoxLayout):
 
-        def __init__(self, **kwargs):
+        '''
+        This is another design class for providing letters to explain different checkboxes.
+        It's sort of... specific.
+        '''
 
+        def __init__(self):
+
+        '''
+            I told you it's specific...
+
+            Parameters:
+                self: Header
+
+            Return:
+                None
+        '''
+        
             super().__init__()
 
             self.widget = Label(font_size=24, text=str(team_set_up[language_code][0]
