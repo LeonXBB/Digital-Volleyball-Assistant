@@ -488,7 +488,9 @@ DVA.pyw
         gfx.frontend.Application.build (sm, frontend_references)
         gfx.frontend.AuthorizationWindow.on_load (id, user_status, logs, sm, frontend_references)
         gfx.frontend.AuthorizationWindow.send_button (logs, frontend_references)
-        gfx.frontend.CoinTossWindow.init_visual_elements (match, frontend_references)
+        gfx.frontend.CoinTossWindow.init_visual_elements (match.left_team.long_name, match.right_team.long_name,
+        frontend_references)
+        gfx.frontend.CoinTossWindow.radio_button_changed (frontend_references)
 
     Uses:
         Config from Kivy.config 
@@ -561,7 +563,12 @@ gfx.frontend
         gfx.frontend.ScreenManager.__init__(NoTransition)
         gfx.frontend.AuthorizationWindow(Screen)
         gfx.frontend.AuthorizationWindow.__init__(app_title, app_version, GridLayout, TextInput, Label, CheckBox, Button)
+        gfx.frontend.AuthorizationWindow.on_load(Kivy.Clock.dt)
+        gfx.frontend.AuthorizationWindow.send_button(Button)
         gfx.frontend.CoinTossWindow(Screen)
+        gfx.frontend.CoinTossWindow.__init__(GridLayout, Label, ToggleButton, Button)
+        gfx.frontend.CoinTossWindow.radio_button_changed(ToggleButton)
+        gfx.frontend.CoinTossWindow.save_button(Button)
 
     class Application
 
@@ -771,6 +778,7 @@ gfx.frontend
 
             Uses:
                 GridLayout, Label, ToggleButton, Button from gfx.frontend
+                gfx.frontend.CoinTossWindow.radio_button_changed
                 gfx.frontend.CoinTossWindow.save_button
 
         def init_visual_elements:
@@ -787,8 +795,11 @@ gfx.frontend
                 None 
 
             Uses:
-                match, frontend_references as gui from DVA
+                match.left_team.long_name, match.right_team.long_name, frontend_references as gui from DVA
                 TeamName from gfx.visual_elements
+
+            Used by:
+                gfx.frontend.CoinTossWindow.on_load
 
         def on_load:
 
@@ -797,11 +808,63 @@ gfx.frontend
                 In this screen, we're only initializating visual elements.
             
             Parameters:
-                
-        
+                self: CoinTossWindow
+            
+            Return:
+                None
+
+            Uses:
+                gfx.frontend.CoinTossWindow.init_visual_elements
+
         def radio_button_changed:
         
+            Info:
+                This is a function that deals with processing radio buttons of the screen pressings as well as 
+                calculating save button's state. We should only enable save button if at least one radio
+                button in each category is pressed.
+
+            Parameters:
+                self: CoinTossWindow
+                instance: gfx.frontend.ToggleButton
+
+            Step by step:
+                1)Get the button.
+                    2-1)If it is down, change its text, as well as opposite button's text. 
+                
+                3)If any of the buttons in each group is down, enable the save button. Else disable it.
+
+            Return:
+                None
+
+            Uses:
+                frontend_references as gui from DVA
+
+            Used by:
+                gfx.frontend.CoinTossWindow.__init__
+
         def save_button:
+            
+            Info:
+                This is a button processing save button press. It calls the coin_toss function of the 1st
+                official which processes the coin toss itself.
+
+            Parameters:
+                self: CoinTossWindow
+                button: gfx.frontend.button
+
+            Return:
+                None
+
+            Uses:
+                match.officials[0].coin_toss from DVA
+
+            Used by:
+                gfx.frontend.CoinTossWindow.__init__
+
+    class TeamSetUpBase
+
+        Info:
+            
 
 gfx.visual_elements
 
@@ -832,6 +895,24 @@ py.objects
         Used by:
             gfx.frontend.AuthorizationWindow.on_load
             gfx.frontend.AuthorizationWindow.send_button
+
+py.match.objects:
+
+    class Team
+
+    Structure:
+
+        long_name: str
+
+            Used by:
+                DVA.py
+
+    class Official 
+
+        def coin_toss
+
+            Used by:
+                DVA.pyw
 
 meta.app_config
 

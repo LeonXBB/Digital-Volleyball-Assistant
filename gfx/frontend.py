@@ -446,13 +446,13 @@ class CoinTossWindow(Screen):
         self.design.main_widget.add_widget(self.design.main_widget.save)
         self.design.main_widget.add_widget(Label())
 
+        self.design.add_widget(self.design.main_widget)
+        self.add_widget(self.design)
+
         self.design.main_widget.toss_result.team_A_A.bind(on_press=self.radio_button_changed)
         self.design.main_widget.toss_result.team_B_A.bind(on_press=self.radio_button_changed)
         self.design.main_widget.toss_result.team_A_serve.bind(on_press=self.radio_button_changed)
         self.design.main_widget.toss_result.team_B_serve.bind(on_press=self.radio_button_changed)
-
-        self.design.add_widget(self.design.main_widget)
-        self.add_widget(self.design)
 
         self.design.main_widget.save.button.bind(on_release=self.save_button)
 
@@ -478,30 +478,60 @@ class CoinTossWindow(Screen):
         match.home_team.Name.load(match.home_team.long_name)
         match.away_team.Name.load(match.away_team.long_name)
 
-    def on_load(self, *args):
+    def on_load(self):
         
+        '''
+        This is a function responsible for loading screen's logic.
+        In this screen, we're only initializating visual elements.
+            
+        Parameters:
+            self: CoinTossWindow
+        
+        Return:
+            None
+        '''
+
         self.init_visual_elements()
     
     def radio_button_changed(self, instance):
+
+        '''
+        This is a function that deals with processing radio buttons of the screen pressings as well as 
+        calculating save button's state. We should only enable save button if at least one radio
+        button in each category is pressed.
+
+        Parameters:
+            self: CoinTossWindow
+            instance: gfx.frontend.ToggleButton
+
+        Step by step:
+            1)Get the button.
+                2-1)If it is down, change its text, as well as opposite button's text. 
+                
+            3)If any of the buttons in each group is down, enable the save button. Else disable it.
+
+        Return:
+            None
+        '''
 
         from DVA import frontend_references as gui
 
         if instance == gui.get('MatchWindowRefereeCoinTossTabTeamAButtonA'):
             if instance.state == 'down':
                 instance.text = coin_toss_window[language_code][0]
-                self.design.main_widget.toss_result.team_B_A.text = coin_toss_window[language_code][1]
+                gui.get('MatchWindowRefereeCoinTossTabTeamBButtonA').text = coin_toss_window[language_code][1]
         elif instance == gui.get('MatchWindowRefereeCoinTossTabTeamBButtonA'):
             if instance.state == 'down':
                 instance.text = coin_toss_window[language_code][0]
-                self.design.main_widget.toss_result.team_A_A.text = coin_toss_window[language_code][1]
+                gui.get('MatchWindowRefereeCoinTossTabTeamAButtonA').text = coin_toss_window[language_code][1]
         elif instance == gui.get('MatchWindowRefereeCoinTossTabTeamAButtonServe'):
             if instance.state == 'down':
                 instance.text = coin_toss_window[language_code][2]
-                self.design.main_widget.toss_result.team_B_serve.text = coin_toss_window[language_code][3]
+                gui.get('MatchWindowRefereeCoinTossTabTeamBButtonServe').text = coin_toss_window[language_code][3]
         else:
             if instance.state == 'down':
                 instance.text = coin_toss_window[language_code][2]
-                self.design.main_widget.toss_result.team_A_serve.text = coin_toss_window[language_code][3]
+                gui.get('MatchWindowRefereeCoinTossTabTeamAButtonServe').text = coin_toss_window[language_code][3]
 
         if (gui.get('MatchWindowRefereeCoinTossTabTeamAButtonA').state == 'down' or gui.get('MatchWindowRefereeCoinTossTabTeamBButtonA').state == 'down') and \
         (gui.get('MatchWindowRefereeCoinTossTabTeamAButtonServe').state == 'down' or gui.get('MatchWindowRefereeCoinTossTabTeamBButtonServe').state == 'down'):
@@ -510,6 +540,18 @@ class CoinTossWindow(Screen):
             gui.get('MatchWindowRefereeCoinTossSendButtonBINDABLE').disabled = True
 
     def save_button(self, button):
+
+        '''
+        This is a button processing save button press. It calls the coin_toss function of the 1st
+        official which processes the coin toss itself.
+
+        Parameters:
+            self: CoinTossWindow
+            button: gfx.frontend.button
+
+        Return:
+            None
+        '''
 
         from DVA import match
 
