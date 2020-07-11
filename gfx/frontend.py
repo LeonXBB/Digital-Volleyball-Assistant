@@ -245,6 +245,12 @@ class AuthorizationWindow(Screen):
         '''
         This is a buidling function for the screen's design and binding.
         It creates Kivy screen, sets its name, load its design and binds send button to respective function.
+
+        Parameters:
+            self: AuthorizationWindow
+
+        Return:
+            None
         '''
 
         super().__init__()
@@ -311,29 +317,29 @@ class AuthorizationWindow(Screen):
 
     def on_load(self, dt):
 
-    '''
-    This is a function that loads logic of the screen.
-    Here, we checking if the user has already logged in and prefered not to do that again, 
-    and if so, we set their id and status according to the results of that authorization, as well
-    as process successfull authorization.
-    If the user didn't choose to do so, or couldn't, we switchching their screen to the authorization window.
+        '''
+        This is a function that loads logic of the screen.
+        Here, we checking if the user has already logged in and prefered not to do that again, 
+        and if so, we set their id and status according to the results of that authorization, as well
+        as process successfull authorization.
+        If the user didn't choose to do so, or couldn't, we switchching their screen to the authorization window.
 
-    Parameters:
-        self: AuthorizationWindow
-        dt: kivy.Clock.dt 
+        Parameters:
+            self: AuthorizationWindow
+            dt: kivy.Clock.dt 
 
-    Step by step:
-        1)Check if remember.me file exists from previous authorization attempt.
-            2-1)If so, check if it was successfull (by checking the Request log)
-                3-1-1)If so, set their id and status according to that request.
-                4-1-1)Process successfull authorization.
-                5-1-1)Return None to avoid switching to authorization screen.
-            2-2, 3-1-2)If not, switch to authorization screen. 
-        3)Also, check app's version
+        Step by step:
+            1)Check if remember.me file exists from previous authorization attempt.
+                2-1)If so, check if it was successfull (by checking the Request log)
+                    3-1-1)If so, set their id and status according to that request.
+                    4-1-1)Process successfull authorization.
+                    5-1-1)Return None to avoid switching to authorization screen.
+                2-2, 3-1-2)If not, switch to authorization screen. 
+            3)Also, check app's version
 
-        Return:
-            None
-    '''
+            Return:
+                None
+        '''
 
         import DVA
         from DVA import logs, sm, frontend_references as gui
@@ -588,6 +594,12 @@ class TeamSetUpBase(Screen):
             This is a initialization function for this content class. It only deals with design.
             This design includes scrolling. It is done by invisible slider which movement is then
             processed.
+
+            Parameters:
+                self: SharedArea
+
+            Return:
+                None
             '''
             super().__init__()
 
@@ -676,15 +688,15 @@ class TeamSetUpBase(Screen):
 
         def __init__(self):
 
-        '''
-            I told you it's specific...
+            '''
+                I told you it's specific...
 
-            Parameters:
-                self: Header
+                Parameters:
+                    self: Header
 
-            Return:
-                None
-        '''
+                Return:
+                    None
+            '''
         
             super().__init__()
 
@@ -702,12 +714,22 @@ class TeamSetUpBase(Screen):
 
     def __init__(self):
 
+        '''
+        This is main initializating function of the screen. Just like other screens' __init__ function it only deals with design and bonding.
+
+            Parameters:
+                self: TeamSetUpBase
+                
+            Return:
+                None
+        '''
+
         super().__init__()
 
         self.design = GridLayout(cols=1, pos_hint={"x": 0, "y": 0}, size_hint=(1, 1))
         self.design.main_widget = GridLayout(rows=3, padding=[10], spacing=[10, 10])
 
-        self.design.main_widget.referee_spot = BoxLayout()  # also, put content of other users' mode
+        self.design.main_widget.referee_spot = BoxLayout()
         self.design.main_widget.buttons = GridLayout(cols=5, size_hint=(1, 0.1), padding=[5])
 
         self.design.main_widget.buttons.cancel = Button(text=buttons[language_code][2])
@@ -725,12 +747,37 @@ class TeamSetUpBase(Screen):
         self.design.main_widget.buttons.save.bind(on_release=self.save_button)
 
     def get_players_list(self, team):
-        
+
+        '''
+        This is a function that uses a more generic core function to get list of players objects to be used in loading players list on the screen. 
+
+            Parameters:
+                self: TeamSetUpBase
+                team: py.match.objects.Team
+
+            Return:
+                get_people_list(team, with_absent_players=True): function call with given parameters that returns list with Player objects.
+        '''
+
         from py.core import get_people_list
 
         return get_people_list(team, with_absent_players=True)
 
     def load_players_list(self, team, start_index, end_index):
+
+        '''
+        This is a function that creates, loads, and scrolls team's players list. Scrolling is considered loading players with indexes from start_index 
+        included to end_index excluded.
+
+        Parameters:
+            self: TeamSetUpBase
+            team: py.match.objects.Team
+            start_index: int
+            end_index: int
+
+        Return:
+            None
+        '''
 
         from DVA import match, frontend_references as gui
         from gfx.visual_elements import TeamPeopleList

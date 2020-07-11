@@ -3,7 +3,8 @@ Note 2: Do as I say, not as I do.
 Note 3:
 TODO: make it an actual docx with hyperlinks and crossreferences to different elements (classes, functions, 
 parameters etc). Also, do some general formatting.
-
+Note 4: Don't try to understand formatting.
+Note 5: There may be errors in reference list.
 
 As in its name, this app is designed to help volleyball enthusiasts and professionals, such as coaches, 
 players, officials etc with sport-related activities, both during and off-match. 
@@ -485,12 +486,14 @@ DVA.pyw
     
     Used by:
         run.pyw (script itself)
+        
         gfx.frontend.Application.build (sm, frontend_references)
         gfx.frontend.AuthorizationWindow.on_load (id, user_status, logs, sm, frontend_references)
         gfx.frontend.AuthorizationWindow.send_button (logs, frontend_references)
         gfx.frontend.CoinTossWindow.init_visual_elements (match.left_team.long_name, match.right_team.long_name,
         frontend_references)
         gfx.frontend.CoinTossWindow.radio_button_changed (frontend_references)
+        gfx.frontend.TeamSetUpBase.load_players_list (frontend_references, match.left_team)
 
     Uses:
         Config from Kivy.config 
@@ -576,6 +579,7 @@ gfx.frontend
         gfx.frontend.TeamSetUpBase.PlayerWidget.__init__ (Label, CheckBox, TextInput)
         gfx.frontend.TeamSetUpBase.Header (BoxLayout)
         gfx.frontend.TeamSetUpBase.Header.__init__ (team_set_up, Label)
+        gfx.frontend.TeamSetUpBase.__init__ (GridLayout, BoxLayout, Button, Label)
 
     class Application
 
@@ -614,7 +618,7 @@ gfx.frontend
                 6)Run first screen's logic.
 
             Return:
-                DVA.sm - a widget to display: screen manager used by the app.
+                DVA.sm: a widget to display (screen manager used by the app).
 
             Uses:
                 DVA.pyw (sm, frontend_references)
@@ -807,7 +811,7 @@ gfx.frontend
 
             Uses:
                 match.left_team.long_name, match.right_team.long_name, frontend_references as gui from DVA
-                TeamName from gfx.visual_elements
+                gfx.visual_elements.TeamName, gfx.visual_elements.TeamName.load
 
             Used by:
                 gfx.frontend.CoinTossWindow.on_load
@@ -881,7 +885,7 @@ gfx.frontend
             Team Set Up screen is a screen for user to set up teams' squads for the match, setting present /
             absent players, shirts numbrers, captains etc.
 
-        Structure:
+        Structure (excluding imports, parameters and sub-variables unless logiclly independent):
 
             class SharedArea
             class PlayerWidget
@@ -910,7 +914,7 @@ gfx.frontend
                 class to represent different teams' lists using tabs, and other childrens classes will use
                 it once as a content to insert.
 
-            Structure:
+            Structure (excluding imports, parameters and sub-variables unless logiclly independent):
                 def __init__
 
             Uses:
@@ -941,12 +945,16 @@ gfx.frontend
                 line for each person. It also disables changing their parameters if they are chosen to be
                 absent.
 
-            Structure:
+            Structure (excluding imports, parameters and sub-variables unless logiclly independent):
                 def __init__
                 def present_checkbox
 
             Uses:
                 gfx.frontend.GridLayout (inheiritance)
+
+            Used by:
+                gfx.frontend.TeamSetUpBase.SharedArea.__init__
+                gfx.frontend.TeamSetUpBase.load_players_list
 
             def __init__
 
@@ -962,6 +970,9 @@ gfx.frontend
                 Uses:
                     Label, CheckBox, TextInput from gfx.frontend
                     gfx.frontend.TeamSetUpBase.PlayerWidget.present_checkbox
+
+                Used by:
+                    gfx.frontend.TeamSetUpBase.PlayerWidget.__init__
 
             def present_checkbox
 
@@ -990,11 +1001,14 @@ gfx.frontend
                 This is another design class for providing letters to explain different checkboxes.
                 It's sort of... specific.
 
-            Structure:
+            Structure (excluding imports, parameters and sub-variables unless logiclly independent):
                 def __init__
 
             Uses:
                 gfx.frontend.BoxLayout (inheiritance)
+            
+            Used by:
+                gfx.frontend.TeamSetUpBase.SharedArea.__init__
             
             def __init__
 
@@ -1010,14 +1024,81 @@ gfx.frontend
                 Uses: 
                     Label, team_set_up from gfx.frontend
 
-
         def __init__
+
+            Info:
+                This is main initializating function of the screen. Just like other screens' __init__ function it only deals with design and bonding.
+
+            Parameters:
+                self: TeamSetUpBase
+                
+            Return:
+                None
+
+            Uses:
+                GridLayout, BoxLayout, Button, Label from gfx.frontend
+                gxf.frontend.TeamSetUpBase.save_button
+                gfx.frontend.TeamSetUpBase.cancel_button
 
         def get_players_list
 
+            Info:
+                This is a function that uses a more generic core function to get list of players objects to be used in loading players list on the screen. 
+
+            Parameters:
+                self: TeamSetUpBase
+                team: py.match.objects.Team
+
+            Return:
+                get_people_list(team, with_absent_players=True): function call with given parameters that returns list with Player objects.
+
+            Uses:
+                py.core.get_people_list
+
+            Used by:
+                gfx.frontend.TeamSetUpBase.load_players_list
+
         def load_players_list
 
+            Info:
+                This is a function that creates, loads, and scrolls team's players list. Scrolling is considered loading players with indexes from start_index 
+                included to end_index excluded.
+
+            Parameters:
+                self: TeamSetUpBase
+                team: py.match.objects.Team
+                start_index: int
+                end_index: int
+
+            Return:
+                None
+
+            Uses:
+                gfx.visual_elements.TeamPeopleList, gfx.visual_elements.TeamPeopleList.load, gfx.visual_elements.TeamPeopleList.scroll
+                gfx.frontend.TeamSetUpBase.get_players_list
+                frontend_references as gui, match.left_team from DVA.pyw
+                gfx.frontend.TeamSetUpBase.PlayerWidget
+
+            Used by:
+
         def get_team_set_up_children
+
+            Info:
+
+            Structure (excluding imports, parameters and sub-variables unless logiclly independent):
+                team_set_up_children: list
+
+            Parameters:
+
+            Step by step:
+
+            Return:
+
+
+            Uses:
+
+            Used by:
+
 
         def init_visual_elements
 
@@ -1025,12 +1106,36 @@ gfx.frontend
 
         def cancel_button
 
+            Used by:
+                gxf.frontend.TeamSetUpBase.__init__
+
         def save_button
 
-gfx.visual_elements
+            Used by:
+                gxf.frontend.TeamSetUpBase.__init__
 
-    Used by:
-        gfx.frontend_references.CoinTossWindow.init_visual_elements (TeamName)
+gfx.visual_elements
+    
+    TeamName:
+
+        Used by:
+            gfx.frontend.CoinTossWindow.init_visual_elements
+    
+        def load:
+
+            Used by:
+                gfx.frontend.CoinTossWindow.init_visual_elements
+
+    TeamPeopleList:
+
+        Used by:
+            gfx.frontend.TeamSetUpBase.load_players_list
+
+        def load:
+
+            Used by:
+                gfx.frontend.TeamSetUpBase.load_players_list
+
 
 py.core 
 
@@ -1048,6 +1153,11 @@ py.core
         Used by:
             gfx.frontend.AuthorizationWindow.on_load
             gfx.frontend.AuthorizationWindow.send_button
+
+    def get_people_list
+
+        Used by:
+            gfx.frontend.TeamSetUpBase.get_players_list
 
 py.objects
 
@@ -1067,6 +1177,10 @@ py.match.objects:
 
             Used by:
                 DVA.py
+
+    Used by:
+        gfx.frontend.TeamSetUpBase.get_players_list
+        gfx.frontend.TeamSetUpBase.load_players_list
 
     class Official 
 
