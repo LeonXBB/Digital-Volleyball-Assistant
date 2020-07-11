@@ -819,13 +819,43 @@ class TeamSetUpBase(Screen):
         
         return team_set_up_children
 
-    def init_visual_elements(self, team, children_index, start_index, end_index):
+    def init_visual_elements(self, team, team_index, start_index, end_index):
+
+        '''
+        This is a function that works with visual elements: creates, connects to respective screen's digets, loads, and processes them.
+        First, it creates and fills with null team's SetUp visual element if it has not been done before.
+        (only partialy related to NameList, it stores values for checkboxes, linking and scrolling them for corresponding names).
+        Then, it updates its values from screen, scrolls according to user scroll, and loads them back in new position, once again, 
+        related to names.
+        Finally, it also deals with teams' names.
+
+        Parameters:
+            self: TeamSetUpBase
+            team: py.match.objects.Team
+            team_index: int - 0 for left team, 1 for right team 
+            start_index: int 
+            end_index: int
+
+        Step by step:
+
+                1-1)If team's SetUp visual_element hasn't been initializated yet, do it using get_team_set_up_children function.
+                2-1)Fill it with empty values (False)
+                3-1)Load list of players names for the first time.
+
+            2)Update team's SetUp map values (list of values for different checkboxes for different players) from screen.
+            3)Scroll names list according to the user's action.
+            4)Re-load team's SetUp map values according to new names position.
+            5)Create and load teams' names.
+        
+        Return:
+            None
+        '''
 
         from DVA import match, frontend_references as gui
         from gfx.visual_elements import TeamSetUp, TeamName
        
         if not hasattr(team.SetUp, 'map_values') or len(team.SetUp.map_values) == 0:
-            team.SetUp = TeamSetUp(self.get_team_set_up_children(children_index))
+            team.SetUp = TeamSetUp(self.get_team_set_up_children(team_index))
             team.SetUp.create_map(team)
             self.load_players_list(team, start_index, end_index)
 
@@ -840,9 +870,22 @@ class TeamSetUpBase(Screen):
                 opposite_team.Name = TeamName(gui.get('MatchWindowRefereeTeamSetUpTabTeam' + ('B' if team == match.left_team else 'A') + 'Tab'))
                 opposite_team.Name.load(opposite_team.long_name)
 
-    def on_load(self, team, start_index, end_index, *args):
+    def on_load(self, team, start_index, end_index):
 
-        from DVA import match, frontend_references as gui
+        '''
+        The function that loads screen's logic. In this screen, we only load visual elements, and only for the team of a current tab.
+            
+        Parameters:
+            self: TeamSetUpBase
+            team: str - 'A' for left team, 'B' for right team.
+            start_index: int - for scrolling 
+            end_index: int
+
+        Return:
+            None
+        '''
+
+        from DVA import match
 
         if team == 'A':
             self.init_visual_elements(match.left_team, 0, start_index, end_index)
@@ -852,6 +895,18 @@ class TeamSetUpBase(Screen):
 
     def cancel_button(self, button):  # TODO change for non-referee
 
+        '''
+        This is a function designed to process cancel button press. Cancel button clears tab's content for that specific team. 
+        It does so by calling the respective function of team's SetUp.
+
+        Parameters:
+            self: TeamSetUpBase
+            button: gfx.frontend.Button
+
+        Return:
+            None
+        '''
+
         from DVA import match, frontend_references as gui
 
         if gui.get('MatchWindowRefereeTeamSetUpTabHeader').current_tab == gui.get('MatchWindowRefereeTeamSetUpTabTeamATab'):
@@ -860,6 +915,18 @@ class TeamSetUpBase(Screen):
             match.right_team.SetUp.clear(button)
 
     def save_button(self, button):  # TODO change for non-referee
+
+        '''
+        This is a function that processes the press of save button. Save button saves teams' set up results. 
+        It does so by calling that specific team's head coach's (or Head Coach object if the team does not have a head coach) respective function. 
+
+        Parameters:
+            self: TeamSetUpBase
+            button: gfx.frontend.Button
+
+        Return:
+            None
+        '''
 
         from DVA import match, frontend_references as gui
         from py.match.objects import HeadCoach
