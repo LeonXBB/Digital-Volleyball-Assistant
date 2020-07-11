@@ -494,6 +494,7 @@ DVA.pyw
         frontend_references)
         gfx.frontend.CoinTossWindow.radio_button_changed (frontend_references)
         gfx.frontend.TeamSetUpBase.load_players_list (frontend_references, match.left_team)
+        gfx.frontend.TeamSetUpBase.get_team_set_up_children (frontend_references)
 
     Uses:
         Config from Kivy.config 
@@ -1084,9 +1085,31 @@ gfx.frontend
         def get_team_set_up_children
 
             Info:
+                This is a function that selects and returns widgets for visual widgets used in another functions of the screen
 
             Structure (excluding imports, parameters and sub-variables unless logiclly independent):
                 team_set_up_children: list
+
+            Parameters:
+                index: int - 0 for the left team, 1 for the right team.
+
+            Step by step:
+                1)Create a return list.
+                    2)For every widget in related widget list, add a sublist.
+                        3)For every widget in step 2, append children widgets to the return list except for person's name (index 4)
+
+            Return:
+                team_set_up_children: list - return list containing correct widgets.
+
+            Uses:
+                frontend_references as gui from DVA.pyw
+
+            Used by:
+
+        def init_visual_elements
+
+            Info:
+                This is a function that connect screen's widgets to respective visual elements and loads them.
 
             Parameters:
 
@@ -1094,13 +1117,11 @@ gfx.frontend
 
             Return:
 
-
             Uses:
+                frontend_references as gui, match from DVA.pyw
+                gfx.visual_elements.TeamName, gfx.visual_elements.TeamSetUp
 
             Used by:
-
-
-        def init_visual_elements
 
         def on_load
 
@@ -1136,6 +1157,10 @@ gfx.visual_elements
             Used by:
                 gfx.frontend.TeamSetUpBase.load_players_list
 
+        def scroll:
+
+            Used by:
+                gfx.frontend.TeamSetUpBase.load_players_list
 
 py.core 
 

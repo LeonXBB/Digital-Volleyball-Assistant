@@ -789,6 +789,24 @@ class TeamSetUpBase(Screen):
 
     def get_team_set_up_children(self, index):
         
+        '''
+        This is a function that selects and returns widgets for visual widgets used in another functions of the screen
+
+        Structure (excluding imports, parameters and sub-variables unless logiclly independent):
+            team_set_up_children: list
+
+        Parameters:
+            index: int - 0 for the left team, 1 for the right team.
+
+        Step by step:
+            1)Create a return list.
+                2)For every widget in related widget list, add a sublist.
+                    3)For every widget in step 2, append children widgets to the return list except for person's name (index 4)
+
+        Return:
+            team_set_up_children: list - return list containing correct widgets.
+        '''
+
         from DVA import frontend_references as gui
 
         team_set_up_children = []
