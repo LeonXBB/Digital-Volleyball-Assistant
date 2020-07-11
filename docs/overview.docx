@@ -488,11 +488,14 @@ DVA.pyw
         run.pyw (script itself)
         
         gfx.frontend.Application.build (sm, frontend_references)
+        
         gfx.frontend.AuthorizationWindow.on_load (id, user_status, logs, sm, frontend_references)
         gfx.frontend.AuthorizationWindow.send_button (logs, frontend_references)
+        
         gfx.frontend.CoinTossWindow.init_visual_elements (match.left_team.long_name, match.right_team.long_name,
         frontend_references)
         gfx.frontend.CoinTossWindow.radio_button_changed (frontend_references)
+        
         gfx.frontend.TeamSetUpBase.load_players_list (frontend_references, match.left_team)
         gfx.frontend.TeamSetUpBase.get_team_set_up_children (frontend_references)
         gfx.frontend.TeamSetUpBase.init_visual_elements (frontend_references, match.left_team, match.right_team,  match.left_team.long_name, match.right_team.long_name)
@@ -500,6 +503,10 @@ DVA.pyw
         gfx.frontend.TeamSetUpBase.cancel_button (frontend_references, match.left_team.SetUp.clear, match.right_team.SetUp.clear)
         gfx.frontend.TeamSetUpBase.save_button (match.left_team, match.left_team.head_coach, match.left_team.head_coach.team_set_up, 
         match.right_team, match.right_team.head_coach, match.right_team.head_coach.team_set_up, frontend_references)
+        
+        gfx.frontend.TeamSetUpReferee.header_button (match.left_team, match.left_team.long_name, match.left_team.players, match.left_team.expulsed_players, 
+        match.left_team.disqualified_players, match.right_team, match.right_team.long_name, match.right_team.players, match.right_team.expulsed_players, 
+        match.right_team.disqualified_players, frontend_references)
 
     Uses:
         Config from Kivy.config 
@@ -520,10 +527,17 @@ gfx.frontend
         Most imports are done at the module level to avoid importing same things over and over again.
 
     Structure (excluding imports, parameters and sub-variables unless logiclly independent):
+        
         class Application
         class ScreenManager
         class AuthorizationWindow
         class CoinTossWindow
+        class TeamSetUpReferee
+
+        indxes: list - list containing values for current position of all scrollbars, separately for each tab
+
+            Used by:
+                gfx.frontend.TeamSetUpReferee.header_button
 
     Uses: 
         path, getcwd from os
@@ -588,6 +602,8 @@ gfx.frontend
         gfx.frontend.TeamSetUpBase.__init__ (GridLayout, BoxLayout, Button, Label)
         gfx.frontend.TeamSetUpBase.cancel_button (Button)
         gfx.frontend.TeamSetUpBase.save_button (Button)
+        gfx.frontend.TeamSetUpReferee.__init__ (TabbedPanel, TabbedPanelHeader)
+        gfx.frontend.TeamSetUpReferee.header_button (TabbedPanelHeader)
 
     class Application
 
@@ -936,6 +952,8 @@ gfx.frontend
             def cancel_button (the class itself)
             def save_button (the class itself)
 
+            gfx.frontend.TeamSetUpReferee
+
         class SharedArea
 
             Info:
@@ -948,6 +966,9 @@ gfx.frontend
 
             Uses:
                 gfx.frontend.GridLayout (inheiritance)
+
+            Used by:
+                gfx.frontend.TeamSetUpReferee.__init__
 
             def __init__
 
@@ -1195,6 +1216,9 @@ gfx.frontend
                 gfx.frontend.TeamSetUpBase.init_visual_elements
                 match.left_team, match.right_team from DVA.pyw
 
+            Used by:
+                gfx.frontend.TeamSetUpReferee.header_button
+
         def cancel_button
 
             Info:
@@ -1235,6 +1259,69 @@ gfx.frontend
 
             Used by:
                 gxf.frontend.TeamSetUpBase.__init__
+
+    class TeamSetUpReferee
+
+        Info:
+            This is implementation of the Base TeamSetUp screen for referee users. It contains of tabbed panel for two teams and said base for each team.
+
+        Structure:
+            def __init__
+            def header_button
+
+        Uses:
+            gfx.frontend.TeamSetUpBase (inheiritance)
+
+        Used by:
+            gfx.frontend.TeamSetUpReferee.__init__ (the class itself)
+
+        def __init__
+
+            Info:
+                The initializating function for the class.
+            
+            Parameters:
+                self: TeamSetUpReferee
+
+            Return:
+                None
+
+            Uses:
+                TabbedPanel, TabbedPanelHeader from gfx.frontend
+                gfx.frontend.TeamSetUpBase.SharedArea
+                gfx.frontend.TeamSetUpReferee.header_button
+
+        def header_button
+
+            Info:
+                The header-button pressing processign function.
+                It deals with loading screen's logic, as well as scrolling indexes calculations.
+
+            Structure:
+                teams: list containing teams objects.
+                letters: list containing teams letters.
+
+            Parameters:
+                self: TeamSetUpReferee
+                button: gfx.frontend.TabbedPanelHeader
+
+            Step by step:
+                1)Create two list to be used in the next steps.
+                2)Determine the index using by comparing the name of the tab we're switching to (0 for left team, 1 for right_team)
+                3)Calculate either we have enough players for six more (amount of widgets in the screen content) or not.
+                4)Load screen's logic with correct parameters using calculated index, and scrolling range.
+
+            Return:
+                None
+
+            Uses: 
+                match.left_team, match.left_team.long_name, match.left_team.players, match.left_team.expulsed_players, match.left_team.disqualified_players,
+                match.right_team, match.right_team.long_name, match.right_team.players, match.right_team.expulsed_players, match.right_team.disqualified_players,
+                frontend_references as gui from DVA.pyw
+                gfx.frontend.indexes
+
+            Used by:
+                gfx.frontend.TeamSetUpReferee.__init__
 
 gfx.visual_elements
     

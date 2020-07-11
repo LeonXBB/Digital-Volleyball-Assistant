@@ -945,7 +945,21 @@ class TeamSetUpBase(Screen):
 
 class TeamSetUpWindowReferee(TeamSetUpBase):  # TODO either save button disabled or popup when not all conditions are met for ALL THE TABS
 
+    '''
+    This is implementation of the Base TeamSetUp screen for referee users. It contains of tabbed panel for two teams and said base for each team.
+    '''
+
     def __init__(self):
+
+        '''
+        The initializating function for the class.
+            
+        Parameters:
+            self: TeamSetUpReferee
+
+        Return:
+            None
+        '''
 
         super().__init__()
         self.name = 'TeamSetUpWindowReferee'
@@ -967,6 +981,28 @@ class TeamSetUpWindowReferee(TeamSetUpBase):  # TODO either save button disabled
         self.design.main_widget.referee_spot.content.team_B_button.bind(on_release=self.header_button)
 
     def header_button(self, button):
+
+        '''
+        The header-button pressing processign function.
+        It deals with loading screen's logic, as well as scrolling indexes calculations.
+
+        Structure:
+            teams: list containing teams objects.
+            letters: list containing teams letters.
+
+        Parameters:
+            self: TeamSetUpReferee
+            button: gfx.frontend.TabbedPanelHeader
+
+        Step by step:
+            1)Create two list to be used in the next steps.
+            2)Determine the index using by comparing the name of the tab we're switching to (0 for left team, 1 for right_team)
+            3)Calculate either we have enough players for six more (amount of widgets in the screen content) or not.
+            4)Load screen's logic with correct parameters using calculated index, and scrolling range.
+
+        Return:
+            None
+        '''
 
         from DVA import match, frontend_references as gui
 
