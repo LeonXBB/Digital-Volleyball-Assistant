@@ -25,29 +25,27 @@ The app is creared using Python, Kivy, and PIL.
 
 There are several important cornstone-concepts of the code's architecture:
 
-* OBJECTS, including
-    * EVENTS
-    * EVENT MANAGER
-    * VISUAL ELEMENTS 
-    * REQUESTS
-    * LOGS
+    * OBJECTS, including
+        * EVENTS
+        * EVENT MANAGER
+        * VISUAL ELEMENTS 
+        * REQUESTS
+        * LOGS
 
-* GFX, including
-    * SCREENS
-    * POPUPS
+    * GFX, including
+        * SCREENS
+        * POPUPS
 
-* DATA CONFIG, including
-    *APP CONFIG
-    *MATCH CONFIG
-    *LOCALIZATION
-    *PROTOCOL IMAGE BORDERS
-    *INTERVAL INSTRUCTIONS
+    * DATA CONFIG, including
+        *APP CONFIG
+        *MATCH CONFIG
+        *LOCALIZATION
+        *PROTOCOL IMAGE BORDERS
+        *INTERVAL INSTRUCTIONS
 
-* CORE FUNCTIONS 
+    * CORE FUNCTIONS 
 
-So, basically, these are all the cornstones...
-
-
+    So, basically, these are all the cornstones...
 
 Before we start, let's go through the directory structure. In the root directory we have the following list:
 
@@ -60,140 +58,138 @@ Before we start, let's go through the directory structure. In the root directory
     DVA.pyw 
     icon.ico
 
-If you work in developer's version, i.e. you're me, you also have 
+    If you work in developer's version, i.e. you're me, you also have 
 
-    run.pyw
-    run.spec
+        run.pyw
+        run.spec
 
-We need to go deeper. This is description of (almost) each point, including sub-structure.
+    We need to go deeper. This is description of (almost) each point, including sub-structure.
 
-    run.pyw - this is a loading script for our main code. Long story short: customization files (app_ and match_config, localization, and 
-    protocol image borders) were first creared with py extensions. The reason for that is that yours truly was not aware of the fact that 
-    py.modules are imported during compilation and not runtime. As customization requires to apply changes whenever they done (saved, to be 
-    precise), and changing the structure of importing those files would be very time consuming, the quick-fix was found in form of 
-    "shell-script" that only has one job - run the main script with all of its dependencies imported during runtime.
+        run.pyw - this is a loading script for our main code. Long story short: customization files (app_ and match_config, localization, and 
+        protocol image borders) were first creared with py extensions. The reason for that is that yours truly was not aware of the fact that 
+        py.modules are imported during compilation and not runtime. As customization requires to apply changes whenever they done (saved, to be 
+        precise), and changing the structure of importing those files would be very time consuming, the quick-fix was found in form of 
+        "shell-script" that only has one job - run the main script with all of its dependencies imported during runtime.
 
-    run.spec - "pre-cooked" spec file for faster compiling run.pyw 
+        run.spec - "pre-cooked" spec file for faster compiling run.pyw 
 
-    icon.ico - icon of the app.  
-    
-    DVA.pyw - main script which creates window, load logs etc. 
+        icon.ico - icon of the app.  
+        
+        DVA.pyw - main script which creates window, load logs etc. 
 
-    DVA.exe - result of compiling run.spec. App's main and only executable.
+        DVA.exe - result of compiling run.spec. App's main and only executable.
 
-    /docs - folder that contains this overview / references list, user instruction, and license information.
+        /docs - folder that contains this overview / references list, user instruction, and license information.
 
-    /logs - folder that contains .txt file(s) for logs. Currently, we have two logs - for events and requests. Events' log is being creared and 
-    fullfilled in different ways, including requests' log but only exists during runtime and has no .txt representation. Requests' log, on
-    another hand, may or may not have .txt file, depending on if any request has occured.
+        /logs - folder that contains .txt file(s) for logs. Currently, we have two logs - for events and requests. Events' log is being creared and 
+        fullfilled in different ways, including requests' log but only exists during runtime and has no .txt representation. Requests' log, on
+        another hand, may or may not have .txt file, depending on if any request has occured.
 
-    /meta - folder for meta stuff (as in the name). Currently contains localization and app config. 
+        /meta - folder for meta stuff (as in the name). Currently contains localization and app config. 
 
-    /gfx - folder that contains everything related to graphics, including visual files, design code, and some processing code, including 
-    complicated processing code.
-    The folder itself has the following structure:
+        /gfx - folder that contains everything related to graphics, including visual files, design code, and some processing code, including 
+        complicated processing code.
+        The folder itself has the following structure:
 
-        /background_pictures
-        /match
-        frontend.py 
-        interval_instructions.py 
-        visual_elements.py
-        loading.gif
+            /background_pictures
+            /match
+            frontend.py 
+            interval_instructions.py 
+            visual_elements.py
+            loading.gif
 
-        Now, about every file, as usual:
+            Now, about every file, as usual:
 
-        loading.gif - gif image that will be supposed to popup during time-consuming processes and 1)notify the user what's going on and that 
-        the programm did not freeze, 2)block user from chaotically clicking and actually freezing the programm, 3)just generaly make the 
-        programm looks nicer. As for now, the only one time-consuming process is generation of protocol image, and it does not work there due 
-        to some technical difficulties. But it will in the future! 
+            loading.gif - gif image that will be supposed to popup during time-consuming processes and 1)notify the user what's going on and that 
+            the programm did not freeze, 2)block user from chaotically clicking and actually freezing the programm, 3)just generaly make the 
+            programm looks nicer. As for now, the only one time-consuming process is generation of protocol image, and it does not work there due 
+            to some technical difficulties. But it will in the future! 
 
-        visual_elements.py - file that contains code of VisualElement class and all the classes that inheirit from it including their methods. 
-        For explanaition of what Visual Element is, look below the directory structure.
+            visual_elements.py - file that contains code of VisualElement class and all the classes that inheirit from it including their methods. 
+            For explanaition of what Visual Element is, look below the directory structure.
 
-        interval_instructions.py - file containing instructions for interval window in form of string. Basically, in the programm there's an 
-        interval window that popups when there's some interval to wait, such as 1)before court entry, 2)before coin toss, 3)before set start, 
-        4)before time out end, and has a timer, so interval_instructions.py stores instructions in str form to be executed by code in 
-        frontend.py.
+            interval_instructions.py - file containing instructions for interval window in form of string. Basically, in the programm there's an 
+            interval window that popups when there's some interval to wait, such as 1)before court entry, 2)before coin toss, 3)before set start, 
+            4)before time out end, and has a timer, so interval_instructions.py stores instructions in str form to be executed by code in 
+            frontend.py.
 
-        frontend.py - backbone of all GUI in the programm. It has code for:
-            
-            Kivy application itself, 
-            its screenmanager, 
-            all the screens in said screenmanager, 
-                including base screens for inheiritance, 
-                and user-status versions, 
-            list of widget references of said screens (see references for more info)
-            all methods of said screens, such as __init__, loading (in terms of not physical loading of a screen, but rather logical loading, 
-                i.e. what should be done in case of any backend / frontend changes that concern the screen irrelative to current 
-                screen \ switching between screens, these functions may be called when not in a screen at all, or when already in a screen - 
-                for example, the user is in the sanctions screen and selects a player who already has a warning. Warning button becomes 
-                hidden.), as well as widget manipulation, 
-            and popup manager, 
-                including design and functions for popup windows,
-            as well as background picture,
-            team widget - specific class for connecting volleyball positions numbers with Python and Kivy indexing, and applying this 
-                connecting in future code.
-            two Kivy mixing behavior classes, 
-            and, finally, two separate functions for scrolling processing.
+            frontend.py - backbone of all GUI in the programm. It has code for:
+                
+                Kivy application itself, 
+                its screenmanager, 
+                all the screens in said screenmanager, 
+                    including base screens for inheiritance, 
+                    and user-status versions, 
+                list of widget references of said screens (see references for more info)
+                all methods of said screens, such as __init__, loading (in terms of not physical loading of a screen, but rather logical loading, 
+                    i.e. what should be done in case of any backend / frontend changes that concern the screen irrelative to current 
+                    screen \ switching between screens, these functions may be called when not in a screen at all, or when already in a screen - 
+                    for example, the user is in the sanctions screen and selects a player who already has a warning. Warning button becomes 
+                    hidden.), as well as widget manipulation, 
+                and popup manager, 
+                    including design and functions for popup windows,
+                as well as background picture,
+                team widget - specific class for connecting volleyball positions numbers with Python and Kivy indexing, and applying this 
+                    connecting in future code.
+                two Kivy mixing behavior classes, 
+                and, finally, two separate functions for scrolling processing.
 
-        /match - folder that contains different images and sub-folders, such as sanction cards pictures, arrows picture for 
-        cancelling / restoring events, and serve_ball.png, which is also our icon.
+            /match - folder that contains different images and sub-folders, such as sanction cards pictures, arrows picture for 
+            cancelling / restoring events, and serve_ball.png, which is also our icon.
 
-        /background_pictures - folder that contains...you name it...background pictures! To use your own background picture, add a file into 
-        here with '.jpg' extension, call it 'background_' + *your_picture_name*, and then change app_background_picture variable in 
-        meta/app_config.py to *your_picture_name*.
-    
-    /py - folder for backend code. It consists of:
+            /background_pictures - folder that contains...you name it...background pictures! To use your own background picture, add a file into 
+            here with '.jpg' extension, call it 'background_' + *your_picture_name*, and then change app_background_picture variable in 
+            meta/app_config.py to *your_picture_name*.
+        
+        /py - folder for backend code. It consists of:
 
-        /match
-        /requests
-        core.py
-        events.py 
-        objects.py
+            /match
+            /requests
+            core.py
+            events.py 
+            objects.py
 
-        Now, as always:
+            Now, as always:
 
-        /match - folder containing files and folder(s) related specifically to match. Note: As mentioned before, the fourth architecture of the 
-        app was weird. It consisted of different packages / modules, every one of which would hold code for different parts of the program, 
-        such as match - referee, or non-match - player-profile etc, and the main program, which would -load, -unload, -rotate them and so for. 
-        Now, /match folder is sort of following this idea. Base of any module are three files: core.py, events.py, objects.py. In /py we are 
-        keeping general code, while in py/match we're saving code related directly to match flow. Why is it just /py/match and not 
-        /py/match-referee? Well, first, it is so for now, and second, the difference between match flow for referees, head coaches, and staff is 
-        not that big, there would be more cons than pros to disconnect it. However, in this module idea I've been using something like 
-        'match-meta' which served as inheritance base for other 'match - modules'. Also, those of you who have read my plans for far future
-        with this app, know that non-match modules will be at least 10 times more and bigger than match-modules.
+            /match - folder containing files and folder(s) related specifically to match. Note: As mentioned before, the fourth architecture of the 
+            app was weird. It consisted of different packages / modules, every one of which would hold code for different parts of the program, 
+            such as match - referee, or non-match - player-profile etc, and the main program, which would -load, -unload, -rotate them and so for. 
+            Now, /match folder is sort of following this idea. Base of any module are three files: core.py, events.py, objects.py. In /py we are 
+            keeping general code, while in py/match we're saving code related directly to match flow. Why is it just /py/match and not 
+            /py/match-referee? Well, first, it is so for now, and second, the difference between match flow for referees, head coaches, and staff is 
+            not that big, there would be more cons than pros to disconnect it. However, in this module idea I've been using something like 
+            'match-meta' which served as inheritance base for other 'match - modules'. Also, those of you who have read my plans for far future
+            with this app, know that non-match modules will be at least 10 times more and bigger than match-modules.
 
-        /py/requests - holds requests sending and processing files. See below for more info.
+            /py/requests - holds requests sending and processing files. See below for more info.
 
-        core.py - holds core app functions.
+            core.py - holds core app functions.
 
-	    events.py - holds app's events.
+            events.py - holds app's events.
 
-        objects.py - holds app's objects (Log and Request)
+            objects.py - holds app's objects (Log and Request)
 
-        /match has the following list:
-			
-        	/protocol 
-			match_config.py
-			core.py
-			events.py
-			objects.py
-			
-			/protocol - stores protocol-related files:
-			
-				image.png - protocol blank image
-				borders.py - protocol borders zones (see Modding in user manual for more details)		
+            /match has the following list:
+                
+                /protocol 
+                match_config.py
+                core.py
+                events.py
+                objects.py
+                
+                /protocol - stores protocol-related files:
+                
+                    image.png - protocol blank image
+                    borders.py - protocol borders zones (see Modding in user manual for more details)		
 
-	
-			match.config - stores match rules.
-			
-			core.py - match-related functions.
+        
+                match.config - stores match rules.
+                
+                core.py - match-related functions.
 
-			events.py - match-related events.
+                events.py - match-related events.
 
-			objects.py - match-related objects.
-
-
+                objects.py - match-related objects.
 
 Now, finally, we can inspect those concepts in detail, so shall we? The following is the description of 
 each category, what it is, what it does, why so etc. For an actual reference list, look below.
@@ -201,1254 +197,1591 @@ Let's start from up to down.
 
 EVENTS 
 
-Imagine this:
+    Imagine this:
 
-Matchtime. Head coach informs match officials that he's making a substitution. They do it using their 
-tablet and user-profiles. Appropriate changes to backend (switch players in team.players) and frontend (update
-team line up numbers in match screen) are made (these are not all changes). Substitution object is created. 
+    Matchtime. Head coach informs match officials that he's making a substitution. They do it using their 
+    tablet and user-profiles. Appropriate changes to backend (switch players in team.players) and frontend (update
+    team line up numbers in match screen) are made (these are not all changes). Substitution object is created. 
 
-Now, imagine this:
+    Now, imagine this:
 
-Matchtime. Head coach makes a substitution using their tablet. Appropriate changes to backend and frontend are 
-made (these are not all changes). Substitution object is created. Information then is sent to officials tablets
-using requests.
+    Matchtime. Head coach makes a substitution using their tablet. Appropriate changes to backend and frontend are 
+    made (these are not all changes). Substitution object is created. Information then is sent to officials tablets
+    using requests.
 
-Now, imagine this:
+    Now, imagine this:
 
-Matchtime. The app has crashed midway for whatever reason but the substitution was already made before. The app
-now copies information from the log, appropriate changes...
+    Matchtime. The app has crashed midway for whatever reason but the substitution was already made before. The app
+    now copies information from the log, appropriate changes...
 
-In two of these three cases, the algorithm is the following:
+    In two of these three cases, the algorithm is the following:
 
-* User does something in GUI.
-* Respective method of respective user object is called. 
+    * User does something in GUI.
+    * Respective method of respective user object is called. 
 
-    (Note: I'm using phrase 'user object' very freely here.
-    There's no objects connected to user. The user is only represented by variable 'user-status' which is used
-    to determine their status as in 'referee'/'head coach'/'viewer' etc and to load correct app mode. If we're
-    talking about match mode, there's objects for humans, as well as Match, Set, Substitution, Sanction etc.
-    They are created for the purposes of naturality and linking into a code.)
+        (Note: I'm using phrase 'user object' very freely here.
+        There's no objects connected to user. The user is only represented by variable 'user-status' which is used
+        to determine their status as in 'referee'/'head coach'/'viewer' etc and to load correct app mode. If we're
+        talking about match mode, there's objects for humans, as well as Match, Set, Substitution, Sanction etc.
+        They are created for the purposes of naturality and linking into a code.)
 
-* This method deals with call-specific details (like, releasing mistake button in the match screen if the method
-  is player.mistake())
-* Also, this methond send signal to event manager that respective event needs to be created.
-* Specific event class does not have its own __init__ function but inheirits from Event class itself which does.
-* Event class does some processing with logs, requests, and so on, depending on different parameters, and calls
-  create() function of said specific event class which does all the frontend, backend, and objects 
-  manipulations.
-* Then, if necessary, event manager does post-event processing.
+    * This method deals with call-specific details (like, releasing mistake button in the match screen if the method
+    is player.mistake())
+    * Also, this methond send signal to event manager that respective event needs to be created.
+    * Specific event class does not have its own __init__ function but inheirits from Event class itself which does.
+    * Event class does some processing with logs, requests, and so on, depending on different parameters, and calls
+    create() function of said specific event class which does all the frontend, backend, and objects 
+    manipulations.
+    * Then, if necessary, event manager does post-event processing.
 
-If we're using logs instead, then we pass different parameters to event manager and event class itself while
-creare() function remains the same.
-This allows us to ensure the same effects and behavior when we're doing the same action in different ways.
+    If we're using logs instead, then we pass different parameters to event manager and event class itself while
+    creare() function remains the same.
+    This allows us to ensure the same effects and behavior when we're doing the same action in different ways.
 
-So, basically, this is it. An Event is an object that represents the effects of the action (event) that has 
-happened and allows us to centralize its processing, irregardless of source of origin, user-status etc.
+    So, basically, this is it. An Event is an object that represents the effects of the action (event) that has 
+    happened and allows us to centralize its processing, irregardless of source of origin, user-status etc.
 
-Look py/events.py or py/match/events.py in directory structure or references for more information.
+    Look py/events.py or py/match/events.py in directory structure or references for more information.
 
 EVENT MANAGER
 
-Some events are independent. Some are not. Sometimes we need to delete / restore event.
-This is what event manager is for.
+    Some events are independent. Some are not. Sometimes we need to delete / restore event.
+    This is what event manager is for.
 
-Dependent events are events that are not first in events chain, and that are creared not by user but app's 
-logic. An example:
+    Dependent events are events that are not first in events chain, and that are creared not by user but app's 
+    logic. An example:
 
-User issues a penalty to a player (SanctionIssued) -> If this is standard rules, point is assigned to another
-team (Point_sReceived) -> If this is the last point of the set (set point), the set ends (yeah, I know about
-referees' recommendation not to issue penalty on set point) (SetEnd) -> If this is the last set, the match 
-ends (MatchEnd).
+    User issues a penalty to a player (SanctionIssued) -> If this is standard rules, point is assigned to another
+    team (Point_sReceived) -> If this is the last point of the set (set point), the set ends (yeah, I know about
+    referees' recommendation not to issue penalty on set point) (SetEnd) -> If this is the last set, the match 
+    ends (MatchEnd).
 
-In this example, SanctionIssued is an independent event, while Point_sReceived, SetEnd, and MatchEnd are
-dependent events. Some events are always in / dependent, some are mixed.
+    In this example, SanctionIssued is an independent event, while Point_sReceived, SetEnd, and MatchEnd are
+    dependent events. Some events are always in / dependent, some are mixed.
 
-Handeling event chains from Event class itself is difficult cause they require different processing and is
-just better when done via event manager.
+    Handeling event chains from Event class itself is difficult cause they require different processing and is
+    just better when done via event manager.
 
-Event manager also deals with events deletion / restoration. It does so by:
+    Event manager also deals with events deletion / restoration. It does so by:
 
-* calling event's __delete__ and restore (which is basically create function with different wrapping)
-  functions.
-* keeping and updating two lists: cancelled_events_ids, and created_events_ids which are then being used to
-  determine which events to delete / restore (the last ones).
-* maintaining event chains: if the event to delete / restore is dependent, it'll delete / restore all events up 
-  to the independent one.
+    * calling event's __delete__ and restore (which is basically create function with different wrapping)
+    functions.
+    * keeping and updating two lists: cancelled_events_ids, and created_events_ids which are then being used to
+    determine which events to delete / restore (the last ones).
+    * maintaining event chains: if the event to delete / restore is dependent, it'll delete / restore all events up 
+    to the independent one.
 
-Look py/events.py or py/match/events.py in directory structure or references for more information.
+    Look py/events.py or py/match/events.py in directory structure or references for more information.
 
 VISUAL ELEMENTS
 
-Imagine, if Team object would have a list named 'name_labels' which would contain all the Kivy Label widgets
-which displays team's name. And, when, for example, team receives warning, we could change the color of these
-Labels to yellow. And, maybe, some other functions, more complicated. And, maybe, we could dynamically change
-some attributes of those widgets depending on our backend?
+    Imagine, if Team object would have a list named 'name_labels' which would contain all the Kivy Label widgets
+    which displays team's name. And, when, for example, team receives warning, we could change the color of these
+    Labels to yellow. And, maybe, some other functions, more complicated. And, maybe, we could dynamically change
+    some attributes of those widgets depending on our backend?
 
-Visual Element is a cool interface between frontend and backend. It has the following structure:
+    Visual Element is a cool interface between frontend and backend. It has the following structure:
 
-* elements - list of widgets associated with this Visual Element.
-* parameters - list of different values (text, opacity, color etc) to be set in elements when loaded if 
-  applicable.
-* load function - applying parameters to elements 
-* elements management functions - add, delete, clear element(s). See below for more information.
-* specific functions - like penalty() for TeamName or rotate() for TeamLineUp.
+    * elements - list of widgets associated with this Visual Element.
+    * parameters - list of different values (text, opacity, color etc) to be set in elements when loaded if 
+    applicable.
+    * load function - applying parameters to elements 
+    * elements management functions - add, delete, clear element(s). See below for more information.
+    * specific functions - like penalty() for TeamName or rotate() for TeamLineUp.
 
-Note about elements management functions: 
-    
-    In the third version of the architecture Visual Elements were pretty much constant. team.Name = TeamName()
-    was created once and then, when needed to be update due to, say, sides change after set end, elements
-    would be updated and Visual Element would be re-loaded.
-    However, during writing of the code, it was noticed that re-initialisation of Visual Elements has no 
-    downsides and is somehow easier to work with. Thus, now changing elements list is done by creating new
-    Visual Element.
-    
-    There also were is_active parameter, and unload() function, which are now deleted.
+    Note about elements management functions: 
+        
+        In the third version of the architecture Visual Elements were pretty much constant. team.Name = TeamName()
+        was created once and then, when needed to be update due to, say, sides change after set end, elements
+        would be updated and Visual Element would be re-loaded.
+        However, during writing of the code, it was noticed that re-initialisation of Visual Elements has no 
+        downsides and is somehow easier to work with. Thus, now changing elements list is done by creating new
+        Visual Element.
+        
+        There also were is_active parameter, and unload() function, which are now deleted.
 
-Look gfx/visual_elements.py in directory structure or references for more information.
+    Look gfx/visual_elements.py in directory structure or references for more information.
 
 REQUESTS 
 
-App's requests are pretty much standard Python requests library with some interface build around it.
+    App's requests are pretty much standard Python requests library with some interface build around it.
 
-It can work with meta data, add itself into the log, and has two different ways of working with no connections:
-either throw a popup, or add them into queue and send when Internet re-appears.
+    It can work with meta data, add itself into the log, and has two different ways of working with no connections:
+    either throw a popup, or add them into queue and send when Internet re-appears.
 
-Requests folder has two files for each request: init and process. The former stores request preparation code
-which is executed before sending, the latter stores reply body's processing code which is executed after.
+    Requests folder has two files for each request: init and process. The former stores request preparation code
+    which is executed before sending, the latter stores reply body's processing code which is executed after.
 
-Internet address to which requests are send is stored in app_config.
+    Internet address to which requests are send is stored in app_config.
 
-Look py/core.py or py/match/core.py in directory structure or references for more information.
+    Look py/core.py or py/match/core.py in directory structure or references for more information.
 
 LOGS 
 
-Logs in the app are very simple. 
+    Logs in the app are very simple. 
 
-They consits of two sublogs. The first one, just a log, stores approximate return of the __dir__ function of
-the object to store, while the deep log stores the actual object.
+    They consits of two sublogs. The first one, just a log, stores approximate return of the __dir__ function of
+    the object to store, while the deep log stores the actual object.
 
-Logs obviously have functions to add (both to normal log and deeply) but have no delete element(s) function
-in themselves. They do have functions though to return either specific or all elements with the given values 
-of specific indexes. Also, optionally, they can be saved into .txt file or just be kept in memort during 
-runtime.
+    Logs obviously have functions to add (both to normal log and deeply) but have no delete element(s) function
+    in themselves. They do have functions though to return either specific or all elements with the given values 
+    of specific indexes. Also, optionally, they can be saved into .txt file or just be kept in memort during 
+    runtime.
 
-Note: If there's an unfinished match, events from it will be loaded into Events log which will be created on
-app load and all the events will be passed through event manager, thus restoring state of the app (and match)
-which it had before execution stopped.
+    Note: If there's an unfinished match, events from it will be loaded into Events log which will be created on
+    app load and all the events will be passed through event manager, thus restoring state of the app (and match)
+    which it had before execution stopped.
 
-Look py/objects.py or /logs in directory structure or references for more information.
+    Look py/objects.py or /logs in directory structure or references for more information.
 
 SCREENS
 
-Screens in the app's GUI are basically Kivy's screens with some notes.
+    Screens in the app's GUI are basically Kivy's screens with some notes.
 
-Each screen has at least __init__ function in which all the design is stored in inserting level as well as 
-widget bonding if any.
+    Each screen has at least __init__ function in which all the design is stored branch by branch, level by
+    level as well as widget bonding (in the end), if any.
 
-It also has on_load function which basically loads screen's logic. (see /gfx.frontend.py in directory 
-structure for more information), as well as digets manipulation processing functions, both related to 
-backend and frontend.
+    It also has on_load function which basically loads screen's logic. (see /gfx.frontend.py in directory 
+    structure for more information), as well as digets manipulation processing functions, both related to 
+    backend and frontend.
 
-Instead of using variables names directly, every function except __init__ uses and should do so elements' 
-names in frontend references dictionary list stored in App class. It is this way so that if we change
-screen's design structure, we can just change the dictionary and not replace all the references to that 
-widget. Not applicable to __init__ function due to said dictionary not existing on that point.
+    Instead of using variables names directly, every function except __init__ uses and should do so elements' 
+    names in frontend references dictionary list stored in App class. It is this way so that if we change
+    screen's design structure, we can just change the dictionary and not replace all the references to that 
+    widget. Not applicable to __init__ function due to said dictionary not existing on that point.
 
-Look gfx/frontend.py in directory structure or references for more information.
+    Look gfx/frontend.py in directory structure or references for more information.
 
 POPUPS
 
-Popups are similar to Kivy's popups and screens. 
+    Popups are similar to Kivy's popups and screens. 
 
-Class PopUpWindow stored in gfx/frontend.py provides sort of interface / manager for popups and allows for
-calling and (optionally) loading selected popup window.
+    Class PopUpWindow stored in gfx/frontend.py provides sort of interface / manager for popups and allows for
+    calling and (optionally) loading selected popup window.
 
-One particular popup is IntervalWindow which exists to show timer counting down to some event. It executes
-code stored in gfx/interval_instructions.py when the time comes. Referee's interface of this window has
-'Skip' button.
+    One particular popup is IntervalWindow which exists to show timer counting down to some event. It executes
+    code stored in gfx/interval_instructions.py when the time comes. Referee's interface of this window has
+    'Skip' button.
 
-Unlike screens, popups, being created 'on fly' don't have their widgets put into references list and address
-their widgets in their functions by calling them directly.
+    Unlike screens, popups, being created 'on fly' don't have their widgets put into references list and address
+    their widgets in their functions by calling them directly.
 
-Look gfx/frontend.py in directory structure or references for more information.
+    Look gfx/frontend.py in directory structure or references for more information.
 
 APP CONFIG
 
-App config is a py file that stores all meta app information.
-It is located in meta/app_config.py.
+    App config is a py file that stores all meta app information.
+    It is located in meta/app_config.py.
 
 MATCH CONFIG
 
-Match config is a py file that stores all rules of current rules set to be used in match flow.
-It is located in py/match/match_config.py.
+    Match config is a py file that stores all rules of current rules set to be used in match flow.
+    It is located in py/match/match_config.py.
 
 LOCALIZATION 
 
-Localization is stored in /meta/localization.py divided in list named after context of their usage. Those
-lists themselves are divided into sub-list each of which contains strings in their respective language.
-language_code from /meta/app_config specifies which sub-list will be used. General way of importing string is
-*list group name*[language_code][needed_string_index]
-Please, note that all formatting is done manually. Some strings are divided into two to put variable's value
-inside them. 
+    Localization is stored in /meta/localization.py divided in list named after context of their usage. Those
+    lists themselves are divided into sub-list each of which contains strings in their respective language.
+    language_code from /meta/app_config specifies which sub-list will be used. General way of importing string is
+    *list group name*[language_code][needed_string_index]
+    Please, note that all formatting is done manually. Some strings are divided into two to put variable's value
+    inside them. 
 
-Look Modding section of the user manual, or /meta/localization.py in directory structure or references for more information.
+    Look Modding section of the user manual, or /meta/localization.py in directory structure or references for more information.
 
 PROTOCOL BORDERS
 
-After the end of a match, the app generates a protocol image which is to be used as any volleyball match
-protocol. This file contains information about top-left and bottom right coordinates of the area in which 
-text data relative to name needs to be inserted. 
+    After the end of a match, the app generates a protocol image which is to be used as any volleyball match
+    protocol. This file contains information about top-left and bottom right coordinates of the area in which 
+    text data relative to name needs to be inserted. 
 
-Look Modding section of the user manual, or /py/match/protocol/borders.py in directory structure or references for more information.
+    Look Modding section of the user manual, or /py/match/protocol/borders.py in directory structure or references for more information.
 
 INTERVAL INSTRUCTIONS
 
-Basically, it's a list of strings with some command that will be passed to exec() function as an argument when
-the time of the interval with that id passes. 
+    Basically, it's a list of strings with some command that will be passed to exec() function as an argument when
+    the time of the interval with that id passes. 
 
-Look /gfx/interval_instructions.py in directory structure or references for more information.
+    Look /gfx/interval_instructions.py in directory structure or references for more information.
 
 CORE FUNCTIONS
 
-Basically, it's functions that do not belong to any package's object or event, and thus are brought 
-together here. They're more 'general', and user usually does not interact with them but with the code that
-interacts with them.
-The word 'core' cause it sounds cool. 
+    Basically, it's functions that do not belong to any package's object or event, and thus are brought 
+    together here. They're more 'general', and user usually does not interact with them but with the code that
+    interacts with them.
+    The word 'core' cause it sounds cool. 
 
-Example: 
+    Example: 
 
-Calculating name strings. 
+    Calculating name strings. 
 
-From server we're getting, among other things, list of people involved in a request with their names and last 
-name. But there are different rules for processing paperwork in different countries. For example, in Northern 
-America it's always LASTNAME, FIRSTNAME. Last name all capital, comma, whitespace, first name all capital. In 
-my city league though (Eastern Europe) it's Last name, and then, if the last name is not unique in the document, 
-comma, whitespace, and start adding by one letter to each person untill the name string does not become unique,
-but don't finish on vowel. Put a period at the end except for if all letters of the first name have been used. 
+    From server we're getting, among other things, list of people involved in a request with their names and last 
+    name. But there are different rules for processing paperwork in different countries. For example, in Northern 
+    America it's always LASTNAME, FIRSTNAME. Last name all capital, comma, whitespace, first name all capital. In 
+    my city league though (Eastern Europe) it's Last name, and then, if the last name is not unique in the document, 
+    comma, whitespace, and start adding by one letter to each person untill the name string does not become unique,
+    but don't finish on vowel. Put a period at the end except for if all letters of the first name have been used. 
 
-We're using this function when we're processing request reply and save the results in Person objects for the 
-correct displaying people's name according to paperwork rules in different people lists throughout the app 
-(substitutions list, for example).
+    We're using this function when we're processing request reply and save the results in Person objects for the 
+    correct displaying people's name according to paperwork rules in different people lists throughout the app 
+    (substitutions list, for example).
 
-Look py/core.py or py/match/core.py in directory structure or references for more information.
+    Look py/core.py or py/match/core.py in directory structure or references for more information.
 
 
 
 CODE REFERENCES
 
 
-run.pyw
+    run.pyw
 
-    Info: 
-        run.py is a so-called "shell-script" created because there's a need to import main script's 
-        dependencies during runtime and not compiling. It does so by running DVA.pyw in Python without 
-        compiling it. 
-        Executables created with pyinstaller have their own Python interpreter in them so it is irrelavent 
-        whether user has Python installed or not. Kivy is imported implicitly.
-    
-    Structure (excluding imports, parameters and sub-variables unless logiclly independent):
-        directory: str
-    
-    Step by step:
-        First, 'directory' variable is created which contains current directory (directory = os.getcwd())
-        Then, the exact command that's being executed is 
-        'subprocess.run(f'cmd /c "python {directory}\DVA.pyw"', shell=True)'. Shell is set to True because
-        otherwise Kivy's terminal window appears.
-    
-    Uses: 
-        subprocess
-        os
-        DVA.pyw
-
-DVA.pyw
-
-    Info:
-        Main script of the app. It is responsible for starting the application, creating and configuring GUI 
-        window, as well as loading and (if necessary) restoring logs, as well as creating screen manager for 
-        the GUI.
-    
-    Structure (excluding imports, parameters and sub-variables unless logiclly independent):
-        logs: list
-        sm: ScreenManager
-        Digital_Volleyball_Assistant: Application
-        frontend_references: dict 
-        id: int
-        user_status: list 
-        match: py.match.objects.Match
-    
-    Step by step:
-        First, we're setting window's  graphical parameters, including its resizableness and icon, according 
-        to app config.
-        Then, we create logs list and screen manager. They need to be available as they are called from other 
-        places, so they not under '__main__' name.
-        After that, if said name is actually '__main__', we load logs using respective core funtion, and 
-        creating and running the app itself.
-    
-    Used by:
-        run.pyw (script itself)
+        Info: 
+            run.py is a so-called "shell-script" created because there's a need to import main script's 
+            dependencies during runtime and not compiling. It does so by running DVA.pyw in Python without 
+            compiling it. 
+            Executables created with pyinstaller have their own Python interpreter in them so it is irrelavent 
+            whether user has Python installed or not. Kivy is imported implicitly.
         
-        gfx.frontend.Application.build (sm, frontend_references)
+        Structure (excluding imports, parameters and sub-variables unless logiclly independent):
+            directory: str
         
-        gfx.frontend.AuthorizationWindow.on_load (id, user_status, logs, sm, frontend_references)
-        gfx.frontend.AuthorizationWindow.send_button (logs, frontend_references)
+        Step by step:
+            First, 'directory' variable is created which contains current directory (directory = os.getcwd())
+            Then, the exact command that's being executed is 
+            'subprocess.run(f'cmd /c "python {directory}\DVA.pyw"', shell=True)'. Shell is set to True because
+            otherwise Kivy's terminal window appears.
         
-        gfx.frontend.CoinTossWindow.init_visual_elements (match.left_team.long_name, match.right_team.long_name,
-        frontend_references)
-        gfx.frontend.CoinTossWindow.radio_button_changed (frontend_references)
-        
-        gfx.frontend.TeamSetUpBase.load_players_list (frontend_references, match.left_team)
-        gfx.frontend.TeamSetUpBase.get_team_set_up_children (frontend_references)
-        gfx.frontend.TeamSetUpBase.init_visual_elements (frontend_references, match.left_team, match.right_team,  match.left_team.long_name, match.right_team.long_name)
-        gfx.frontend.TeamSetUpBase.on_load (match.left_team, match.right_team)
-        gfx.frontend.TeamSetUpBase.cancel_button (frontend_references, match.left_team.SetUp.clear, match.right_team.SetUp.clear)
-        gfx.frontend.TeamSetUpBase.save_button (match.left_team, match.left_team.head_coach, match.left_team.head_coach.team_set_up, 
-        match.right_team, match.right_team.head_coach, match.right_team.head_coach.team_set_up, frontend_references)
-        
-        gfx.frontend.TeamSetUpReferee.header_button (match.left_team, match.left_team.long_name, match.left_team.players, match.left_team.expulsed_players, 
-        match.left_team.disqualified_players, match.right_team, match.right_team.long_name, match.right_team.players, match.right_team.expulsed_players, 
-        match.right_team.disqualified_players, frontend_references)
+        Uses: 
+            subprocess
+            os
+            DVA.pyw
 
-    Uses:
-        Config from Kivy.config 
-        app_icon_path, app_resizable, app_width, app_height from meta.app_config
-        Application, ScreenManager from gfx.frontend
-        ScreenManager.__init__ from gfx.frontend.ScreenManager
-        load_log from py.core 
-
-gfx.frontend
-
-    Info:
-        This is file for storing code related to app's frontend. Currently it stores code of the Kivy App 
-        itself, its Screen Manager, all the screens and their functions, Popup windows and their manager,
-        background picture, special interface widget to allow applying volleyball position indexing with 
-        Kivy indexing, two classes of Kivy mixed behavior widgets, and two functions related to mouse 
-        scrolling, as well as indexes list for the latter.
-
-        Most imports are done at the module level to avoid importing same things over and over again.
-
-    Structure (excluding imports, parameters and sub-variables unless logiclly independent):
-        
-        class Application
-        class ScreenManager
-        class AuthorizationWindow
-        class CoinTossWindow
-        class TeamSetUpReferee
-
-        indxes: list - list containing values for current position of all scrollbars, separately for each tab
-
-            Used by:
-                gfx.frontend.TeamSetUpReferee.header_button
-
-    Uses: 
-        path, getcwd from os
-        BytesIO from io 
-        partial from functools 
-
-        ImageDraw, ImageFont, Image * as PIL_Image * from PIL
-
-        py.match.match_config # We're importing it as a package because it's being used in getattr()
-        * everything* from py.match.match_config
-        * everything* from meta.app_config
-        * everything* from meta.localization
-
-        App from kivy.app 
-        Clock from kivy.clock 
-
-        ButtonBehavior, FocusBehavior from kivy.uix.behaviors
-
-        Screen, ScreenManager * as _ScreenManager_ *, NoTransition from kivy.uix.screenmanager
-
-        GridLayout from kivy.uix.gridlayout
-        BoxLayout from kivy.uix.boxlayout
-        FloatLayout from kivy.uix.floatlayout
-        RelativeLayout from kivy.uix.relativelayout
-        ScrollView from kivy.uix.scrollview
-
-        Button from kivy.uix.button 
-        Label from kivy.uix.label 
-        Popup from kivy.uix.popup 
-        Slider from kivy.uix.slider 
-        Spinner from kivy.uix.spinner 
-        TabbedPanel, TabbedPanelHeader from kivy.uix.tabbedpanel
-        TextInput from kivy.uix.textinput 
-        CheckBox from kivy.uix.checkbox 
-        Image  * as core Image * from kivy.core.image
-        Image from kivy.uix.image  
-        ToggleButton from kivy.uix.togglebutton 
-        FileChooserIconView from kivy.uix.filechooser
-
-        Window from kivy.core.window
-
-    Used by:
-        gfx.frontend.Application (App)
-        gfx.frontend.Application.build (app_title, app_version, kivy.Clock)
-        gfx.frontend.ScreenManager (__ScreenManager__)
-        gfx.frontend.ScreenManager.__init__(NoTransition)
-        gfx.frontend.AuthorizationWindow(Screen)
-        gfx.frontend.AuthorizationWindow.__init__(authorization_window, buttons, app_title, app_version, GridLayout, TextInput, Label, CheckBox, Button)
-        gfx.frontend.AuthorizationWindow.on_load(Kivy.Clock.dt)
-        gfx.frontend.AuthorizationWindow.send_button(Button)
-        gfx.frontend.CoinTossWindow(Screen)
-        gfx.frontend.CoinTossWindow.__init__(coin_toss_window, buttons, GridLayout, Label, ToggleButton, Button)
-        gfx.frontend.CoinTossWindow.radio_button_changed(ToggleButton)
-        gfx.frontend.CoinTossWindow.save_button(Button)
-        gfx.frontend.TeamSetUpBase (Screen)
-        gfx.frontend.TeamSetUpBase.SharedArea (GridLayout)
-        gfx.frontend.TeamSetUpBase.SharedArea.__init__(GridLayout, Slider)
-        gfx.frontend.TeamSetUpBase.PlayerWidget (GridLayout)
-        gfx.frontend.TeamSetUpBase.PlayerWidget.__init__ (Label, CheckBox, TextInput)
-        gfx.frontend.TeamSetUpBase.Header (BoxLayout)
-        gfx.frontend.TeamSetUpBase.Header.__init__ (team_set_up, Label)
-        gfx.frontend.TeamSetUpBase.__init__ (GridLayout, BoxLayout, Button, Label)
-        gfx.frontend.TeamSetUpBase.cancel_button (Button)
-        gfx.frontend.TeamSetUpBase.save_button (Button)
-        gfx.frontend.TeamSetUpReferee.__init__ (TabbedPanel, TabbedPanelHeader)
-        gfx.frontend.TeamSetUpReferee.header_button (TabbedPanelHeader)
-
-    class Application
+    DVA.pyw
 
         Info:
-            Application class representing Kivy Application. Contains single function 'build' which is used by
-            Kivy when creating the app. 
-
+            Main script of the app. It is responsible for starting the application, creating and configuring GUI 
+            window, as well as loading and (if necessary) restoring logs, as well as creating screen manager for 
+            the GUI.
+        
         Structure (excluding imports, parameters and sub-variables unless logiclly independent):
-            def build 
-
-        Uses:
-            App from gfx.frontend (inheiritance)
-
-        Used by:    
-            DVA.pyw (class itself)
-            gfx.frontend.Application.build (class itself)
-
-        def build:
-            
-            Info:
-                This is a meta function which is required by Kivy to build an app. 
-                It determines what and in what form will be shown on the start. 
-                In here, we're dealing with setting window's title, creating screens, adding background to 
-                them, appending them to the screen manager, and running the logic of the first screen.
-                Also, here we're creating frontend_references which is a dictionary for links to most of the 
-                widgets.
-            
-            Parameters:
-                self: Application
-
-            Step by step:
-                1)Set app title according to app_config.
-                2)Create all app's window.
-                3)Create frontend_references list. 
-                4)Add screens to the screen manager.
-                5)Append background to them.
-                6)Run first screen's logic.
-
-            Return:
-                DVA.sm: a widget to display (screen manager used by the app).
-
-            Uses:
-                DVA.pyw (sm, frontend_references)
-                app_title, app_version, kivy.Clock from gfx.frontend
-                gfx.frontend.AuthorizationWindow
-                gfx.frontend.AuthorizationWindow.on_load
-
-    class ScreenManager
-
-        Info:
-            Class representing app's screen manager.
-
-        Structure (excluding imports, parameters and sub-variables unless logiclly independent):
-            def __init__
-
-        Uses:
-            __ScreenManager__ from gfx.frontend (inheiritance)
-
-        Used by: 
-            DVA.pyw (class itself)
-            __init__ (class itself)
-
-        def __init__:
-
-            Info:
-                The initialization function for the class.
-                It deals with initializating Kivy object and removing transition. 
-
-            Parameters:
-                self: ScreenManager
-            
-            Return:
-                None 
-            
-            Uses:
-                NoTransition from gfx.frontend
-            
-            Used by:
-                DVA.pyw (sm initialization)
-
-    class AuthorizationWindow
-
-        Info:
-            This is a Screen class that represents Authorization Window. 
-            Authorization Window is a window that either auto logs user in or provides interface for them for 
-            doing so.
-
-        Structure (excluding imports, parameters and sub-variables unless logiclly independent):
-            def __init__
-            def on_load
-            def send_button
-
-        Uses:
-            Screen from gfx.frontend (inheiritance)
-
+            logs: list
+            sm: ScreenManager
+            Digital_Volleyball_Assistant: Application
+            frontend_references: dict #TODO change the way importing frontend_references is shown. Currently, we show usage of the dict, and 
+            of the code representation of widget / screen (if necessary). What we should do instead is call get() function of a dictionary
+            (as it is what we're actually doing), and make it use all said widgets and screens including those that we haven't shown in this
+            references (as for now, but they will be). It can be done either directly and through the names in the dictionary (with one extra step)
+            id: int
+            user_status: list 
+            match: py.match.objects.Match
+        
+        Step by step:
+            First, we're setting window's  graphical parameters, including its resizableness and icon, according 
+            to app config.
+            Then, we create logs list and screen manager. They need to be available as they are called from other 
+            places, so they not under '__main__' name.
+            After that, if said name is actually '__main__', we load logs using respective core funtion, and 
+            creating and running the app itself.
+        
         Used by:
-            gfx.frontend.Application.build
-            def __init__ (class itself)
-            on_load (class itself)
-            send_button (class itself)
 
-        def __init__
-
-            Info:
-                This is a buidling function for the screen's design and binding.
-                It creates Kivy screen, sets its name, load its design and binds send button to respective 
-                function.
+            run.pyw (script itself)
             
-            Parameters:
-                self: AuthorizationWindow
+            gfx.frontend.Application.build (sm, frontend_references)
+            
+            gfx.frontend.AuthorizationWindow.on_load (id, user_status, logs, sm, frontend_references)
+            gfx.frontend.AuthorizationWindow.send_button (logs, frontend_references)
+            
+            gfx.frontend.CoinTossWindow.init_visual_elements (match.left_team.long_name, match.right_team.long_name,
+            frontend_references)
+            gfx.frontend.CoinTossWindow.radio_button_changed (frontend_references)
+            
+            gfx.frontend.TeamSetUpBase.load_players_list (frontend_references, match.left_team)
+            gfx.frontend.TeamSetUpBase.get_team_set_up_children (frontend_references)
+            gfx.frontend.TeamSetUpBase.init_visual_elements (frontend_references, match.left_team, match.right_team,  match.left_team.long_name, match.right_team.long_name)
+            gfx.frontend.TeamSetUpBase.on_load (match.left_team, match.right_team)
+            gfx.frontend.TeamSetUpBase.cancel_button (frontend_references, match.left_team.SetUp.clear, match.right_team.SetUp.clear)
+            gfx.frontend.TeamSetUpBase.save_button (match.left_team, match.left_team.head_coach, match.left_team.head_coach.team_set_up, 
+            match.right_team, match.right_team.head_coach, match.right_team.head_coach.team_set_up, frontend_references)
+            
+            gfx.frontend.TeamSetUpReferee.header_button (match.left_team, match.left_team.long_name, match.left_team.players, match.left_team.expulsed_players, 
+            match.left_team.disqualified_players, match.right_team, match.right_team.long_name, match.right_team.players, match.right_team.expulsed_players, 
+            match.right_team.disqualified_players, frontend_references)
 
-            Return:
-                None
+            gfx.frontend.LineUpSetUpBase.SharedArea.spinner_button_pressed (frontend_references)
+            gfx.frontend.LineUpSetUpBase.set_save_button_state (frontend_references)
+            gfx.frontend.LineUpSetUpBase.init_visual_elements (match, frontend_references, match.left_team, match.left_team.long_name, 
+            match.right_team, match.right_team.long_name)
+            gfx.frontend.LineUpSetUpBase.on_load (match, match.left_team, match.right_team)
+            gfx.frontend.LineUpSetUpBase.cancel_button (frontend_references)
+            gfx.frontend.LineUpSetUpBase.save_button ( match.left_team, match.left_team.head_coach, match.left_team.head_coach.line_up_set_up, 
+            match.right_team, match.right_team.head_coach, match.right_team.head_coach.line_up_set_up, frontend_references)
 
-            Uses:
-                authorization_window, buttons, app_title, app_version, GridLayout, TextInput, Label, 
-                CheckBox, Button from gfx.frontend
-                gfx.frontend.AuthorizationWindow.send_button
-
-        def on_load
-
-            Info:
-                This is a function that loads logic of the screen.
-                Here, we checking if the user has already logged in and prefered not to do that again, 
-                and if so, we set their id and status according to the results of that authorization, as well
-                as process successfull authorization.
-                If the user didn't choose to do so, or couldn't, we switchching their screen to the 
-                authorization window.
-
-            Parameters:
-                self: AuthorizationWindow
-                dt: gfx.frontend.Clock.dt 
-
-            Step by step:
-                1)Check if remember.me file exists from previous authorization attempt.
-                    2-1)If so, check if it was successfull (by checking the Request log)
-                        3-1-1)If so, set their id and status according to that request.
-                        4-1-1)Process successfull authorization.
-                        5-1-1)Return None to avoid switching to authorization screen.
-                    2-2, 3-1-2)If not, switch to authorization screen. 
-                3)Also, check app's version
-
-            Return:
-                None
-
-            Structure:
-                DVA.user_id: int 
-                DVA.user_status: list
-
-            Uses:
-                DVA (id, user_status)
-                logs, sm, frontend_references as gui from DVA
-                authorization_successfull from py.core 
-                Request from py.object
-
-            Used by:
-                gfx.Application.build (the def itself)
-
-        def send_button
-
-            Info:
-                This is a function that processes send button press.
-                It creates, sends, and logs appropriate request, and, if successfull, processes authorization, as well as creates remember.me
-                file if necessary.
-
-            Parameters:
-                self: AuthorizationWindow
-                button: gfx.frontend.Button
-
-            Step by step:
-                1)Create authorization request.
-                2)Check if it's successfull.
-                    3-1)If so, process authorization.
-                    4-1)Check if 'Remember Me' checkbox selected.
-                        5-1-1)If so, create 'remember.me' file.
-
-            Return:
-                None
-
-            Uses:
-                logs, frontend_references from DVA
-                Request from py.objects
-                authorization_successfull from py.core
-
-            Used by:
-                gfx.frontend.AuthorizationWindow.__init__
-
-    class CoinTossWindow
-
-        Info:
-            This is a Screen class that represents Coin Toss Window.
-            Coin Toss Window is a screen when user who is referee can save coin toss results.
-        
-        Structure (excluding imports, parameters and sub-variables unless logiclly independent):
-            def __init__
-            def init_visual_elements
-            def on_load
-            def radio_button_changed
-            def save_button
+            gfx.frontend.LineUpSetUpReferee.header_button (match.left_team.long_name)
 
         Uses:
-            Screen from gfx.frontend (inheiritance)
+            Config from Kivy.config 
+            app_icon_path, app_resizable, app_width, app_height from meta.app_config
+            Application, ScreenManager from gfx.frontend
+            ScreenManager.__init__ from gfx.frontend.ScreenManager
+            load_log from py.core 
 
-        Used by:
-            def __init__ (the class itself)
-            def init_visual_elements (the class itself)
-            def on_load (the class itself)
-            def radio_button_changed (the class itself)
-            def save_button (the class itself)
-
-        def __init__:
-
-            Info:
-                This is a buidling function for the screen's design and binding.
-                It creates Kivy screen, sets its name, load its design and binds save button to respective 
-                function.
-            
-            Parameters:
-                self: CoinTossWindow
-
-            Return:
-                None
-
-            Uses:
-                coin_toss_window, buttons, GridLayout, Label, ToggleButton, Button from gfx.frontend
-                gfx.frontend.CoinTossWindow.radio_button_changed
-                gfx.frontend.CoinTossWindow.save_button
-
-        def init_visual_elements:
-
-            Info:
-                This is a function that connect screen's widget to respective visual elements and loads them.
-                First, it creates TeamNames with given widgets.
-                Then, it loads them with given teams' names.
-
-            Parameters:
-                self: CoinTossWindow
-
-            Return:
-                None 
-
-            Uses:
-                match.left_team.long_name, match.right_team.long_name, frontend_references as gui from DVA
-                gfx.visual_elements.TeamName, gfx.visual_elements.TeamName.load
-
-            Used by:
-                gfx.frontend.CoinTossWindow.on_load
-
-        def on_load:
-
-            Info:
-                This is a function responsible for loading screen's logic.
-                In this screen, we're only initializating visual elements.
-            
-            Parameters:
-                self: CoinTossWindow
-            
-            Return:
-                None
-
-            Uses:
-                gfx.frontend.CoinTossWindow.init_visual_elements
-
-        def radio_button_changed:
-        
-            Info:
-                This is a function that deals with processing radio buttons of the screen pressings as well as 
-                calculating save button's state. We should only enable save button if at least one radio
-                button in each category is pressed.
-
-            Parameters:
-                self: CoinTossWindow
-                instance: gfx.frontend.ToggleButton
-
-            Step by step:
-                1)Get the button.
-                    2-1)If it is down, change its text, as well as opposite button's text. 
-                
-                3)If any of the buttons in each group is down, enable the save button. Else disable it.
-
-            Return:
-                None
-
-            Uses:
-                frontend_references as gui from DVA
-
-            Used by:
-                gfx.frontend.CoinTossWindow.__init__
-
-        def save_button:
-            
-            Info:
-                This is a button processing save button press. It calls the coin_toss function of the 1st
-                official which processes the coin toss itself.
-
-            Parameters:
-                self: CoinTossWindow
-                button: gfx.frontend.button
-
-            Return:
-                None
-
-            Uses:
-                match.officials[0].coin_toss from DVA
-
-            Used by:
-                gfx.frontend.CoinTossWindow.__init__
-
-    class TeamSetUpBase
+    gfx.frontend
 
         Info:
+            This is file for storing code related to app's frontend. Currently it stores code of the Kivy App 
+            itself, its Screen Manager, all the screens and their functions, Popup windows and their manager,
+            background picture, special interface widget to allow applying volleyball position indexing with 
+            Kivy indexing, two classes of Kivy mixed behavior widgets, and two functions related to mouse 
+            scrolling, as well as indexes list for the latter.
 
-            This is a base class for Team Set Up screen. It is meant to be used as an inheiritance object for 
-            user status-specific classes.
-            Team Set Up screen is a screen for user to set up teams' squads for the match, setting present /
-            absent players, shirts numbrers, captains etc.
+            Most imports are done at the module level to avoid importing same things over and over again.
 
         Structure (excluding imports, parameters and sub-variables unless logiclly independent):
-
-            class SharedArea
-            class PlayerWidget
-            class Header
-            def __init__
-            def get_players_list
-            def load_players_list
-            def get_team_set_up_children
-            def init_visual_elements
-            def on_load
-            def cancel_button
-            def save_button
-
-        Uses:
-        
-            gfx.frontend.Screen (inheiritance)
-
-        Used by:
-            gfx.frontend.TeamSetUpBase.SharedArea.__init__ (gfx.frontend.TeamSetUpBase.Header, 
-            gfx.frontend.TeamSetUpBase.Header)
             
-            def __init__ (the class itself)
-            def get_players_list (the class itself)
-            def load_players_list (the class itself)
-            def get_team_set_up_children (the class itself)
-            def init_visual_elements (the class itself)
-            def on_load (the class itself)
-            def cancel_button (the class itself)
-            def save_button (the class itself)
+            class Application
+            class ScreenManager
+            class AuthorizationWindow
+            class CoinTossWindow
+            class TeamSetUpReferee
+            class LineUpSetUpBase
+            class LineUpSetUpReferee
 
-            gfx.frontend.TeamSetUpReferee
+            class TeamWidget
 
-        class SharedArea
-
-            Info:
-                This is a class for the shared area. Two objects of this will be used in referee's children
-                class to represent different teams' lists using tabs, and other childrens classes will use
-                it once as a content to insert.
-
-            Structure (excluding imports, parameters and sub-variables unless logiclly independent):
-                def __init__
-
-            Uses:
-                gfx.frontend.GridLayout (inheiritance)
-
-            Used by:
-                gfx.frontend.TeamSetUpReferee.__init__
-
-            def __init__
-
-                Info:
-                    This is a initialization function for this content class. It only deals with design.
-                    This design includes scrolling. It is done by invisible slider which movement is then
-                    processed.
-
-                Parameters:
-                    self: SharedArea
-
-                Return:
-                    None
-
-                Uses:
-                    TeamSetUpBase.Header
-                    TeamSetUpBase.PlayerWidget
-                    GridLayout, Slider from gfx.frontend
-
-        class PlayerWidget
-
-            Info:
-                This is a class that provides design for the actual content of the shared area, line by
-                line for each person. It also disables changing their parameters if they are chosen to be
-                absent.
-
-            Structure (excluding imports, parameters and sub-variables unless logiclly independent):
-                def __init__
-                def present_checkbox
-
-            Uses:
-                gfx.frontend.GridLayout (inheiritance)
-
-            Used by:
-                gfx.frontend.TeamSetUpBase.SharedArea.__init__
-                gfx.frontend.TeamSetUpBase.load_players_list
-
-            def __init__
-
-                Info:
-                    This is an initialization function for this design class. It only deals with design.
-
-                Parameters:
-                    self: PlayerWidget
-
-                Return:
-                    None
-
-                Uses:
-                    Label, CheckBox, TextInput from gfx.frontend
-                    gfx.frontend.TeamSetUpBase.PlayerWidget.present_checkbox
+            indxes: list - list containing values for current position of all scrollbars, separately for each tab
 
                 Used by:
-                    gfx.frontend.TeamSetUpBase.PlayerWidget.__init__
+                    gfx.frontend.TeamSetUpReferee.header_button
 
-            def present_checkbox
+        Uses: 
+            path, getcwd from os
+            BytesIO from io 
+            partial from functools 
+
+            ImageDraw, ImageFont, Image * as PIL_Image * from PIL
+
+            py.match.match_config # We're importing it as a package because it's being used in getattr()
+            * everything* from py.match.match_config
+            * everything* from meta.app_config
+            * everything* from meta.localization
+
+            App from kivy.app 
+            Clock from kivy.clock 
+
+            ButtonBehavior, FocusBehavior from kivy.uix.behaviors
+
+            Screen, ScreenManager * as _ScreenManager_ *, NoTransition from kivy.uix.screenmanager
+
+            GridLayout from kivy.uix.gridlayout
+            BoxLayout from kivy.uix.boxlayout
+            FloatLayout from kivy.uix.floatlayout
+            RelativeLayout from kivy.uix.relativelayout
+            ScrollView from kivy.uix.scrollview
+
+            Button from kivy.uix.button 
+            Label from kivy.uix.label 
+            Popup from kivy.uix.popup 
+            Slider from kivy.uix.slider 
+            Spinner from kivy.uix.spinner 
+            TabbedPanel, TabbedPanelHeader from kivy.uix.tabbedpanel
+            TextInput from kivy.uix.textinput 
+            CheckBox from kivy.uix.checkbox 
+            Image  * as core Image * from kivy.core.image
+            Image from kivy.uix.image  
+            ToggleButton from kivy.uix.togglebutton 
+            FileChooserIconView from kivy.uix.filechooser
+
+            Window from kivy.core.window
+
+        Used by:
+            
+            gfx.frontend.Application (App)
+            gfx.frontend.Application.build (app_title, app_version, kivy.Clock)
+            
+            gfx.frontend.ScreenManager (__ScreenManager__)
+            gfx.frontend.ScreenManager.__init__(NoTransition)
+            
+            gfx.frontend.AuthorizationWindow(Screen)
+            gfx.frontend.AuthorizationWindow.__init__(authorization_window, buttons, app_title, app_version, GridLayout, TextInput, Label, CheckBox, Button)
+            gfx.frontend.AuthorizationWindow.on_load(Kivy.Clock.dt)
+            gfx.frontend.AuthorizationWindow.send_button(Button)
+            
+            gfx.frontend.CoinTossWindow(Screen)
+            gfx.frontend.CoinTossWindow.__init__(coin_toss_window, buttons, GridLayout, Label, ToggleButton, Button)
+            gfx.frontend.CoinTossWindow.radio_button_changed(ToggleButton)
+            gfx.frontend.CoinTossWindow.save_button(Button)
+            
+            gfx.frontend.TeamSetUpBase (Screen)
+            gfx.frontend.TeamSetUpBase.SharedArea (GridLayout)
+            gfx.frontend.TeamSetUpBase.SharedArea.__init__(GridLayout, Slider)
+            gfx.frontend.TeamSetUpBase.PlayerWidget (GridLayout)
+            gfx.frontend.TeamSetUpBase.PlayerWidget.__init__ (Label, CheckBox, TextInput)
+            gfx.frontend.TeamSetUpBase.Header (BoxLayout)
+            gfx.frontend.TeamSetUpBase.Header.__init__ (team_set_up, Label)
+            gfx.frontend.TeamSetUpBase.__init__ (GridLayout, BoxLayout, Button, Label)
+            gfx.frontend.TeamSetUpBase.cancel_button (Button)
+            gfx.frontend.TeamSetUpBase.save_button (Button)
+            
+            gfx.frontend.TeamSetUpReferee.__init__ (TabbedPanel, TabbedPanelHeader)
+            gfx.frontend.TeamSetUpReferee.header_button (TabbedPanelHeader)
+            
+            gfx.frontend.LineUpSetUpBase (Screen)
+            gfx.frontend.LineUpSetUpBase.SharedArea (GridLayout)
+            gfx.frontend.LineUpSetUpBase.SharedArea.__init__ (Spinner)
+            gfx.frontend.LineUpSetUpBase.SharedArea.spinner_button_pressed (Clock.schedule_once, partial)
+            gfx.frontend.LineUpSetUpBase.__init__ (GridLayout, BoxLayout, Button, buttons, language_code)
+            gfx.frontend.LineUpSetUpBase.init_visual_elements (Spinner)
+
+            gfx.frontend.LineUpSetUpReferee.__init__ (TabbedPanel, TabbedPanelHeader)
+
+        class Application
+
+            Info:
+                Application class representing Kivy Application. Contains single function 'build' which is used by
+                Kivy when creating the app. 
+
+            Structure (excluding imports, parameters and sub-variables unless logiclly independent):
+                def build 
+
+            Uses:
+                App from gfx.frontend (inheiritance)
+
+            Used by:    
+                DVA.pyw (class itself)
+                gfx.frontend.Application.build (class itself)
+
+            def build:
+                
+                Info:
+                    This is a meta function which is required by Kivy to build an app. 
+                    It determines what and in what form will be shown on the start. 
+                    In here, we're dealing with setting window's title, creating screens, adding background to 
+                    them, appending them to the screen manager, and running the logic of the first screen.
+                    Also, here we're creating frontend_references which is a dictionary for links to most of the 
+                    widgets.
+                
+                Parameters:
+                    self: Application
+
+                Step by step:
+                    1)Set app title according to app_config.
+                    2)Create all app's window.
+                    3)Create frontend_references list. 
+                    4)Add screens to the screen manager.
+                    5)Append background to them.
+                    6)Run first screen's logic.
+
+                Return:
+                    DVA.sm: a widget to display (screen manager used by the app).
+
+                Uses:
+                    DVA.pyw (sm, frontend_references)
+                    app_title, app_version, kivy.Clock from gfx.frontend
+                    gfx.frontend.AuthorizationWindow
+                    gfx.frontend.AuthorizationWindow.on_load
+
+        class ScreenManager
+
+            Info:
+                Class representing app's screen manager.
+
+            Structure (excluding imports, parameters and sub-variables unless logiclly independent):
+                def __init__
+
+            Uses:
+                __ScreenManager__ from gfx.frontend (inheiritance)
+
+            Used by: 
+                DVA.pyw (class itself)
+                __init__ (class itself)
+
+            def __init__:
 
                 Info:
-                    This is function for disabling other parameters if the person is not active. 
-                    Surprisingly, the person is considered present if the respective checkbox is selected.
+                    The initialization function for the class.
+                    It deals with initializating Kivy object and removing transition. 
 
                 Parameters:
-                    self: PlayerWidget
+                    self: ScreenManager
+                
+                Return:
+                    None 
+                
+                Uses:
+                    NoTransition from gfx.frontend
+                
+                Used by:
+                    DVA.pyw (sm initialization)
+
+        class AuthorizationWindow
+
+            Info:
+                This is a Screen class that represents Authorization Window. 
+                Authorization Window is a window that either auto logs user in or provides interface for them for 
+                doing so.
+
+            Structure (excluding imports, parameters and sub-variables unless logiclly independent):
+                def __init__
+                def on_load
+                def send_button
+
+            Uses:
+                Screen from gfx.frontend (inheiritance)
+
+            Used by:
+                gfx.frontend.Application.build
+                def __init__ (class itself)
+                on_load (class itself)
+                send_button (class itself)
+
+            def __init__
+
+                Info:
+                    This is a buidling function for the screen's design and binding.
+                    It creates Kivy screen, sets its name, load its design and binds send button to respective 
+                    function.
+                
+                Parameters:
+                    self: AuthorizationWindow
+
+                Return:
+                    None
+
+                Uses:
+                    authorization_window, buttons, app_title, app_version, GridLayout, TextInput, Label, 
+                    CheckBox, Button from gfx.frontend
+                    gfx.frontend.AuthorizationWindow.send_button
+
+            def on_load
+
+                Info:
+                    This is a function that loads logic of the screen.
+                    Here, we checking if the user has already logged in and prefered not to do that again, 
+                    and if so, we set their id and status according to the results of that authorization, as well
+                    as process successfull authorization.
+                    If the user didn't choose to do so, or couldn't, we switchching their screen to the 
+                    authorization window.
+
+                Parameters:
+                    self: AuthorizationWindow
+                    dt: gfx.frontend.Clock.dt 
+
+                Step by step:
+                    1)Check if remember.me file exists from previous authorization attempt.
+                        2-1)If so, check if it was successfull (by checking the Request log)
+                            3-1-1)If so, set their id and status according to that request.
+                            4-1-1)Process successfull authorization.
+                            5-1-1)Return None to avoid switching to authorization screen.
+                        2-2, 3-1-2)If not, switch to authorization screen. 
+                    3)Also, check app's version
+
+                Return:
+                    None
+
+                Structure:
+                    DVA.user_id: int 
+                    DVA.user_status: list
+
+                Uses:
+                    DVA (id, user_status)
+                    logs, sm, frontend_references as gui from DVA
+                    authorization_successfull from py.core 
+                    Request from py.object
+
+                Used by:
+                    gfx.Application.build (the def itself)
+
+            def send_button
+
+                Info:
+                    This is a function that processes send button press.
+                    It creates, sends, and logs appropriate request, and, if successfull, processes authorization, as well as creates remember.me
+                    file if necessary.
+
+                Parameters:
+                    self: AuthorizationWindow
                     button: gfx.frontend.Button
 
                 Step by step:
-                    1)Check if the checkbox is pressed.
-                        2-1)If so, enable another ones.
-                        2-2)If not, disable them.
+                    1)Create authorization request.
+                    2)Check if it's successfull.
+                        3-1)If so, process authorization.
+                        4-1)Check if 'Remember Me' checkbox selected.
+                            5-1-1)If so, create 'remember.me' file.
 
                 Return:
                     None
 
-                Used by:
-                    gfx.frontend.TeamSetUpBase.PlayerWidget.__init__
+                Uses:
+                    logs, frontend_references from DVA
+                    Request from py.objects
+                    authorization_successfull from py.core
 
-        class Header
+                Used by:
+                    gfx.frontend.AuthorizationWindow.__init__
+
+        class CoinTossWindow
 
             Info:
-                This is another design class for providing letters to explain different checkboxes.
-                It's sort of... specific.
-
+                This is a Screen class that represents Coin Toss Window.
+                Coin Toss Window is a screen when user who is referee can save coin toss results.
+            
             Structure (excluding imports, parameters and sub-variables unless logiclly independent):
                 def __init__
+                def init_visual_elements
+                def on_load
+                def radio_button_changed
+                def save_button
 
             Uses:
-                gfx.frontend.BoxLayout (inheiritance)
-            
+                Screen from gfx.frontend (inheiritance)
+
             Used by:
-                gfx.frontend.TeamSetUpBase.SharedArea.__init__
+                def __init__ (the class itself)
+                def init_visual_elements (the class itself)
+                def on_load (the class itself)
+                def radio_button_changed (the class itself)
+                def save_button (the class itself)
+
+            def __init__:
+
+                Info:
+                    This is a buidling function for the screen's design and binding.
+                    It creates Kivy screen, sets its name, load its design and binds save button to respective 
+                    function.
+                
+                Parameters:
+                    self: CoinTossWindow
+
+                Return:
+                    None
+
+                Uses:
+                    coin_toss_window, buttons, GridLayout, Label, ToggleButton, Button from gfx.frontend
+                    gfx.frontend.CoinTossWindow.radio_button_changed
+                    gfx.frontend.CoinTossWindow.save_button
+
+            def init_visual_elements:
+
+                Info:
+                    This is a function that connect screen's widget to respective visual elements and loads them.
+                    First, it creates TeamNames with given widgets.
+                    Then, it loads them with given teams' names.
+
+                Parameters:
+                    self: CoinTossWindow
+
+                Return:
+                    None 
+
+                Uses:
+                    match.left_team.long_name, match.right_team.long_name, frontend_references as gui from DVA
+                    gfx.visual_elements.TeamName, gfx.visual_elements.TeamName.load
+
+                Used by:
+                    gfx.frontend.CoinTossWindow.on_load
+
+            def on_load:
+
+                Info:
+                    This is a function responsible for loading screen's logic.
+                    In this screen, we're only initializating visual elements.
+                
+                Parameters:
+                    self: CoinTossWindow
+                
+                Return:
+                    None
+
+                Uses:
+                    gfx.frontend.CoinTossWindow.init_visual_elements
+
+            def radio_button_changed:
             
+                Info:
+                    This is a function that deals with processing radio buttons of the screen pressings as well as 
+                    calculating save button's state. We should only enable save button if at least one radio
+                    button in each category is pressed.
+
+                Parameters:
+                    self: CoinTossWindow
+                    instance: gfx.frontend.ToggleButton
+
+                Step by step:
+                    1)Get the button.
+                        2-1)If it is down, change its text, as well as opposite button's text. 
+                    
+                    3)If any of the buttons in each group is down, enable the save button. Else disable it.
+
+                Return:
+                    None
+
+                Uses:
+                    frontend_references as gui from DVA
+
+                Used by:
+                    gfx.frontend.CoinTossWindow.__init__
+
+            def save_button:
+                
+                Info:
+                    This is a button processing save button press. It calls the coin_toss function of the 1st
+                    official which processes the coin toss itself.
+
+                Parameters:
+                    self: CoinTossWindow
+                    button: gfx.frontend.button
+
+                Return:
+                    None
+
+                Uses:
+                    match.officials[0].coin_toss from DVA
+
+                Used by:
+                    gfx.frontend.CoinTossWindow.__init__
+
+        class TeamSetUpBase
+
+            Info:
+
+                This is a base class for Team Set Up screen. It is meant to be used as an inheiritance object for 
+                user status-specific classes.
+                Team Set Up screen is a screen for user to set up teams' squads for the match, setting present /
+                absent players, shirts numbrers, captains etc.
+
+            Structure (excluding imports, parameters and sub-variables unless logiclly independent):
+
+                class SharedArea
+                class PlayerWidget
+                class Header
+                def __init__
+                def get_players_list
+                def load_players_list
+                def get_team_set_up_children
+                def init_visual_elements
+                def on_load
+                def cancel_button
+                def save_button
+
+            Uses:
+            
+                gfx.frontend.Screen (inheiritance)
+
+            Used by:
+                gfx.frontend.TeamSetUpBase.SharedArea.__init__ (gfx.frontend.TeamSetUpBase.Header, 
+                gfx.frontend.TeamSetUpBase.Header)
+                
+                def __init__ (the class itself)
+                def get_players_list (the class itself)
+                def load_players_list (the class itself)
+                def get_team_set_up_children (the class itself)
+                def init_visual_elements (the class itself)
+                def on_load (the class itself)
+                def cancel_button (the class itself)
+                def save_button (the class itself)
+
+                gfx.frontend.TeamSetUpReferee
+
+            class SharedArea
+
+                Info:
+                    This is a class for the shared area. Two objects of this will be used in referee's children
+                    class to represent different teams' lists using tabs, and other childrens classes will use
+                    it once as a content to insert.
+
+                Structure (excluding imports, parameters and sub-variables unless logiclly independent):
+                    def __init__
+
+                Uses:
+                    gfx.frontend.GridLayout (inheiritance)
+
+                Used by:
+                    gfx.frontend.TeamSetUpReferee.__init__
+
+                def __init__
+
+                    Info:
+                        This is a initialization function for this content class. It only deals with design.
+                        This design includes scrolling. It is done by invisible slider which movement is then
+                        processed.
+
+                    Parameters:
+                        self: SharedArea
+
+                    Return:
+                        None
+
+                    Uses:
+                        TeamSetUpBase.Header
+                        TeamSetUpBase.PlayerWidget
+                        GridLayout, Slider from gfx.frontend
+
+            class PlayerWidget
+
+                Info:
+                    This is a class that provides design for the actual content of the shared area, line by
+                    line for each person. It also disables changing their parameters if they are chosen to be
+                    absent.
+
+                Structure (excluding imports, parameters and sub-variables unless logiclly independent):
+                    def __init__
+                    def present_checkbox
+
+                Uses:
+                    gfx.frontend.GridLayout (inheiritance)
+
+                Used by:
+                    gfx.frontend.TeamSetUpBase.SharedArea.__init__
+                    gfx.frontend.TeamSetUpBase.load_players_list
+
+                def __init__
+
+                    Info:
+                        This is an initialization function for this design class. It only deals with design.
+
+                    Parameters:
+                        self: PlayerWidget
+
+                    Return:
+                        None
+
+                    Uses:
+                        Label, CheckBox, TextInput from gfx.frontend
+                        gfx.frontend.TeamSetUpBase.PlayerWidget.present_checkbox
+
+                    Used by:
+                        gfx.frontend.TeamSetUpBase.PlayerWidget.__init__
+
+                def present_checkbox
+
+                    Info:
+                        This is function for disabling other parameters if the person is not active. 
+                        Surprisingly, the person is considered present if the respective checkbox is selected.
+
+                    Parameters:
+                        self: PlayerWidget
+                        button: gfx.frontend.Button
+
+                    Step by step:
+                        1)Check if the checkbox is pressed.
+                            2-1)If so, enable another ones.
+                            2-2)If not, disable them.
+
+                    Return:
+                        None
+
+                    Used by:
+                        gfx.frontend.TeamSetUpBase.PlayerWidget.__init__
+
+            class Header
+
+                Info:
+                    This is another design class for providing letters to explain different checkboxes.
+                    It's sort of... specific.
+
+                Structure (excluding imports, parameters and sub-variables unless logiclly independent):
+                    def __init__
+
+                Uses:
+                    gfx.frontend.BoxLayout (inheiritance)
+                
+                Used by:
+                    gfx.frontend.TeamSetUpBase.SharedArea.__init__
+                
+                def __init__
+
+                    Info:
+                        I told you it's specific...
+
+                    Parameters:
+                        self: Header
+
+                    Return:
+                        None
+
+                    Uses: 
+                        Label, team_set_up from gfx.frontend
+
             def __init__
 
                 Info:
-                    I told you it's specific...
+                    This is main initializating function of the screen. Just like other screens' __init__ function it only deals with design and bonding.
 
                 Parameters:
-                    self: Header
+                    self: TeamSetUpBase
+                    
+                Return:
+                    None
+
+                Uses:
+                    GridLayout, BoxLayout, Button, Label from gfx.frontend
+                    gxf.frontend.TeamSetUpBase.save_button
+                    gfx.frontend.TeamSetUpBase.cancel_button
+
+            def get_players_list
+
+                Info:
+                    This is a function that uses a more generic core function to get list of players objects to be used in loading players list on the screen. 
+
+                Parameters:
+                    self: TeamSetUpBase
+                    team: py.match.objects.Team
+
+                Return:
+                    get_people_list(team, with_absent_players=True): function call with given parameters that returns list with Player objects.
+
+                Uses:
+                    py.core.get_people_list
+
+                Used by:
+                    gfx.frontend.TeamSetUpBase.load_players_list
+
+            def load_players_list
+
+                Info:
+                    This is a function that creates, loads, and scrolls team's players list. Scrolling is considered loading players with indexes from start_index 
+                    included to end_index excluded.
+
+                Parameters:
+                    self: TeamSetUpBase
+                    team: py.match.objects.Team
+                    start_index: int
+                    end_index: int
+
+                Return:
+                    None
+
+                Uses:
+                    gfx.visual_elements.TeamPeopleList, gfx.visual_elements.TeamPeopleList.load, gfx.visual_elements.TeamPeopleList.scroll
+                    gfx.frontend.TeamSetUpBase.get_players_list
+                    frontend_references as gui, match.left_team from DVA.pyw
+                    gfx.frontend.TeamSetUpBase.PlayerWidget
+
+                Used by:
+                    gfx.frontend.init_visual_elements
+
+            def get_team_set_up_children
+
+                Info:
+                    This is a function that selects and returns widgets for visual widgets used in another functions of the screen
+
+                Structure (excluding imports, parameters and sub-variables unless logiclly independent):
+                    team_set_up_children: list
+
+                Parameters:
+                    index: int - 0 for the left team, 1 for the right team.
+
+                Step by step:
+                    1)Create a return list.
+                        2)For every widget in related widget list, add a sublist.
+                            3)For every widget in step 2, append children widgets to the return list except for person's name (index 4)
+
+                Return:
+                    team_set_up_children: list - return list containing correct widgets.
+
+                Uses:
+                    frontend_references as gui from DVA.pyw
+
+                Used by:
+                    gfx.frontend.init_visual_elements
+
+            def init_visual_elements
+
+                Info:
+                    This is a function that works with visual elements: creates, connects to respective screen's digets, loads, and processes them.
+                    First, it creates and fills with null team's SetUp visual element if it has not been done before.
+                    (only partialy related to NameList, it stores values for checkboxes, linking and scrolling them for corresponding names).
+                    Then, it updates its values from screen, scrolls according to user scroll, and loads them back in new position, once again, 
+                    related to names.
+                    Finally, it also deals with teams' names.
+
+                Parameters:
+                    self: TeamSetUpBase
+                    team: py.match.objects.Team
+                    team_index: int - 0 for left team, 1 for right team 
+                    start_index: int 
+                    end_index: int
+
+                Step by step:
+
+                        1-1)If team's SetUp visual_element hasn't been initializated yet, do it using get_team_set_up_children function.
+                        2-1)Fill it with empty values (False)
+                        3-1)Load list of players names for the first time.
+
+                    2)Update team's SetUp map values (list of values for different checkboxes for different players) from screen.
+                    3)Scroll names list according to the user's action.
+                    4)Re-load team's SetUp map values according to new names position.
+                    5)Create and load teams' names.
+                
+                Return:
+                    None
+
+                Uses:
+                    frontend_references as gui, match.left_team, match.right_team from DVA.pyw
+                    gfx.visual_elements.TeamName, gfx.visual_elements.TeamName.load
+                    gfx.visual_elements.TeamSetUp, gfx.visual_elements.TeamSetUp.load, gfx.visual_elements.TeamSetUp.update, gfx.visual_elements.TeamSetUp.create_map   
+                    gfx.frontend.TeamSetUpBase.get_team_set_up_children
+                    gfx.frontend.TeamSetUpBase.load_players_list
+                    
+                Used by:
+                    gfx.frontend.on_load
+
+            def on_load
+
+                Info:
+                    The function that loads screen's logic. In this screen, we only load visual elements, and only for the team of a current tab.
+                    
+                Parameters:
+                    self: TeamSetUpBase
+                    team: str - 'A' for left team, 'B' for right team.
+                    start_index: int - for scrolling 
+                    end_index: int
+
+                Return:
+                    None
+
+                Uses:
+                    gfx.frontend.TeamSetUpBase.init_visual_elements
+                    match.left_team, match.right_team from DVA.pyw
+
+                Used by:
+                    gfx.frontend.TeamSetUpReferee.header_button
+
+            def cancel_button
+
+                Info:
+                    This is a function designed to process cancel button press. Cancel button clears tab's content for that specific team. 
+                    It does so by calling the respective function of team's SetUp.
+
+                Parameters:
+                    self: TeamSetUpBase
+                    button: gfx.frontend.Button
+
+                Return:
+                    None
+
+                Uses:
+                    frontend_references as gui, match.left_team.SetUp.clear, match.right_team.SetUp.clear from DVA.pyw
+
+                Used by:
+                    gxf.frontend.TeamSetUpBase.__init__
+
+            def save_button
+
+                Info:
+                    This is a function that processes the press of save button. Save button saves teams' set up results. 
+                    It does so by calling that specific team's head coach's (or Head Coach object if the team does not have a head coach) respective function. 
+
+                Parameters:
+                    self: TeamSetUpBase
+                    button: gfx.frontend.Button
+
+                Return:
+                    None
+
+                Uses:
+                    match.left_team, match.left_team.head_coach, match.left_team.head_coach.team_set_up, 
+                    match.right_team, match.right_team.head_coach, match.right_team.head_coach.team_set_up
+                    frontend_references as gui from DVA.pyw 
+                    py.match.objects.HeadCoach 
+
+                Used by:
+                    gxf.frontend.TeamSetUpBase.__init__
+
+        class TeamSetUpReferee
+
+            Info:
+                This is implementation of the Base TeamSetUp screen for referee users. It contains of tabbed panel for two teams and said base for each team.
+
+            Structure:
+                def __init__
+                def header_button
+
+            Uses:
+                gfx.frontend.TeamSetUpBase (inheiritance)
+
+            Used by:
+                gfx.frontend.TeamSetUpReferee.__init__ (the class itself)
+                gfx.frontend.TeamSetUpReferee.header_button
+
+            def __init__
+
+                Info:
+                    The initializating function for the class.
+                
+                Parameters:
+                    self: TeamSetUpReferee
+
+                Return:
+                    None
+
+                Uses:
+                    TabbedPanel, TabbedPanelHeader from gfx.frontend
+                    gfx.frontend.TeamSetUpBase.SharedArea
+                    gfx.frontend.TeamSetUpReferee.header_button
+
+            def header_button
+
+                Info:
+                    The header-button pressing processign function.
+                    It deals with loading screen's logic, as well as scrolling indexes calculations.
+
+                Structure:
+                    teams: list containing teams objects.
+                    letters: list containing teams letters.
+
+                Parameters:
+                    self: TeamSetUpReferee
+                    button: gfx.frontend.TabbedPanelHeader
+
+                Step by step:
+                    1)Create two list to be used in the next steps.
+                    2)Determine the index using by comparing the name of the tab we're switching to (0 for left team, 1 for right_team)
+                    3)Calculate either we have enough players for six more (amount of widgets in the screen content) or not.
+                    4)Load screen's logic with correct parameters using calculated index, and scrolling range.
 
                 Return:
                     None
 
                 Uses: 
-                    Label, team_set_up from gfx.frontend
+                    match.left_team, match.left_team.long_name, match.left_team.players, match.left_team.expulsed_players, match.left_team.disqualified_players,
+                    match.right_team, match.right_team.long_name, match.right_team.players, match.right_team.expulsed_players, match.right_team.disqualified_players,
+                    frontend_references as gui from DVA.pyw
+                    gfx.frontend.indexes
 
-        def __init__
+                Used by:
+                    gfx.frontend.TeamSetUpReferee.__init__
 
-            Info:
-                This is main initializating function of the screen. Just like other screens' __init__ function it only deals with design and bonding.
-
-            Parameters:
-                self: TeamSetUpBase
-                
-            Return:
-                None
-
-            Uses:
-                GridLayout, BoxLayout, Button, Label from gfx.frontend
-                gxf.frontend.TeamSetUpBase.save_button
-                gfx.frontend.TeamSetUpBase.cancel_button
-
-        def get_players_list
+        class LineUpSetUpBase
 
             Info:
-                This is a function that uses a more generic core function to get list of players objects to be used in loading players list on the screen. 
-
-            Parameters:
-                self: TeamSetUpBase
-                team: py.match.objects.Team
-
-            Return:
-                get_people_list(team, with_absent_players=True): function call with given parameters that returns list with Player objects.
-
-            Uses:
-                py.core.get_people_list
-
-            Used by:
-                gfx.frontend.TeamSetUpBase.load_players_list
-
-        def load_players_list
-
-            Info:
-                This is a function that creates, loads, and scrolls team's players list. Scrolling is considered loading players with indexes from start_index 
-                included to end_index excluded.
-
-            Parameters:
-                self: TeamSetUpBase
-                team: py.match.objects.Team
-                start_index: int
-                end_index: int
-
-            Return:
-                None
-
-            Uses:
-                gfx.visual_elements.TeamPeopleList, gfx.visual_elements.TeamPeopleList.load, gfx.visual_elements.TeamPeopleList.scroll
-                gfx.frontend.TeamSetUpBase.get_players_list
-                frontend_references as gui, match.left_team from DVA.pyw
-                gfx.frontend.TeamSetUpBase.PlayerWidget
-
-            Used by:
-                gfx.frontend.init_visual_elements
-
-        def get_team_set_up_children
-
-            Info:
-                This is a function that selects and returns widgets for visual widgets used in another functions of the screen
+                This is a base class for LineUp Set Up screen. It is meant to be used as an inheiritance object for 
+                user status-specific classes.
+                Team Set Up screen is a screen for user to select team's starting players for the set.
 
             Structure (excluding imports, parameters and sub-variables unless logiclly independent):
-                team_set_up_children: list
-
-            Parameters:
-                index: int - 0 for the left team, 1 for the right team.
-
-            Step by step:
-                1)Create a return list.
-                    2)For every widget in related widget list, add a sublist.
-                        3)For every widget in step 2, append children widgets to the return list except for person's name (index 4)
-
-            Return:
-                team_set_up_children: list - return list containing correct widgets.
+                
+                class SharedArea
+                def __init__
+                def set_save_button_state
+                def on_load
+                def cancel_button
+                def save_button
 
             Uses:
-                frontend_references as gui from DVA.pyw
+                gfx.frontend.Screen (inheiritance)
 
             Used by:
+
+                gfx.frontend.SharedArea.spinner_button_pressed
+                gfx.frontend.__init__
+                gfx.frontend.get_save_button_state
                 gfx.frontend.init_visual_elements
-
-        def init_visual_elements
-
-            Info:
-                This is a function that works with visual elements: creates, connects to respective screen's digets, loads, and processes them.
-                First, it creates and fills with null team's SetUp visual element if it has not been done before.
-                (only partialy related to NameList, it stores values for checkboxes, linking and scrolling them for corresponding names).
-                Then, it updates its values from screen, scrolls according to user scroll, and loads them back in new position, once again, 
-                related to names.
-                Finally, it also deals with teams' names.
-
-            Parameters:
-                self: TeamSetUpBase
-                team: py.match.objects.Team
-                team_index: int - 0 for left team, 1 for right team 
-                start_index: int 
-                end_index: int
-
-            Step by step:
-
-                    1-1)If team's SetUp visual_element hasn't been initializated yet, do it using get_team_set_up_children function.
-                    2-1)Fill it with empty values (False)
-                    3-1)Load list of players names for the first time.
-
-                2)Update team's SetUp map values (list of values for different checkboxes for different players) from screen.
-                3)Scroll names list according to the user's action.
-                4)Re-load team's SetUp map values according to new names position.
-                5)Create and load teams' names.
-            
-            Return:
-                None
-
-            Uses:
-                frontend_references as gui, match.left_team, match.right_team from DVA.pyw
-                gfx.visual_elements.TeamName, gfx.visual_elements.TeamName.load
-                gfx.visual_elements.TeamSetUp, gfx.visual_elements.TeamSetUp.load, gfx.visual_elements.TeamSetUp.update, gfx.visual_elements.TeamSetUp.create_map   
-                gfx.frontend.TeamSetUpBase.get_team_set_up_children
-                gfx.frontend.TeamSetUpBase.load_players_list
-                
-            Used by:
                 gfx.frontend.on_load
+                gfx.frontend.cancel_button
+                gfx.frontend.save_button
 
-        def on_load
+                gfx.frontend.LineUpSetUpReferee
 
-            Info:
-                The function that loads screen's logic. In this screen, we only load visual elements, and only for the team of a current tab.
-                
-            Parameters:
-                self: TeamSetUpBase
-                team: str - 'A' for left team, 'B' for right team.
-                start_index: int - for scrolling 
-                end_index: int
+            class SharedArea
 
-            Return:
-                None
+                Info:
+                    
+                    This is a class for the shared area. Two objects of this will be used in referee's children
+                    class to represent different teams' lists using tabs, and other childrens classes will use
+                    it once as a content to insert.
 
-            Uses:
-                gfx.frontend.TeamSetUpBase.init_visual_elements
-                match.left_team, match.right_team from DVA.pyw
+                Structure (excluding imports, parameters and sub-variables unless logiclly independent):
+                    
+                    def __init__
+                    def spinner_button_pressed
 
-            Used by:
-                gfx.frontend.TeamSetUpReferee.header_button
+                Uses:
+                    gfx.frontend.GridLayout (inheiritance)
 
-        def cancel_button
+                Used by:
+                    gfx.frontend.LineUpSetUpBase.SharedArea.__init__
+                    gfx.frontend.LineUpSetUpBase.SharedArea.spinner_button_pressed
+                    gfx.frontend.LineUpSetUpBase.init_visual_elements
+                    gfx.frontend.LineUpSetUpReferee.__init__
 
-            Info:
-                This is a function designed to process cancel button press. Cancel button clears tab's content for that specific team. 
-                It does so by calling the respective function of team's SetUp.
+                def __init__
+                    
+                    Info:
+                        This is a initialization function for this content class. It only deals with design and binding.
+                        This design includes TeamWidget - special interface class to correctly process line up positions indexes
+                        according to volleyball rules.
 
-            Parameters:
-                self: TeamSetUpBase
-                button: gfx.frontend.Button
+                    Parameters:
+                        self: gfx.frontend.LineUpSetUpBase.SharedArea
 
-            Return:
-                None
+                    Return:
+                        None
 
-            Uses:
-                frontend_references as gui, match.left_team.SetUp.clear, match.right_team.SetUp.clear from DVA.pyw
+                    Uses:
+                        Spinner, TeamWidget from gfx.frontend
+                        gfx.frontend.LineUpSetUpBase.SharedArea.spinner_button_pressed
 
-            Used by:
-                gxf.frontend.TeamSetUpBase.__init__
+                def spinner_button_pressed
+                    
+                    Info:
+                        This is a function that processes presses on the spinner button representing players in positions, 
+                        and changes in current values of those buttons.
 
-        def save_button
+                    Parameters:
+                        self: gfx.frontend.LineUpSetUpBase.SharedArea
+                        button: gfx.frontend.Spinner
 
-            Info:
-                This is a function that processes the press of save button. Save button saves teams' set up results. 
-                It does so by calling that specific team's head coach's (or Head Coach object if the team does not have a head coach) respective function. 
+                    Return:
+                        None
 
-            Parameters:
-                self: TeamSetUpBase
-                button: gfx.frontend.Button
+                    Uses:
+                        Clock.schedule_once, partial from gfx.frontend
+                        frontend_references as gui from DVA.pyw
+                        gfx.frontend.LineUpSetUpBase
+                        gfx.frontend.LineUpSetUpBase.on_load 
 
-            Return:
-                None
+                    Used by:
+                        gfx.frontend.LineUpSetUpBase.SharedArea.__init__
 
-            Uses:
-                match.left_team, match.left_team.head_coach, match.left_team.head_coach.team_set_up, 
-                match.right_team, match.right_team.head_coach, match.right_team.head_coach.team_set_up
-                frontend_references as gui from DVA.pyw 
-                py.match.objects.HeadCoach 
-
-            Used by:
-                gxf.frontend.TeamSetUpBase.__init__
-
-    class TeamSetUpReferee
-
-        Info:
-            This is implementation of the Base TeamSetUp screen for referee users. It contains of tabbed panel for two teams and said base for each team.
-
-        Structure:
             def __init__
-            def header_button
+                
+                Info:
+                    This is main initializating function of the screen. Just like other screens' __init__ function it only deals with design and bonding.
 
-        Uses:
-            gfx.frontend.TeamSetUpBase (inheiritance)
+                Parameters:
+                    self: gfx.frontend.LineUpSetUpBase
 
-        Used by:
-            gfx.frontend.TeamSetUpReferee.__init__ (the class itself)
+                Return:
+                    None
 
-        def __init__
+                Uses:
+                    GridLayout, BoxLayout, Button, buttons, language_code from gfx.frontend
+                    gfx.frontend.LineUpSetUpBase.cancel_button, gfx.frontend.LineUpSetUpBase.save_button
+
+            def set_save_button_state
+                
+                Info:
+                    This is a button that calculates save button state. It should be normal if all the spinners have some
+                    non-empty text value,  and disabled otherwise. 
+
+                Structure:
+                    not_able_to_save: bool
+
+                Parameters:
+                    self: gfx.frontend.LineUpSetUpBase
+                    letter: str - 'A' for left team, 'B' for right team.
+
+                Step by step:
+                    1)Set default value to False.
+                    2)Go through the spinner list using frontend_references and letter to get correct widgets and check their value.
+                        3-1)If value is empty, change the default value to True.
+                    4)Set button's state disabled parameter to the default value.
+
+                Return:
+                    None
+
+                Uses:
+                    frontend_references as gui from DVA.pyw 
+
+                Used by:
+                    gfx.frontend.LineUpSetUpBase.on_load
+
+            def init_visual_elements
+                            
+                Info:
+                    This is a function that works with visual elements: creates, connects to respective screen's digets, loads, and processes them.
+                    First, it creates team's line up set up with relative widgets.
+                    Then, it also deals with their names.
+
+                Parameters:
+                    self: gfx.frontend.LineUpSetUpBase
+                    team: py.match.objects.Team
+                    spinner: gfx.frontend.Spinner
+
+                Return:
+                    None
+
+                Uses:
+                    match, frontend_references as gui, match.left_team, match.left_team.long_name, match.right_team, 
+                    match.right_team.long_name from DVA.pyw
+                    TeamName, TeamName.load, TeamLineUpSetUp, TeamLineUpSetUp.load from gfx.visual_elements
+                    gfx.frontend.LineUpSetUpBase.SharedArea                   
+
+                Used by:
+                    gfx.frontend.LineUpSetUpBase.on_load
+
+            def on_load
+                            
+                Info:
+                    The function that loads screen's logic. 
+                    In this screen we set save button state and also load visual elements for the team of a current tab.
+
+                Parameters:
+                    self: gfx.frontend.LineUpSetUpBase
+                    team: str - 'A' for left team, 'B' for right team
+                    spinner: gfx.frontend.Spinner 
+
+                Return:
+                    None
+
+                Uses:
+                    match, match.left_team, match.right_team from DVA.pyw
+                    gfx.frontend.LineUpSetUpBase.set_save_button_state
+                    gfx.frontend.LineUpSetUpBase.init_visual_elements
+
+                Used by:
+                    gfx.frontend.LineUpSetUpBase.SharedArea.spinner_button_pressed
+
+            def cancel_button
+                            
+                Info:
+                    This is a function designed to process cancel button press. Cancel button clears tab's content for that specific team. 
+                    It does so by calling the respective function of team's LineUpSetUp.
+
+                Parameters:
+                    self: gfx.frontend.LineUpSetUpBase
+                    button: gfx.frontend.Button
+
+                Return:
+                    None
+
+                Uses:
+                    match.left_team.LineUpSetUp.clear, match.right_team.LineUpSetUp.clear
+                    frontend_references as gui from DVA.pyw
+
+                Used by:
+                    gfx.frontend.LineUpSetUpBase.__init__
+            
+            def save_button 
+                            
+                Info:
+                    This is a function that processes the press of save button. Save button saves teams' line up set up results. 
+                    It does so by calling that specific team's head coach's (or Head Coach object if the team does not have a head coach) respective function. 
+
+                Parameters:
+                    self: TeamSetUpBase
+                    button: gfx.frontend.Button
+
+                Return:
+                    None
+
+                Uses:
+                    match.left_team, match.left_team.head_coach, match.left_team.head_coach.team_set_up, 
+                    match.right_team, match.right_team.head_coach, match.right_team.head_coach.team_set_up
+                    frontend_references as gui from DVA.pyw 
+                    py.match.objects.HeadCoach 
+
+                Used by:
+                    gfx.frontend.LineUpSetUpBase.__init__
+
+        class LineUpSetUpReferee
 
             Info:
-                The initializating function for the class.
-            
-            Parameters:
-                self: TeamSetUpReferee
+                This is implementation of the Base LineUpSetUp screen for referee users. It contains of tabbed panel for two teams and said base for each team.
 
-            Return:
-                None
+            Structure (excluding imports, parameters and sub-variables unless logiclly independent)
+
+                def __init__
+                def header_button
 
             Uses:
-                TabbedPanel, TabbedPanelHeader from gfx.frontend
-                gfx.frontend.TeamSetUpBase.SharedArea
-                gfx.frontend.TeamSetUpReferee.header_button
-
-        def header_button
-
-            Info:
-                The header-button pressing processign function.
-                It deals with loading screen's logic, as well as scrolling indexes calculations.
-
-            Structure:
-                teams: list containing teams objects.
-                letters: list containing teams letters.
-
-            Parameters:
-                self: TeamSetUpReferee
-                button: gfx.frontend.TabbedPanelHeader
-
-            Step by step:
-                1)Create two list to be used in the next steps.
-                2)Determine the index using by comparing the name of the tab we're switching to (0 for left team, 1 for right_team)
-                3)Calculate either we have enough players for six more (amount of widgets in the screen content) or not.
-                4)Load screen's logic with correct parameters using calculated index, and scrolling range.
-
-            Return:
-                None
-
-            Uses: 
-                match.left_team, match.left_team.long_name, match.left_team.players, match.left_team.expulsed_players, match.left_team.disqualified_players,
-                match.right_team, match.right_team.long_name, match.right_team.players, match.right_team.expulsed_players, match.right_team.disqualified_players,
-                frontend_references as gui from DVA.pyw
-                gfx.frontend.indexes
+                gfx.frontend.LineUpSetUpBase (inheiritance)
 
             Used by:
-                gfx.frontend.TeamSetUpReferee.__init__
+                gfx.frontend.LineUpSetUpReferee.__init__
+                gfx.frontend.LineUpSetUpReferee.header_button
 
-gfx.visual_elements
-    
-    TeamName:
+            def __init__
 
-        Used by:
-            gfx.frontend.CoinTossWindow.init_visual_elements
-            gfx.frontend.TeamSetUpBase.init_visual_elements
-    
-        def load:
+                Info:
+                    The initializating function for the class.
+                
+                Parameters:
+                    self: LineUpSetUpReferee
+
+                Return:
+                    None
+
+                Uses:
+                    TabbedPanel, TabbedPanelHeader from gfx.frontend
+                    gfx.frontend.LineUpSetUpBase.SharedArea
+                    gfx.frontend.LineUpSetUpReferee.header_button
+
+            def header_button
+                
+                Info:
+                    The header-button pressing processign function.
+
+                Parameters:
+                    self: LineUpSetUpReferee
+                    button: gfx.frontend.Button
+
+                Return:
+                    None
+
+                Uses:
+                    match.left_team.long_name
+
+                Used by:
+                    gfx.frontend.LineUpSetUpReferee.__init__
+
+        class TeamWidget
+
+            Used by:
+                gfx.frontend.LineUpSetUpBase.SharedArea.__init__
+
+    gfx.visual_elements
+        
+        TeamName:
 
             Used by:
                 gfx.frontend.CoinTossWindow.init_visual_elements
                 gfx.frontend.TeamSetUpBase.init_visual_elements
-
-    TeamPeopleList:
-
-        Used by:
-            gfx.frontend.TeamSetUpBase.load_players_list
-
-        def load:
-
-            Used by:
-                gfx.frontend.TeamSetUpBase.load_players_list
-
-        def scroll:
-
-            Used by:
-                gfx.frontend.TeamSetUpBase.load_players_list
-
-    TeamSetUp:
-
-        Used by:
-            gfx.frontend.TeamSetUpBase.init_visual_elements
-
-        def load:
-
-            Used by:
-                gfx.frontend.TeamSetUpBase.init_visual_elements
-
-        def update:
-
-            Used by:
-                gfx.frontend.TeamSetUpBase.init_visual_elements
+                gfx.frontend.LineUpSetUpBase.init_visual_elements
         
-        def create_map:
+            def load:
+
+                Used by:
+                    gfx.frontend.CoinTossWindow.init_visual_elements
+                    gfx.frontend.TeamSetUpBase.init_visual_elements
+                    gfx.frontend.LineUpSetUpBase.init_visual_elements
+
+        TeamPeopleList:
+
+            Used by:
+                gfx.frontend.TeamSetUpBase.load_players_list
+
+            def load:
+
+                Used by:
+                    gfx.frontend.TeamSetUpBase.load_players_list
+
+            def scroll:
+
+                Used by:
+                    gfx.frontend.TeamSetUpBase.load_players_list
+
+        TeamSetUp:
 
             Used by:
                 gfx.frontend.TeamSetUpBase.init_visual_elements
 
-        def clear:
+            def load:
+
+                Used by:
+                    gfx.frontend.TeamSetUpBase.init_visual_elements
+
+            def update:
+
+                Used by:
+                    gfx.frontend.TeamSetUpBase.init_visual_elements
+            
+            def create_map:
+
+                Used by:
+                    gfx.frontend.TeamSetUpBase.init_visual_elements
+
+            def clear:
+
+                Used by:
+                    DVA.pyw
+        
+        TeamLineUpSetUp:
 
             Used by:
-                DVA.pyw
+                gfx.frontend.LineUpSetUpBase.init_visual_elements
+        
+            def load:
 
-py.core 
+                Used by:
+                    gfx.frontend.LineUpSetUpBase.init_visual_elements
+            
+            def clear:
 
-    def load_log
+                Used by:
+                    gfx.frontend.LineUpSetUpBase.cancel_button
 
-        Parameters:
-            log_name: str
-            save_to_file: bool
+    py.core 
 
-        Used by:
-            DVA.pyw (the script itself)
+        def load_log
 
-    def authorization_successfull
+            Parameters:
+                log_name: str
+                save_to_file: bool
 
-        Used by:
-            gfx.frontend.AuthorizationWindow.on_load
-            gfx.frontend.AuthorizationWindow.send_button
+            Used by:
+                DVA.pyw (the script itself)
 
-    def get_people_list
+        def authorization_successfull
 
-        Used by:
-            gfx.frontend.TeamSetUpBase.get_players_list
+            Used by:
+                gfx.frontend.AuthorizationWindow.on_load
+                gfx.frontend.AuthorizationWindow.send_button
 
-py.objects
+        def get_people_list
 
-    class Request
+            Used by:
+                gfx.frontend.TeamSetUpBase.get_players_list
 
-        Used by:
-            gfx.frontend.AuthorizationWindow.on_load
-            gfx.frontend.AuthorizationWindow.send_button
+    py.objects
 
-py.match.objects:
+        class Request
 
-    class Team
+            Used by:
+                gfx.frontend.AuthorizationWindow.on_load
+                gfx.frontend.AuthorizationWindow.send_button
 
-        Structure:
+    py.match.objects:
 
-            SetUp: gfx.visual_elements.TeamSetUp
+        class Team
 
-            long_name: str
+            Structure:
+
+                SetUp: gfx.visual_elements.TeamSetUp
+
+                long_name: str
+
+                    Used by:
+                        DVA.pyw
+
+                head_coach: py.match.objects.HeadCoach 
+
+                    Used by: 
+                        DVA.pyw
+
+            Used by:
+                gfx.frontend.TeamSetUpBase.get_players_list
+                gfx.frontend.TeamSetUpBase.load_players_list
+                gfx.frontend.TeamSetUpBase.init_visual_elements
+                gfx.frontend.LineUpSetUpBase.init_visual_elements
+
+        class HeadCoach
+
+            Used by:
+                gfx.frontend.TeamSetUpBase.save_button
+                gfx.frontend.LineUpSetUpBase.save_button
+
+            def team_set_up:
+
+                Used by:
+                    DVA.pyw
+            
+            def line_up_set_up:
 
                 Used by:
                     DVA.pyw
 
-            head_coach: py.match.objects.HeadCoach 
+        class Official 
 
-                Used by: 
+            def coin_toss
+
+                Used by:
                     DVA.pyw
 
-        Used by:
-            gfx.frontend.TeamSetUpBase.get_players_list
-            gfx.frontend.TeamSetUpBase.load_players_list
-            gfx.frontend.TeamSetUpBase.init_visual_elements
-
-    class HeadCoach
+    meta.app_config
 
         Used by:
-            gfx.frontend.TeamSetUpBase.save_button
-
-        def team_set_up:
-
-            Used by:
-                DVA.pyw
-
-    class Official 
-
-        def coin_toss
-
-            Used by:
-                DVA.pyw
-
-meta.app_config
-
-    Used by:
-        DVA.pyw (app_icon_path, app_resizable, app_width, app_height)
-
+            DVA.pyw (app_icon_path, app_resizable, app_width, app_height)

@@ -1022,9 +1022,31 @@ class TeamSetUpWindowReferee(TeamSetUpBase):  # TODO either save button disabled
 
 class LineUpSetUpBase(Screen):
 
+    '''
+    This is a base class for LineUp Set Up screen. It is meant to be used as an inheiritance object for user status-specific classes.
+    Team Set Up screen is a screen for user to select team's starting players for the set.
+    '''
+
     class SharedArea(GridLayout):
 
+        '''
+        This is a class for the shared area. Two objects of this will be used in referee's children class to represent different teams' lists 
+        using tabs, and other childrens classes will use it once as a content to insert.
+        '''
+
         def __init__(self):
+
+            '''
+            This is a initialization function for this content class. It only deals with design and binding.
+            This design includes TeamWidget - special interface class to correctly process line up positions indexes
+            according to volleyball rules.
+
+            Parameters:
+                self: gfx.frontend.LineUpSetUpBase.SharedArea
+
+            Return:
+                None
+            '''
 
             super().__init__()
 
@@ -1038,20 +1060,40 @@ class LineUpSetUpBase(Screen):
             for spinner in self.team.real_indexes:
                 spinner.bind(text=self.spinner_pressed)
 
-        def spinner_pressed(self, *args):
+        def spinner_pressed(self, button):
 
-            from kivy.clock import Clock
+            '''
+            This is a function that processes presses on the spinner button representing players in positions, and changes in current values 
+            of those buttons.
+
+            Parameters:
+                self: gfx.frontend.LineUpSetUpBase.SharedArea
+                button: gfx.frontend.Spinner
+
+            Return:
+                None
+            '''
+
             from DVA import frontend_references as gui
-            from functools import partial
 
             screen = gui.get('MatchWindowRefereeLineUpSetUpTabContent')
 
-            if args[0] in gui.get('MatchWindowRefereeLineUpSetUpTabTeamAContent'):
-                Clock.schedule_once(partial(screen.on_load, 'A', args[0]))
+            if button in gui.get('MatchWindowRefereeLineUpSetUpTabTeamAContent'):
+                Clock.schedule_once(partial(screen.on_load, 'A', button))
             else:
-                Clock.schedule_once(partial(screen.on_load, 'B', args[0]))
+                Clock.schedule_once(partial(screen.on_load, 'B', button))
 
     def __init__(self):
+
+        '''
+        This is main initializating function of the screen. Just like other screens' __init__ function it only deals with design and bonding.
+
+        Parameters:
+            self: gfx.frontend.LineUpSetUpBase
+
+        Return:
+            None
+        '''
 
         super().__init__()
 
@@ -1078,8 +1120,29 @@ class LineUpSetUpBase(Screen):
         self.design.main_widget.buttons.save.bind(on_release=self.save_button)
         self.design.main_widget.buttons.save.disabled = True
 
-    def get_save_button_state(self, letter):
+    def set_save_button_state(self, letter):
         
+        '''
+        This is a button that calculates save button state. It should be normal if all the spinners have some non-empty text value, and 
+        disabled otherwise. 
+
+        Structure:
+            not_able_to_save: bool
+
+        Parameters:
+            self: gfx.frontend.LineUpSetUpBase
+            letter: str - 'A' for left team, 'B' for right team.
+
+        Step by step:
+            1)Set default value to False.
+            2)Go through the spinner list using frontend_references and letter to get correct widgets and check their value.
+                3-1)If value is empty, change the default value to True.
+            4)Set button's state disabled parameter to the default value.
+
+        Return:
+            None
+        '''
+
         from DVA import frontend_references as gui
 
         not_able_to_save = False
@@ -1091,6 +1154,20 @@ class LineUpSetUpBase(Screen):
         gui.get('MatchWindowRefereeLineUpSetUpSaveButton').disabled = not_able_to_save
 
     def init_visual_elements(self, team, spinner):
+
+        '''
+        This is a function that works with visual elements: creates, connects to respective screen's digets, loads, and processes them.
+        First, it creates team's line up set up with relative widgets.
+        Then, it also deals with their names.
+
+        Parameters:
+            self: gfx.frontend.LineUpSetUpBase
+            team: py.match.objects.Team
+            spinner: gfx.frontend.Spinner
+
+        Return:
+            None
+        '''
 
         from DVA import match, frontend_references as gui
         from gfx.visual_elements import TeamLineUpSetUp, TeamName
@@ -1105,21 +1182,46 @@ class LineUpSetUpBase(Screen):
                 opposite_team.Name = TeamName(gui.get('MatchWindowRefereeLineUpSetUpTabTeam' + ('B' if team == match.left_team else 'A') + 'Tab'))
                 opposite_team.Name.load(opposite_team.long_name)
 
-    def on_load(self, team, spinner=None, *args):
+    def on_load(self, team, spinner=None):
 
-        from DVA import match, frontend_references as gui
+        '''
+        The function that loads screen's logic. 
+        In this screen we set save button state and also load visual elements for the team of a current tab.
+
+        Parameters:
+            self: gfx.frontend.LineUpSetUpBase
+            team: str - 'A' for left team, 'B' for right team
+            spinner: gfx.frontend.Spinner 
+
+        Return:
+            None
+        '''
+
+        from DVA import match
 
         if team == 'A':
 
-            self.get_save_button_state('A')
+            self.set_save_button_state('A')
             self.init_visual_elements(match.left_team, spinner)
 
         elif team == 'B':
 
-            self.get_save_button_state('B')
+            self.set_save_button_state('B')
             self.init_visual_elements(match.right_team, spinner)       
 
-    def cancel_button(self, *args):
+    def cancel_button(self, button):
+
+        '''
+        This is a function designed to process cancel button press. Cancel button clears tab's content for that specific team. 
+        It does so by calling the respective function of team's LineUpSetUp.
+
+        Parameters:
+            self: gfx.frontend.LineUpSetUpBase
+            button: gfx.frontend.Button
+
+        Return:
+            None
+        '''
 
         from DVA import match, frontend_references as gui
 
@@ -1147,7 +1249,21 @@ class LineUpSetUpBase(Screen):
 
 class LineUpSetUpReferee(LineUpSetUpBase):
 
+    '''
+    This is implementation of the Base LineUpSetUp screen for referee users. It contains of tabbed panel for two teams and said base for each team.
+    '''
+
     def __init__(self):
+
+        '''
+        The initializating function for the class.
+        
+        Parameters:
+            self: LineUpSetUpReferee
+
+        Return:
+            None
+        '''
 
         super().__init__()
 
@@ -1170,6 +1286,17 @@ class LineUpSetUpReferee(LineUpSetUpBase):
         self.design.main_widget.referee_spot.content.team_B_button.bind(on_release=self.header_button)
 
     def header_button(self, button):
+
+        '''
+        The header-button pressing processign function.
+
+        Parameters:
+            self: LineUpSetUpReferee
+            button: gfx.frontend.Button
+
+        Return:
+            None
+        '''
 
         from DVA import match
 
