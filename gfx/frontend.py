@@ -1371,13 +1371,13 @@ class SanctionsWindowReferee(Screen):
 
             self.scrollbar.bind(on_touch_up=scroll__init)          
 
-    def header_button(self, *args):
+    def header_button(self, button):
         
         from DVA import frontend_references as gui
 
-        if args[0] == gui.get('MatchWindowRefereeSanctionsTeamATab'):
+        if button == gui.get('MatchWindowRefereeSanctionsTeamATab'):
             self.on_load('A', scroll_get_indexes('Sanctions', 'A')[0], scroll_get_indexes('Sanctions', 'A')[1], False)
-        elif args[0] == gui.get('MatchWindowRefereeSanctionsTeamBTab'):
+        elif button == gui.get('MatchWindowRefereeSanctionsTeamBTab'):
             self.on_load('B', scroll_get_indexes('Sanctions', 'B')[0], scroll_get_indexes('Sanctions', 'B')[1], False)
 
     def __init__(self):
@@ -1437,7 +1437,7 @@ class SanctionsWindowReferee(Screen):
         self.person_chosen_B = ''
         self.sanction_chosen_B = ''
 
-    def get_save_button_state(self, team):
+    def set_save_button_state(self, team):
         
         from DVA import match, frontend_references as gui
           
@@ -1488,7 +1488,7 @@ class SanctionsWindowReferee(Screen):
 
         return get_people_list(team, True, True)
 
-    def hide_people_list(self, team, button):
+    def switch_people_list_opacity(self, team, button):
 
         from DVA import match, frontend_references as gui
         
@@ -1674,13 +1674,13 @@ class SanctionsWindowReferee(Screen):
 
         return people_list
     
-    def on_load(self, team, start_index, end_index, is_scrolling=False, *args):
+    def on_load(self, team, start_index, end_index, is_scrolling=False):
 
         from DVA import match, frontend_references as gui
      
         if team == 'A':
 
-            self.get_save_button_state(match.left_team)
+            self.set_save_button_state(match.left_team)
             self.apply_team_limitations(match.left_team)
             if self.person_chosen_A != '':
                 self.apply_person_limitations(match.left_team, self.person_chosen_A)
@@ -1691,7 +1691,7 @@ class SanctionsWindowReferee(Screen):
 
         elif team == 'B':  
           
-            self.get_save_button_state(match.right_team)
+            self.set_save_button_state(match.right_team)
             self.apply_team_limitations(match.right_team)
             if self.person_chosen_B != '':
                 self.apply_person_limitations(match.right_team, self.person_chosen_B)
@@ -1700,67 +1700,67 @@ class SanctionsWindowReferee(Screen):
                 self.calculate_popup(match.right_team)            
             self.init_visual_elements(match.right_team, start_index, end_index, is_scrolling)  
 
-    def sanction_button_pressed(self, *args):
+    def sanction_button_pressed(self, button):
 
         from DVA import match, frontend_references as gui 
 
         if gui.get('MatchWindowRefereeSanctionsTabHeader').current_tab == gui.get('MatchWindowRefereeSanctionsTeamATab'):
             
-            if args[0].state == 'down':
-                self.sanction_chosen_A = args[0].background_normal.split('/')[-1].split('.')[0]
+            if button.state == 'down':
+                self.sanction_chosen_A = button.background_normal.split('/')[-1].split('.')[0]
             else:
                 self.sanction_chosen_A = ''
-            self.hide_people_list(match.left_team, args[0])
+            self.switch_people_list_opacity(match.left_team, button)
 
             match.left_team.PlayersList.load('Sanctions', self.apply_sanction_limitations(match.left_team), ToggleButton, with_numbers=True)
             match.left_team.PlayersList.scroll(0,6, ToggleButton, with_numbers=True, choice_data=self.person_chosen_A)
             indexes[4] = 0
 
-            self.get_save_button_state(match.left_team)
+            self.set_save_button_state(match.left_team)
 
         elif gui.get('MatchWindowRefereeSanctionsTabHeader').current_tab == gui.get('MatchWindowRefereeSanctionsTeamBTab'):
 
-            if args[0].state == 'down':
-                self.sanction_chosen_B = args[0].background_normal.split('/')[-1].split('.')[0]
+            if button.state == 'down':
+                self.sanction_chosen_B = button.background_normal.split('/')[-1].split('.')[0]
             else:
                 self.sanction_chosen_B = ''
-            self.hide_people_list(match.right_team, args[0])
+            self.switch_people_list_opacity(match.right_team, button)
 
             match.right_team.PlayersList.load('Sanctions', self.apply_sanction_limitations(match.right_team), ToggleButton, with_numbers=True)
             match.right_team.PlayersList.scroll(0,6, ToggleButton, with_numbers=True, choice_data=self.person_chosen_B)
             indexes[5] = 0
 
-            self.get_save_button_state(match.right_team)
+            self.set_save_button_state(match.right_team)
 
-    def person_button_pressed(self, *args):
+    def person_button_pressed(self, button):
 
         from DVA import match, frontend_references as gui
 
         if gui.get('MatchWindowRefereeSanctionsTabHeader').current_tab == gui.get('MatchWindowRefereeSanctionsTeamATab'):
 
-            if args[0].state == 'down':
-                self.person_chosen_A = args[0].text
-                self.apply_person_limitations(match.left_team, args[0].text)
+            if button.state == 'down':
+                self.person_chosen_A = button.text
+                self.apply_person_limitations(match.left_team, button.text)
             else:
                 self.person_chosen_A = ''
                 self.enable_every_sanction(match.left_team)
                 self.apply_team_limitations(match.left_team)
 
-            self.get_save_button_state(match.left_team)
+            self.set_save_button_state(match.left_team)
 
         elif gui.get('MatchWindowRefereeSanctionsTabHeader').current_tab == gui.get('MatchWindowRefereeSanctionsTeamBTab'):
 
-            if args[0].state == 'down':
-                self.person_chosen_B = args[0].text
-                self.apply_person_limitations(match.right_team, args[0].text)
+            if button.state == 'down':
+                self.person_chosen_B = button.text
+                self.apply_person_limitations(match.right_team, button.text)
             else:
                 self.person_chosen_B = ''
                 self.enable_every_sanction(match.right_team)
                 self.apply_team_limitations(match.right_team)
 
-            self.get_save_button_state(match.right_team)
+            self.set_save_button_state(match.right_team)
 
-    def cancel_button_pressed(self, *args):
+    def cancel_button_pressed(self, button):
         
         from DVA import match, frontend_references as gui
         
