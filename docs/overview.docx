@@ -519,6 +519,10 @@ CODE REFERENCES
 
             gfx.frontend.LineUpSetUpReferee.header_button (match.left_team.long_name)
 
+            gfx.frontend.SanctionWindowReferee.header_button (frontend_references)
+            gfx.frontend.SanctionWindowReferee.set_save_button_state (match, frontend_references)
+            gfx.frontend.SanctionWindowReferee.switch_people_list_opacity (match, match.sets, match.left_team, match.sets[0].score)
+
         Uses:
             Config from Kivy.config 
             app_icon_path, app_resizable, app_width, app_height from meta.app_config
@@ -614,7 +618,7 @@ CODE REFERENCES
             
             gfx.frontend.TeamSetUpBase (Screen)
             gfx.frontend.TeamSetUpBase.SharedArea (GridLayout)
-            gfx.frontend.TeamSetUpBase.SharedArea.__init__(GridLayout, Slider)
+            gfx.frontend.TeamSetUpBase.SharedArea.__init__(GridLayout, Slider, scroll_init)
             gfx.frontend.TeamSetUpBase.PlayerWidget (GridLayout)
             gfx.frontend.TeamSetUpBase.PlayerWidget.__init__ (Label, CheckBox, TextInput)
             gfx.frontend.TeamSetUpBase.Header (BoxLayout)
@@ -624,7 +628,7 @@ CODE REFERENCES
             gfx.frontend.TeamSetUpBase.save_button (Button)
             
             gfx.frontend.TeamSetUpReferee.__init__ (TabbedPanel, TabbedPanelHeader)
-            gfx.frontend.TeamSetUpReferee.header_button (TabbedPanelHeader)
+            gfx.frontend.TeamSetUpReferee.header_button (TabbedPanelHeader, indexes)
             
             gfx.frontend.LineUpSetUpBase (Screen)
             gfx.frontend.LineUpSetUpBase.SharedArea (GridLayout)
@@ -634,6 +638,20 @@ CODE REFERENCES
             gfx.frontend.LineUpSetUpBase.init_visual_elements (Spinner)
 
             gfx.frontend.LineUpSetUpReferee.__init__ (TabbedPanel, TabbedPanelHeader)
+
+            gfx.frontend.SanctionWindowReferee (Screen)
+            gfx.frontend.SanctionWindowReferee.SharedArea (GridLayout)
+            gfx.frontend.SanctionWindowReferee.SharedArea.__init__ (GridLayout, Slider, ToggleButton, scroll_init)
+            gfx.frontend.SanctionWindowReferee.header_button (TabbedPanelHeader)
+            gfx.frontend.SanctionWindowReferee.__init__ (GridLayout, TabbedPanel, TabbedPanelHeader, Button, Label, buttons, language_code)
+            gfx.frontend.SanctionWindowReferee.calculate_popup (expulsions_instead_of_penalties_on_set_point, sets_to_win, 
+            min_difference_to_end_regular_set, min_difference_to_end_final_set, min_points_to_win_regular_set, min_points_to_win_final_set,
+            PopUpWindow.show_popup, sanctions_errors, language_code)
+            gfx.frontend.SanctionWindowReferee.switch_people_list_opacity (ImageButton)
+            gfx.frontend.SanctionWindowReferee.sanction_button_pressed (Button)
+            gfx.frontend.SanctionWindowReferee.person_button_pressed (Button)
+            gfx.frontend.SanctionWindowReferee.cancel_button_pressed (Button)
+            gfx.frontend.SanctionWindowReferee.save_button_pressed (Button)
 
         class Application
 
@@ -1016,7 +1034,7 @@ CODE REFERENCES
                     Uses:
                         TeamSetUpBase.Header
                         TeamSetUpBase.PlayerWidget
-                        GridLayout, Slider from gfx.frontend
+                        GridLayout, Slider, scroll_init, indexes from gfx.frontend
 
             class PlayerWidget
 
@@ -1662,8 +1680,28 @@ CODE REFERENCES
                 def save_button_pressed
 
             Uses:
+                gfx.frontend.Screen (inheiritance)
 
             Used by:
+                gfx.frontend.SanctionWindowReferee.header_button
+                gfx.frontend.SanctionWindowReferee.__init__
+                gfx.frontend.SanctionWindowReferee.set_save_button_state
+                gfx.frontend.SanctionWindowReferee.calculate_popup
+                gfx.frontend.SanctionWindowReferee.enable_every_sanction
+                gfx.frontend.SanctionWindowReferee.get_people_list
+                gfx.frontend.SanctionWindowReferee.switch_people_list_opacity
+                gfx.frontend.SanctionWindowReferee.init_visual_elements
+                gfx.frontend.SanctionWindowReferee.clear_chosen_person
+                gfx.frontend.SanctionWindowReferee.clear_chosen_sanction
+                gfx.frontend.SanctionWindowReferee.get_person_sanction_level
+                gfx.frontend.SanctionWindowReferee.apply_team_limitations
+                gfx.frontend.SanctionWindowReferee.apply_person_limitations
+                gfx.frontend.SanctionWindowReferee.apply_sanction_limitations
+                gfx.frontend.SanctionWindowReferee.on_load
+                gfx.frontend.SanctionWindowReferee.sanction_button_pressed
+                gfx.frontend.SanctionWindowReferee.person_button_pressed
+                gfx.frontend.SanctionWindowReferee.cancel_button_pressed
+                gfx.frontend.SanctionWindowReferee.save_button_pressed
 
             class SharedArea
 
@@ -1675,8 +1713,10 @@ CODE REFERENCES
                     def __init__
 
                 Uses:
+                    gfx.frontend.GridLayout (inheiritance)
 
                 Used by:
+                    gfx.frontend.SanctionWindowReferee.__init__
 
                 def __init__
 
@@ -1694,6 +1734,7 @@ CODE REFERENCES
                         None 
                     
                     Uses:
+                        GridLayout, Slider, ToggleButton, scroll_init from gfx.frontend
 
                     Used by:
 
@@ -1710,8 +1751,12 @@ CODE REFERENCES
                     None
 
                 Uses:
+                    DVA.pyw (frontend_references as gui)
+                    gfx.frontend.SanctionWindowReferee.on_load
+                    gfx.frontend.scroll_get_indexes
 
                 Used by:
+                    gfx.frontend.SanctionWindowReferee.__init__
 
             def __init__
 
@@ -1726,9 +1771,14 @@ CODE REFERENCES
                     None
 
                 Uses:
+                    GridLayout, TabbedPanel, TabbedPanelHeader, Button, Label, buttons, language_code from gfx.frontend
+                    gfx.frontend.SanctionWindowReferee.SharedArea
+                    gfx.frontend.SanctionWindowReferee.header_button
+                    gfx.frontend.SanctionWindowReferee.sanction_button_pressed
+                    gfx.frontend.SanctionWindowReferee.person_button_pressed
+                    gfx.frontend.SanctionWindowReferee.save_button_pressed
+                    gfx.frontend.SanctionWindowReferee.cancel_button_pressed
 
-                Used by:
-            
             def set_save_button_state
                 
                 Info:
@@ -1754,6 +1804,7 @@ CODE REFERENCES
                     None
 
                 Uses:
+                    DVA.pyw (match, frontend_references as gui)
 
                 Used by:
             
@@ -1779,6 +1830,10 @@ CODE REFERENCES
                     None
 
                 Uses:
+                    expulsions_instead_of_penalties_on_set_point, sets_to_win, min_difference_to_end_regular_set, 
+                    min_difference_to_end_final_set, min_points_to_win_regular_set, min_points_to_win_final_set,
+                    PopUpWindow.show_popup, sanctions_errors, language_code from gfx.frontend
+                    match, match.sets, match.left_team, match.sets[0].score from DVA.pyw
 
                 Used by:
             
@@ -1933,7 +1988,7 @@ CODE REFERENCES
 
                 Parameters:
                     self: gfx.frontend.SanctionWindowReferee
-                    team: py.match.objects
+                    team: py.match.objects.Team
 
                 Step by step:
                     1)Create and fill list of amount of team's sanctions, and max values of sanctions allowed, both by type.
@@ -1959,7 +2014,7 @@ CODE REFERENCES
 
                 Parameters:
                     self: gfx.frontend.SanctionWindowReferee
-                    team: py.match.objects
+                    team: py.match.objects.Team
                     person_name_string: str
 
                 Step by step:
@@ -1987,7 +2042,7 @@ CODE REFERENCES
 
                 Parameters:
                     self: gfx.frontend.SanctionWindowReferee
-                    team: py.match.objects
+                    team: py.match.objects.Team
 
                 Step by step:
 
@@ -2026,6 +2081,7 @@ CODE REFERENCES
                 Uses:
 
                 Used by:
+                    gfx.frontend.SanctionWindowReferee.header_button
 
             def sanction_button_pressed
             
@@ -2050,6 +2106,7 @@ CODE REFERENCES
                 Uses:
 
                 Used by:
+                    gfx.frontend.SanctionWindowReferee.__init__
 
             def person_button_pressed
 
@@ -2072,6 +2129,7 @@ CODE REFERENCES
                 Uses:
 
                 Used by:
+                    gfx.frontend.SanctionWindowReferee.__init__
 
             def cancel_button_pressed
 
@@ -2093,6 +2151,7 @@ CODE REFERENCES
                 Uses:
 
                 Used by:
+                    gfx.frontend.SanctionWindowReferee.__init__
 
             def save_button_pressed
 
@@ -2119,11 +2178,17 @@ CODE REFERENCES
                 Uses:
 
                 Used by:
+                    gfx.frontend.SanctionWindowReferee.__init__
 
         class TeamWidget
 
             Used by:
                 gfx.frontend.LineUpSetUpBase.SharedArea.__init__
+
+        def scroll_get_indexes
+
+            Used by:
+                gfx.frontend.SanctionWindowReferee.header_button
 
     gfx.visual_elements
         
@@ -2180,7 +2245,7 @@ CODE REFERENCES
 
                 Used by:
                     DVA.pyw
-        
+
         TeamLineUpSetUp:
 
             Used by:
@@ -2228,29 +2293,73 @@ CODE REFERENCES
 
     py.match.objects:
 
+        class Match
+        
+            Structure:
+
+                left_team: py.match.objects.Team 
+                right_team: py.match.objects.Team
+                sets: list of py.match.objects.Set 
+                officials: list of py.match.objects.Official
+            
+            Uses:
+                *all of its structure and all of structure's elements' structure.
+
+        #TODO 
+        the code makes call to match.left_team.long_name. 
+        match is a variable of DVA.pyw included in its structure, so we record it as a call there. 
+        DVA.pyw.match is a py.match.objects.Match object, so we connect all the sub-elements (left_team.long_name) when we initializate its
+        logic.
+        long_name is a part of Team's structure.
+
+
         class Team
 
             Structure:
 
                 SetUp: gfx.visual_elements.TeamSetUp
-
                 long_name: str
-
-                    Used by:
-                        DVA.pyw
-
                 head_coach: py.match.objects.HeadCoach 
 
                     Used by: 
-                        DVA.pyw
+                        gfx.frontend.TeamSetUpBase.save_button
+                        gfx.frontend.LineUpSetUpBase.save_button
+
+                expulsed_players: list of py.match.objects.Player 
+                disqualified_players: list of py.match.objects.Player 
 
             Used by:
+
                 gfx.frontend.TeamSetUpBase.get_players_list
                 gfx.frontend.TeamSetUpBase.load_players_list
                 gfx.frontend.TeamSetUpBase.init_visual_elements
+
                 gfx.frontend.LineUpSetUpBase.init_visual_elements
+                
+                gfx.frontend.SanctionWindowReferee.set_save_button_state
+                gfx.frontend.SanctionWindowReferee.calculate_popup
+                gfx.frontend.SanctionWindowReferee.enable_every_sanction
+                gfx.frontend.SanctionWindowReferee.get_people_list
+                gfx.frontend.SanctionWindowReferee.switch_people_list_opacity
+                gfx.frontend.SanctionWindowReferee.init_visual_elements
+                gfx.frontend.SanctionWindowReferee.clear_chosen_person
+                gfx.frontend.SanctionWindowReferee.clear_chosen_sanction
+                gfx.frontend.SanctionWindowReferee.get_person_sanction_level
+                gfx.frontend.SanctionWindowReferee.apply_team_limitations
+                gfx.frontend.SanctionWindowReferee.apply_person_limitations
+                gfx.frontend.SanctionWindowReferee.apply_sanction_limitations
+                gfx.frontend.SanctionWindowReferee.on_load
+
+        class Set
+
+            Structure:
+                score: list of int
 
         class HeadCoach
+
+            Structure:
+                def team_set_up
+                def line_up_set_up
 
             Used by:
                 gfx.frontend.TeamSetUpBase.save_button
@@ -2259,19 +2368,23 @@ CODE REFERENCES
             def team_set_up:
 
                 Used by:
-                    DVA.pyw
+                    gfx.frontend.TeamSetUpBase.save_button
+
             
             def line_up_set_up:
 
                 Used by:
-                    DVA.pyw
+                    gfx.frontend.LineUpSetUpBase.save_button
 
         class Official 
+
+            Structure:
+                def coin_toss
 
             def coin_toss
 
                 Used by:
-                    DVA.pyw
+                    gfx.frontend.CoinTossWindow.save_button
 
     meta.app_config
 
