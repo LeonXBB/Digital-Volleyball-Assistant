@@ -474,6 +474,24 @@ CODE REFERENCES
             id: int
             user_status: list 
             match: py.match.objects.Match
+
+            #TODO (for attention)
+            the code makes call to match.left_team.long_name. 
+            match is a variable of DVA.pyw included in its structure, so we record it as a call there. 
+            DVA.pyw.match is a py.match.objects.Match object, so we connect all the sub-elements (left_team.long_name) when we initializate its
+            logic.
+            long_name is a part of Team's structure.
+
+            LONG STORY SHORT:
+                When making a call to something that's part of huge DVA.match sub-structure throug match variable, 
+                    only show references to DVA.pyw.
+                When making a call to something that's part of the sub-structure part, but calling the element itself,
+                    only show references to that element.
+                
+                Why?
+                    All of the three 1)the DVA.match 'mega-class', 2)the format of references I've designed for myself,
+                    and 3)'Structure' field of said references format,
+                        are a mess and I don't know how to deal with and process them correctly.
         
         Step by step:
             First, we're setting window's  graphical parameters, including its resizableness and icon, according 
@@ -2241,11 +2259,6 @@ CODE REFERENCES
                 Used by:
                     gfx.frontend.TeamSetUpBase.init_visual_elements
 
-            def clear:
-
-                Used by:
-                    DVA.pyw
-
         TeamLineUpSetUp:
 
             Used by:
@@ -2304,14 +2317,6 @@ CODE REFERENCES
             
             Uses:
                 *all of its structure and all of structure's elements' structure.
-
-        #TODO 
-        the code makes call to match.left_team.long_name. 
-        match is a variable of DVA.pyw included in its structure, so we record it as a call there. 
-        DVA.pyw.match is a py.match.objects.Match object, so we connect all the sub-elements (left_team.long_name) when we initializate its
-        logic.
-        long_name is a part of Team's structure.
-
 
         class Team
 
