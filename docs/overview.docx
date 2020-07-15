@@ -432,6 +432,67 @@ CORE FUNCTIONS
 
 CODE REFERENCES
 
+    Notes:
+
+        General structure:
+
+            Generally, structure of any element consist of:
+
+                * INFO - General information, related to the element, desctiption how it works etc.
+                * STEP BY STEP - detailed description of the execution flow, when necessary, such as if the element is complicated or big.
+                * USES - list of all other elements of these references connected to this one.
+                * USED BY - list of all other elements of these referenecs this element is connected to.
+                * STRUCTURE - list of all the inner elements of the element. See below for more explanaition.
+                * elements of the structure.
+
+            Additionally, functions also have:
+
+                * PARAMETERS - list, type and description of all parameters of the function.
+                * RETURN - type and description of the return value of the function.
+            
+            When copying into the code file from references, we should copy INFO and STEP BY STEP, and also PARAMETERS and RETURN for functions.
+
+        Note about STRUCTURE field:
+
+            It should include list of all classes, functions and variables of the elements.
+            As for classes and functions, it should only list them. Their names should be used as otehr field below other ones,
+            and all their sub-fields should be below that.
+            For variables, though, all sub-fields come below their name in STRUCTURE field.
+
+            To keep it short and readable, not every variable should be included but only those who either are logically independent,
+            have an impact on the workflow, are part of the element's architecture, are used in other elements etc.
+            I.e, do not write, for example, variables in __init__ functions of the screens representing different Kivy widgets as
+            there are billions of them and they are of little if not no value.
+
+            Also, do not write classes / functions / variables that the element receives through other means (such as import or direct links
+            to other elements in code)
+
+        Note about using DVA.match in USES and USED BY:
+            
+            #TODO (for attention)
+
+            LONG STORY SHORT:
+                When making a call to something that's part of huge DVA.match sub-structure throug match variable, 
+                    only show references to DVA.pyw.
+                When making a call to something that's part of the sub-structure part, but calling the element itself,
+                    only show references to that element.
+                
+                Why?
+                    All of the three 1)the DVA.match 'mega-class', 2)the format of references I've designed for myself,
+                    and 3)'Structure' field of said references format, are a mess and I don't know how to deal with and process them 
+                    correctly.
+
+        Note about using DVA.frontend_references in USES and USED BY:
+            
+            Currently:
+                Make reference to the frontend_references variable of DVA.pyw itself only.
+                But, if there's direct connection between element's logic and the widget represented by respective dictionary's key, 
+                as well as if this widget exists as element of these references, make reference to it, too.
+
+            In the future version:
+                Make reference to the get() function of the dictionary itself. 
+                From that functuin, make references to the widgets, represented as elements - members of the screens' structure.
+                Every widget included in the dictionary shall exist in these references.
 
     run.pyw
 
@@ -467,32 +528,11 @@ CODE REFERENCES
             logs: list
             sm: ScreenManager
             Digital_Volleyball_Assistant: Application
-            frontend_references: dict #TODO change the way importing frontend_references is shown. Currently, we show usage of the dict, and 
-            of the code representation of widget / screen (if necessary). What we should do instead is call get() function of a dictionary
-            (as it is what we're actually doing), and make it use all said widgets and screens including those that we haven't shown in this
-            references (as for now, but they will be). It can be done either directly and through the names in the dictionary (with one extra step)
+            frontend_references: dict 
             id: int
             user_status: list 
             match: py.match.objects.Match
-
-            #TODO (for attention)
-            the code makes call to match.left_team.long_name. 
-            match is a variable of DVA.pyw included in its structure, so we record it as a call there. 
-            DVA.pyw.match is a py.match.objects.Match object, so we connect all the sub-elements (left_team.long_name) when we initializate its
-            logic.
-            long_name is a part of Team's structure.
-
-            LONG STORY SHORT:
-                When making a call to something that's part of huge DVA.match sub-structure throug match variable, 
-                    only show references to DVA.pyw.
-                When making a call to something that's part of the sub-structure part, but calling the element itself,
-                    only show references to that element.
-                
-                Why?
-                    All of the three 1)the DVA.match 'mega-class', 2)the format of references I've designed for myself,
-                    and 3)'Structure' field of said references format,
-                        are a mess and I don't know how to deal with and process them correctly.
-        
+       
         Step by step:
             First, we're setting window's  graphical parameters, including its resizableness and icon, according 
             to app config.
@@ -539,7 +579,13 @@ CODE REFERENCES
 
             gfx.frontend.SanctionWindowReferee.header_button (frontend_references)
             gfx.frontend.SanctionWindowReferee.set_save_button_state (match, frontend_references)
-            gfx.frontend.SanctionWindowReferee.switch_people_list_opacity (match, match.sets, match.left_team, match.sets[0].score)
+            gfx.frontend.SanctionWindowReferee.calculate_popup (match, match.sets, match.left_team, match.sets[0].score)
+            gfx.frontend.SanctionWindowReferee.enable_every_sanction (match.left_team, frontend_references)
+            gfx.frontend.SanctionWindowReferee.switch_people_list_opacity (match.left_team, match.right_team, frontend_references)
+            gfx.frontend.SanctionWindowReferee.init_visual_elements (match.right_team, match.right_team.long_name, match.left_team, 
+            match.left_team.long_name, frontend_references)
+            gfx.frontend.SanctionWindowReferee.clear_chosen_person (match.left_team, frontend_references)
+            gfx.frontend.SanctionWindowReferee.clear_chosen_sanction (match.left_team, frontend_references)
 
         Uses:
             Config from Kivy.config 
@@ -666,6 +712,8 @@ CODE REFERENCES
             min_difference_to_end_regular_set, min_difference_to_end_final_set, min_points_to_win_regular_set, min_points_to_win_final_set,
             PopUpWindow.show_popup, sanctions_errors, language_code)
             gfx.frontend.SanctionWindowReferee.switch_people_list_opacity (ImageButton)
+            gfx.frontend.SanctionWindowReferee.init_visual_elements (ToggleButton)
+            gfx.frontend.SanctionWindowReferee.get_person_sanction_level (statuses, language_code)
             gfx.frontend.SanctionWindowReferee.sanction_button_pressed (Button)
             gfx.frontend.SanctionWindowReferee.person_button_pressed (Button)
             gfx.frontend.SanctionWindowReferee.cancel_button_pressed (Button)
@@ -1735,6 +1783,11 @@ CODE REFERENCES
 
                 Used by:
                     gfx.frontend.SanctionWindowReferee.__init__
+                    gfx.frontend.SanctionWindowReferee.enable_every_sanction
+                    gfx.frontend.SanctionWindowReferee.switch_people_list_opacity
+                    gfx.frontend.SanctionWindowReferee.init_visual_elements
+                    gfx.frontend.SanctionWindowReferee.clear_chosen_person
+                    gfx.frontend.SanctionWindowReferee.clear_chosen_sanction
 
                 def __init__
 
@@ -1869,6 +1922,8 @@ CODE REFERENCES
                     None
 
                 Uses:
+                    match.left_team, frontend_references as gui from DVA.pyw
+                    gfx.frontend.SanctionWindowReferee.SharedArea
 
                 Used by:
 
@@ -1886,8 +1941,10 @@ CODE REFERENCES
                     with given parameters that returns list with Player and Stuff objects.
 
                 Uses:
+                    py.core.get_people_list
 
                 Used by:
+                    gfx.frontend.SanctionWindowReferee.init_visual_elements
 
             def switch_people_list_opacity
 
@@ -1905,6 +1962,9 @@ CODE REFERENCES
                     None
 
                 Uses:
+                    match.left_team, match.right_team, frontend_references as gui from DVA.pyw
+                    gfx.frontend.SanctionWindowReferee.SharedArea
+                    gfx.frontend.SanctionWindowReferee.clear_chosen_person
 
                 Used by:
 
@@ -1929,6 +1989,14 @@ CODE REFERENCES
                     None
 
                 Uses:
+                    match.right_team, match.right_team.long_name, match.left_team, match.left_team.long_name,
+                    frontend_references as gui from DVA.pyw
+                    gfx.frontend.ToggleButton
+                    gfx.frontend.SanctionWindowReferee.SharedArea
+                    gfx.frontend.SanctionWindowReferee.get_people_list
+                    gfx.frontend.SanctionWindowReferee.apply_sanction_limitations
+                    gfx.visual_elements.TeamPeopleList, gfx.visual_elements.TeamPeopleList.load, gfx.visual_elements.TeamPeopleList.scroll,
+                    gfx.visual_elements.TeamName, gfx.visual_elements.TeamName.load
 
                 Used by:
 
@@ -1946,8 +2014,11 @@ CODE REFERENCES
                     None
 
                 Uses:
+                    match.left_team, frontend_references as gui from DVA.pyw
+                    gfx.frontend.SanctionWindowReferee.SharedArea
 
                 Used by:
+                    gfx.frontend.SanctionWindowReferee.switch_people_list_opacity
 
             def clear_chosen_sanction
 
@@ -1963,6 +2034,8 @@ CODE REFERENCES
                     None
 
                 Uses:
+                    match.left_team, frontend_references as gui from DVA.pyw
+                    gfx.frontend.SanctionWindowReferee.SharedArea
 
                 Used by:
 
@@ -1990,6 +2063,8 @@ CODE REFERENCES
                     [person's sanction level, amount of sanctions of these level (for when multiple is/isn't allowed)]
 
                 Uses:
+                    statuses, language_code from gfx.frontend
+                    py.match.objects.Person.get_sanction_level
 
                 Used by:
 
@@ -2080,6 +2155,7 @@ CODE REFERENCES
                 Uses:
 
                 Used by:
+                    gfx.frontend.SanctionWindowReferee.init_visual_elements
 
             def on_load
 
@@ -2216,28 +2292,33 @@ CODE REFERENCES
                 gfx.frontend.CoinTossWindow.init_visual_elements
                 gfx.frontend.TeamSetUpBase.init_visual_elements
                 gfx.frontend.LineUpSetUpBase.init_visual_elements
-        
+                gfx.frontend.SanctionWindowReferee.init_visual_elements
+
             def load:
 
                 Used by:
                     gfx.frontend.CoinTossWindow.init_visual_elements
                     gfx.frontend.TeamSetUpBase.init_visual_elements
                     gfx.frontend.LineUpSetUpBase.init_visual_elements
+                    gfx.frontend.SanctionWindowReferee.init_visual_elements
 
         TeamPeopleList:
 
             Used by:
                 gfx.frontend.TeamSetUpBase.load_players_list
+                gfx.frontend.SanctionWindowReferee.init_visual_elements
 
             def load:
 
                 Used by:
                     gfx.frontend.TeamSetUpBase.load_players_list
+                    gfx.frontend.SanctionWindowReferee.init_visual_elements
 
             def scroll:
 
                 Used by:
                     gfx.frontend.TeamSetUpBase.load_players_list
+                    gfx.frontend.SanctionWindowReferee.init_visual_elements
 
         TeamSetUp:
 
@@ -2295,6 +2376,7 @@ CODE REFERENCES
 
             Used by:
                 gfx.frontend.TeamSetUpBase.get_players_list
+                gfx.frontend.SanctionWindowReferee.get_people_list
 
     py.objects
 
@@ -2359,6 +2441,13 @@ CODE REFERENCES
 
             Structure:
                 score: list of int
+
+        class Person
+
+            def get_sanction_level
+
+                Used by:
+                    gfx.frontend.SanctionWindowReferee.get_person_sanction_level
 
         class HeadCoach
 

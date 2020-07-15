@@ -1541,8 +1541,6 @@ class SanctionsWindowReferee(Screen):
 
     def get_person_sanction_level(self, team, person_name_string):
 
-        from DVA import match
-
         person = ''
 
         if person_name_string[:1].isdigit() or person_name_string.split()[0] in statuses[language_code]: person_name_string = person_name_string.split(maxsplit=1)[1]
