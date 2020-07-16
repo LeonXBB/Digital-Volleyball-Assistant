@@ -614,6 +614,13 @@ CODE REFERENCES
             gfx.frontend.SanctionWindowReferee.save_button_pressed (match.officials[0].sanction, match.left_team, match.right_team, 
             frontend_references)
 
+            gfx.frontend.SubstitutionsWindowBase.set_save_button_state (match.left_team, frontend_references)
+            gfx.frontend.SubstitutionsWindowBase.get_subs_requests (match.sets[-1].score, match.sets[-1].substitutions)
+            gfx.frontend.SubstitutionsWindowBase.calculate_pop_ups (match.sets[-1].substitutions, match.sets[-1].is_tie_break, 
+            match.sets[-1].wrong_sub_warned_A, match.sets[-1].wrong_sub_warned_B, match.sets[-1].extra_sub_warned_A, 
+            match.sets[-1].extra_sub_warned_B, match.left_team)
+            gfx.frontend.SubstitutionsWindowBase.forced_disable_enable (match.left_team, frontend_references)
+
         Uses:
             Config from Kivy.config 
             app_icon_path, app_resizable, app_width, app_height from meta.app_config
@@ -746,6 +753,16 @@ CODE REFERENCES
             gfx.frontend.SanctionWindowReferee.person_button_pressed (Button)
             gfx.frontend.SanctionWindowReferee.cancel_button_pressed (Button)
             gfx.frontend.SanctionWindowReferee.save_button_pressed (Button)
+
+            gfx.frontend.SubstitutionsWindowBase(Screen)
+            gfx.frontend.SubstitutionsWindowBase.SharedArea (GridLayout)
+            gfx.frontend.SubstitutionsWindowBase.SharedArea.__init__ (GridLayout, Slider, ToggleButton, scroll_init)
+            gfx.frontend.SubstitutionsWindowBase.__init__ (GridLayout, Button, Label, buttons, language_code)
+            gfx.frontend.SubstitutionsWindowBase.calculate_pop_ups (max_substitutions_regular_set, max_substitutions_final_set, 
+            substitutions_requests_from_a_team_during_one_play, only_reverse_substitutions, reverse_substitutions_amount_regular_set, 
+            reverse_substitutions_amount_final_set, substitution_errors, language_code)
+            gfx.frontend.SubstitutionsWindowBase.get_players_list (players_in_team)
+            gfx.frontend.SubstitutionsWindowBase.get_subs_list (players_in_team, libero_allowed_to_substitute)
 
         class Application
 
@@ -2232,7 +2249,7 @@ CODE REFERENCES
 
                 Parameters:
                     self: gfx.frontend.SanctionWindowReferee
-                    team: py.match.objects.Team
+                    team: str
                     start_index: int
                     end_index: int 
                     is_scrolling: bool
@@ -2369,6 +2386,377 @@ CODE REFERENCES
                 Used by:
                     gfx.frontend.SanctionWindowReferee.__init__
 
+        class SubstitutionsWindowBase
+
+            Info:
+                This is a base class for Substitutions screen. It is meant to be used as an inheiritance object for 
+                user status-specific classes.
+                Substitutions screen is a screen that provides user with the ability to make substitutions.
+
+            Structure:
+                class SharedArea
+                def __init__
+                def get_save_button_state
+                def get_subs_requests
+                def calculate_pop_ups
+                def get_players_list
+                def get_subs_list
+                def forced_disable_enable
+                def init_visual_elements
+                def on_load
+                def on_court_player_button_pressed
+                def on_bench_player_button_pressed
+                def next_button
+                def cancel_button
+
+                requests_counter: int
+                        
+                player_out_A: str
+                player_in_A: str
+                player_out_B: str
+                player_in_B: str
+
+                forced_A: bool
+                forced_B: bool
+
+            Uses:
+                gfx.frontend.Screen (inheiritance)
+
+            Used by:
+                gfx.frontend.SubstitutionsWindowBase.__init__
+                gfx.frontend.SubstitutionsWindowBase.set_save_button_state
+                gfx.frontend.SubstitutionsWindowBase.get_subs_requests
+                gfx.frontend.SubstitutionsWindowBase.calculate_pop_ups
+                gfx.frontend.SubstitutionsWindowBase.get_players_list
+                gfx.frontend.SubstitutionsWindowBase.get_subs_list
+                gfx.frontend.SubstitutionsWindowBase.forced_disable_enable
+                gfx.frontend.SubstitutionsWindowBase.init_visual_elements
+                gfx.frontend.SubstitutionsWindowBase.on_load
+                gfx.frontend.SubstitutionsWindowBase.on_court_player_button_pressed
+                gfx.frontend.SubstitutionsWindowBase.on_bench_player_button_pressed
+                gfx.frontend.SubstitutionsWindowBase.next_button
+                gfx.frontend.SubstitutionsWindowBase.cancel_button
+
+            class SharedArea
+
+                Info:
+
+                    This is a class for the shared area. Two objects of this will be used in referee's children
+                    class to represent different teams' lists using tabs, and other childrens classes will use
+                    it once as a window's content to insert.
+
+                Structure:
+                    def __init__
+
+                Uses:
+                    gfx.frontend.GridLayout (inheiritance)
+
+                Used by:
+
+                    gfx.frontend.SubstitutionsWindowBase.SharedArea.__init__
+
+                    gfx.frontend.SubstitutionsWindowBase.set_save_button_state
+                    gfx.frontend.SubstitutionsWindowBase.calculate_pop_ups
+
+                def __init__
+
+                    Info:
+                        This is a initialization function for this content class. It only deals with design.
+                        This design includes scrolling. It is done by invisible slider which movement is then
+                        processed.
+
+                    Parameters:
+                        self: gfx.frontend.SubstitutionsWindowBase.SharedArea
+                        team: str - 'A' or 'B'
+
+                    Return:
+                        None
+
+                    Uses:
+                        GridLayout, Slider, ToggleButton, scroll_init from gfx.frontend
+
+            def __init__
+
+                Info:
+                    This is main initializating function of the screen. Just like other screens' __init__ function it only deals with 
+                    design and bonding.
+
+                Parameters:
+                    self: gfx.frontend.SubstitutionsWindowBase
+
+                Return:
+                    None
+
+                Uses:
+                    GridLayout, Button, Label, buttons, language_code from gfx.frontend
+                    gfx.frontend.SubstitutionsWindowBase.cancel_button
+                    gfx.frontend.SubstitutionsWindowBase.next_button
+
+            def set_save_button_state
+
+                Info:
+                    This is a button that calculates save button state. It should be normal if the user have chosen
+                    both player in and out, and disabled otherwise.
+
+                Parameters:
+                    self: gfx.frontend.SubstitutionsWindowBase
+                    team: py.match.objects.Team
+
+                Return:
+                    None
+
+                Uses:
+                    match.left_team, frontend_references as gui from DVA.pyw
+                    gfx.frontend.SubstitutionsWindowBase.SharedArea
+
+                Used by:
+
+            def get_subs_requests
+
+                Info:
+                    This is a function responsible for two thigns: 1)getting team's done substitutions amount (for applying rules limitations),
+                    and 2)getting amount of substitutions request for a team (in standard rules, the team may only request substitution(s) once
+                    per score change, however, there's no limitations on amount of players that can be substituted during one request).
+
+                Parameters:
+                    self: gfx.frontend.SubstitutionsWindowBase
+                    team: py.match.objects.Team 
+
+                Structure:
+                    team_subs: int
+                    team_subs_requests: int
+                    opposite_team_subs: int
+                    opposite_team_subs_requests: int
+
+                Step by step:
+                    1)For every substitution:
+                        2-1)If this belong to current team, increase team_subs.
+                        2-2)Else, increase opposite_team_subs.
+                        
+                    3)If this was done during current point score or it was done during current point score reversed,
+                    increase respective team subs requests. #TODO why we need reversed score case? Is it related to the old score logic 
+                    when we were reversing it and thus it is an artefact, or is it related to the TieBreak rotation? Or is it related to 
+                    writing B team score first for B team substitutions which is most likely the case?
+
+                Return:
+                    team_subs, team_subs_requests, opposite_team_subs, opposite_team_subs_requests
+
+                Uses:
+                    match.sets[-1].score, match.sets[-1].substitutions from DVA.pyw
+                    
+                Used by:
+                    gfx.frontend.SubstitutionsWindowBase.calculate_pop_ups
+
+            def calculate_pop_ups
+
+                Info:
+                    This is a function that calculates if we need to show popup(s) to the user.
+                    In case of this screen, we have the following popups:
+                        1)Reminder of the only one possible substitution partner - if the player has already been substituted.
+                        2)Reminder that the player can no longer be substituted.
+                        3)Reminder that the team has reached the substitutions amount limitation in one pause.
+                        4)Reminder that the team has no substitutions left.
+
+                Parameters:
+                    self: gfx.frontend.SubstitutionsWindowBase
+                    team: py.match.objects.Team 
+                    reverse_subs_check: str - either '' or player's name - used in check if the player has substitute partner.
+                    list_to_check: str - either '', 'Bench' or 'Court' - 'Bench' for players going out, 'Court' for players going in.
+
+                Structure:
+                    flag: bool - used to determine if we need to show reverse sub partner popup, or if we have already shown it.
+                    reverse_sub_partner: str 
+                    reverse_subs_count: int
+
+                Step by step:
+
+                    1-1)If we calculate for non-sub partner popups (when we load screen's logic):
+                        2-1)If the team has reached max amount of subs for this exact set:
+                            3-1-1)If the other team hasn't done such a thing: swith to the other tab
+                            3-1-2)Else, show a popup.
+                        
+                        4-1)If the team has reached max amount of subs in one pause:
+                            5-1-1)If the other team hasn't done such a thing: swith to the other tab
+                            5-1-2)Else, show a popup.
+
+                    1-2)If we calculate for sub-partner popups (when clicking on some player button):
+                        2-2)If the button on another part of a list is already pressed (i.e, we've already shown it):
+                            3-2)Set flag to False.
+                        
+                        4-2)If the flag is not False:
+                            5-2)If rules only allow reverse substitutions for already substituted players:
+                                6-2)Find who is a sub partner and how many reverse subs have happened.
+                                7-2)If more than allowed, show a popup.
+                                8-2)Also, show a popup for who a sub partner is.
+
+                Return:
+                    None
+
+                Uses:
+                    max_substitutions_regular_set, max_substitutions_final_set, substitutions_requests_from_a_team_during_one_play, 
+                    only_reverse_substitutions, reverse_substitutions_amount_regular_set, reverse_substitutions_amount_final_set
+                    substitution_errors, language_code from gfx.frontend
+                    match.sets[-1].substitutions, match.sets[-1].is_tie_break, match.sets[-1].wrong_sub_warned_A, 
+                    match.sets[-1].wrong_sub_warned_B, match.sets[-1].extra_sub_warned_A, match.sets[-1].extra_sub_warned_B,
+                    match.left_team from DVA.pyw
+                    gfx.frontend.SubstitutionsWindowBase.SharedArea
+                    gfx.frontend.SubstitutionsWindowBase.get_subs_requests
+                    gfx.frontend.SubstitutionsWindowBase.on_load
+                    gfx.frontend.PopUpWindow.show_popup
+
+                Used by:
+
+            def get_players_list
+
+                Info:
+                    This is a function that uses a more generic core function to get list of peoples objects to be used in loading 
+                    players list that are currently on the court.
+
+                Parameters:
+                    self: TeamSetUpBase
+                    team: py.match.objects.Team
+                    forced: bool - should we include expulsed and disqualified players. True for forced substitutions when we just
+                    expulsed / disqualified them and need a substitution.
+
+                Return:
+                    get_people_list(team, with_expulsed_players=forced, with_disqualified_players=forced, end_index=players_in_team): function 
+                    call with given parameters that returns list with Player objects.
+
+                Uses:
+                    py.core.get_people_list
+                    gfx.frontend.players_in_team
+
+                Used by:
+
+            def get_subs_list
+
+                Info:
+                    This is a function that uses a more generic core function to get list of peoples objects to be used in loading 
+                    players list that are currently on the bench.
+
+                Parameters:
+                    self: gfx.frontend.SubstitutionsWindowBase
+                    team: py.match.objects.Team
+
+                Return:
+                    get_people_list(team, start_index=players_in_team, with_liberos=libero_allowed_to_substitute): function 
+                    call with given parameters that returns list with Player objects.
+
+                Uses:
+                    py.core.get_people_list
+                    libero_allowed_to_substitute, players_in_team from gfx.frontend
+
+                Used by:
+
+            def forced_disable_enable
+
+                Info:
+                    This is a function that is responsible for blocking other tabs when the substitution is forces - i.e, after a sanction.
+                    However, it is called on every load and parameter 'boolean' represents if the load is actually forced.
+
+                Parameters:
+                    self: gfx.frontend.SubstitutionsWindowBase
+                    team: py.match.objects.Team
+                    boolean: int (crossed out) bool. 
+
+                Return:
+                    None
+
+                Uses:
+                    gfx.frontend.MatchWindowReferee.MatchWindowReferee
+                    match.left_team, frontend_references as gui from DVA.pyw
+
+                Used by:
+
+            def init_visual_elements
+
+                Info:
+
+                Parameters:
+
+                Return:
+
+                Uses:
+
+                Used by:
+
+            def on_load
+
+                Info:
+
+                Parameters:
+
+                Return:
+
+                Uses:
+
+                Used by:
+                    gfx.frontend.SubstitutionsWindowBase.calculate_pop_ups
+
+            def on_court_player_button_pressed
+
+                Info:
+
+                Parameters:
+
+                Return:
+
+                Uses:
+
+                Used by:
+
+            def on_bench_player_button_pressed
+
+                Info:
+
+                Parameters:
+
+                Return:
+
+                Uses:
+
+                Used by:
+
+            def next_button
+
+                Info:
+
+                Parameters:
+
+                Return:
+
+                Uses:
+
+                Used by:
+                    gfx.frontend.SubstitutionsWindowBase.__init__
+
+            def cancel_button
+
+                Info:
+
+                Parameters:
+
+                Return:
+
+                Uses:
+
+                Used by:
+                    gfx.frontend.SubstitutionsWindowBase.__init__
+
+        class MatchWindowReferee
+
+            class MatchWindowReferee
+
+                Used by:
+                    gfx.frontend.SubstitutionsWindowBase.forced_disable_enable
+
+        class PopUpWindow
+
+            def show_popup:
+
+                Used by:
+                    gfx.frontend.SubstitutionsWindowBase.calculate_pop_ups
+
         class TeamWidget
 
             Used by:
@@ -2473,6 +2861,9 @@ CODE REFERENCES
                 gfx.frontend.TeamSetUpBase.get_players_list
                 gfx.frontend.SanctionWindowReferee.get_people_list
 
+                gfx.frontend.SubstitutionsWindowBase.get_players_list
+                gfx.frontend.SubstitutionsWindowBase.get_subs_list
+
     py.objects
 
         class Request
@@ -2530,12 +2921,25 @@ CODE REFERENCES
                 gfx.frontend.SanctionWindowReferee.apply_team_limitations
                 gfx.frontend.SanctionWindowReferee.apply_person_limitations
                 gfx.frontend.SanctionWindowReferee.apply_sanction_limitations
-                gfx.frontend.SanctionWindowReferee.on_load
+
+                gfx.frontend.SubstitutionsWindowBase.set_save_button_state
+                gfx.frontend.SubstitutionsWindowBase.get_subs_requests
+                gfx.frontend.SubstitutionsWindowBase.calculate_pop_ups
+                gfx.frontend.SubstitutionsWindowBase.get_players_list
+                gfx.frontend.SubstitutionsWindowBase.get_subs_list
+                gfx.frontend.SubstitutionsWindowBase.forced_disable_enable
+                gfx.frontend.SubstitutionsWindowBase.init_visual_elements
 
         class Set
 
             Structure:
                 score: list of int
+                substitutions: list of py.match.objects.Substitution 
+                is_tie_break: bool 
+                wrong_sub_warned_A: bool
+                wrong_sub_warned_B: bool
+                extra_sub_warned_A: bool
+                extra_sub_warned_B: bool 
 
         class Person
 
@@ -2574,6 +2978,8 @@ CODE REFERENCES
 
                 Used by:
                     gfx.frontend.CoinTossWindow.save_button
+
+        class Substitution
 
     py.match.match_config
 

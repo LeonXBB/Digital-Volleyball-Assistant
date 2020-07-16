@@ -1945,7 +1945,7 @@ class SanctionsWindowReferee(Screen):
 
         Parameters:
             self: gfx.frontend.SanctionWindowReferee
-            team: py.match.objects.Team
+            team: str
             start_index: int
             end_index: int 
             is_scrolling: bool
@@ -2171,11 +2171,36 @@ class SanctionsWindowReferee(Screen):
 
 
 class SubstitutionsWindowBase(Screen):
-    
+
+    '''
+    This is a base class for Substitutions screen. It is meant to be used as an inheiritance object for 
+    user status-specific classes.
+    Substitutions screen is a screen that provides user with the ability to make substitutions.
+    '''
+
     class SharedArea(GridLayout):
 
-        def __init__(self, team, **kwargs):
+        '''
+        This is a class for the shared area. Two objects of this will be used in referee's children
+        class to represent different teams' lists using tabs, and other childrens classes will use
+        it once as a window's content to insert.
+        '''
+
+        def __init__(self, team):
             
+            '''
+            This is a initialization function for this content class. It only deals with design.
+            This design includes scrolling. It is done by invisible slider which movement is then
+            processed.
+
+            Parameters:
+                self: gfx.frontend.SubstitutionsWindowBase.SharedArea
+                team: str - 'A' or 'B'
+
+            Return:
+                None
+            '''
+
             super().__init__()
             
             self.rows = 1
@@ -2201,6 +2226,17 @@ class SubstitutionsWindowBase(Screen):
 
     def __init__(self):
         
+        '''
+        This is main initializating function of the screen. Just like other screens' __init__ function it only deals with 
+        design and bonding.
+
+        Parameters:
+            self: gfx.frontend.SubstitutionsWindowBase
+
+        Return:
+            None
+        '''
+
         super().__init__()
 
         self.design = GridLayout(rows=1)
@@ -2232,8 +2268,20 @@ class SubstitutionsWindowBase(Screen):
         self.forced_A = False
         self.forced_B = False
 
-    def get_save_button_state(self, team):
+    def set_save_button_state(self, team):
         
+        '''
+        This is a button that calculates save button state. It should be normal if the user have chosen
+        both player in and out, and disabled otherwise.
+
+        Parameters:
+            self: gfx.frontend.SubstitutionsWindowBase
+            team: py.match.objects.Team
+
+        Return:
+            None
+        '''
+
         from DVA import match, frontend_references as gui
 
         gui.get('MatchWindowRefereeSubstitutionsSaveButton').disabled = True
@@ -2245,6 +2293,33 @@ class SubstitutionsWindowBase(Screen):
                         gui.get('MatchWindowRefereeSubstitutionsSaveButton').disabled = False
 
     def get_subs_requests(self, team):
+
+        '''
+        This is a function responsible for two thigns: 1)getting team's done substitutions amount (for applying rules limitations),
+        and 2)getting amount of substitutions request for a team (in standard rules, the team may only request substitution(s) once
+        per score change, however, there's no limitations on amount of players that can be substituted during one request).
+
+        Parameters:
+            self: gfx.frontend.SubstitutionsWindowBase
+            team: py.match.objects.Team 
+
+        Structure:
+            team_subs: int
+            team_subs_requests: int
+            opposite_team_subs: int
+            opposite_team_subs_requests: int
+
+        Step by step:
+            1)For every substitution:
+                2-1)If this belong to current team, increase team_subs.
+                2-2)Else, increase opposite_team_subs.
+                
+            3)If this was done during current point score or it was done during current point score reversed,
+            increase respective team subs requests.
+
+        Return:
+            team_subs, team_subs_requests, opposite_team_subs, opposite_team_subs_requests
+        '''
 
         from DVA import match
 
@@ -2269,8 +2344,56 @@ class SubstitutionsWindowBase(Screen):
         
         return team_subs, team_subs_requests, opposite_team_subs, opposite_team_subs_requests
 
+        #TODO why we need reversed score case? Is it related to the old score logic when we were reversing it and thus it is an artefact, or 
+        # is it related to the TieBreak rotation? Or is it related to writing B team score first for B team substitutions which is most likely 
+        # the case?
+
     def calculate_pop_ups(self, team, reverse_sub_check='', list_to_check=''):
-            
+    
+        '''
+        This is a function that calculates if we need to show popup(s) to the user.
+        In case of this screen, we have the following popups:
+            1)Reminder of the only one possible substitution partner - if the player has already been substituted.
+            2)Reminder that the player can no longer be substituted.
+            3)Reminder that the team has reached the substitutions amount limitation in one pause.
+            4)Reminder that the team has no substitutions left.
+
+        Parameters:
+            self: gfx.frontend.SubstitutionsWindowBase
+            team: py.match.objects.Team 
+            reverse_subs_check: str - either '' or player's name - used in check if the player has substitute partner.
+            list_to_check: str - either '', 'Bench' or 'Court' - 'Bench' for players going out, 'Court' for players going in.
+
+        Structure:
+            flag: bool - used to determine if we need to show reverse sub partner popup, or if we have already shown it.
+            reverse_sub_partner: str 
+            reverse_subs_count: int
+
+        Step by step:
+
+            1-1)If we calculate for non-sub partner popups (when we load screen's logic):
+                2-1)If the team has reached max amount of subs for this exact set:
+                    3-1-1)If the other team hasn't done such a thing: swith to the other tab
+                    3-1-2)Else, show a popup.
+                
+                4-1)If the team has reached max amount of subs in one pause:
+                    5-1-1)If the other team hasn't done such a thing: swith to the other tab
+                    5-1-2)Else, show a popup.
+
+            1-2)If we calculate for sub-partner popups (when clicking on some player button):
+                2-2)If the button on another part of a list is already pressed (i.e, we've already shown it):
+                    3-2)Set flag to False.
+                
+                4-2)If the flag is not False:
+                    5-2)If rules only allow reverse substitutions for already substituted players:
+                        6-2)Find who is a sub partner and how many reverse subs have happened.
+                        7-2)If more than allowed, show a popup.
+                        8-2)Also, show a popup for who a sub partner is.
+
+        Return:
+            None
+        '''
+
         from DVA import match, frontend_references as gui
 
         if reverse_sub_check == '':
@@ -2346,11 +2469,39 @@ class SubstitutionsWindowBase(Screen):
 
     def get_players_list(self, team, forced=False):
 
+        '''
+        This is a function that uses a more generic core function to get list of peoples objects to be used in loading 
+        players list that are currently on the court.
+
+        Parameters:
+            self: TeamSetUpBase
+            team: py.match.objects.Team
+            forced: bool - should we include expulsed and disqualified players. True for forced substitutions when we just
+            expulsed / disqualified them and need a substitution.
+
+        Return:
+            get_people_list(team, with_expulsed_players=forced, with_disqualified_players=forced, end_index=players_in_team): function 
+            call with given parameters that returns list with Player and Stuff objects
+        '''
+
         from py.core import get_people_list
 
         return get_people_list(team, with_expulsed_players=forced, with_disqualified_players=forced, end_index=players_in_team)
 
     def get_subs_list(self, team):
+
+        '''
+        This is a function that uses a more generic core function to get list of peoples objects to be used in loading 
+        players list that are currently on the bench.
+
+        Parameters:
+            self: gfx.frontend.SubstitutionsWindowBase
+            team: py.match.objects.Team
+
+        Return:
+            get_people_list(team, start_index=players_in_team, with_liberos=libero_allowed_to_substitute): function 
+            call with given parameters that returns list with Player objects.
+        '''
 
         from py.core import get_people_list
         
@@ -2358,6 +2509,19 @@ class SubstitutionsWindowBase(Screen):
 
     def forced_disable_enable(self, team, boolean):
         
+        '''
+        This is a function that is responsible for blocking other tabs when the substitution is forces - i.e, after a sanction.
+        However, it is called on every load and parameter 'boolean' represents if the load is actually forced.
+
+        Parameters:
+            self: gfx.frontend.SubstitutionsWindowBase
+            team: py.match.objects.Team
+            boolean: int (crossed out) bool. 
+
+        Return:
+            None
+        '''
+
         from DVA import match, frontend_references as gui
         
         gui.get('MatchWindowRefereeTabPanel').switch_to(gui.get('MatchWindowRefereeTabPanelSubstitutions'))
