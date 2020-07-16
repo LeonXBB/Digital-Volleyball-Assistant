@@ -467,6 +467,22 @@ CODE REFERENCES
             Also, do not write classes / functions / variables that the element receives through other means (such as import or direct links
             to other elements in code)
 
+        Note about USES and USED BY field:
+
+            In this field we need to write all the other elements that the element uses.
+
+            It is not only limited to the 'import' command but also to any link in a code.
+            And even when the link is not done directly in the code, but another element is still being implicitly used, it still has
+            to be shown.
+            Basically, any element, change in which will lead to change in behavior in the current element, shall be listed here.
+
+            Links should be a two-way street, generally (if one element uses another, another element is used by the first one).
+
+            Brackets may specify what / where / in what way the link is being used.
+
+            The syntax 'file.element_from_file' and 'element_from_file' from 'file' was originally meant to be used like its Python
+            equivalent but came to have nothing in common with that. Whatever is more comfortable for you to write.
+
         Note about using DVA.match in USES and USED BY:
             
             #TODO (for attention)
@@ -586,6 +602,17 @@ CODE REFERENCES
             match.left_team.long_name, frontend_references)
             gfx.frontend.SanctionWindowReferee.clear_chosen_person (match.left_team, frontend_references)
             gfx.frontend.SanctionWindowReferee.clear_chosen_sanction (match.left_team, frontend_references)
+            gfx.frontend.SanctionWindowReferee.apply_team_limitations (match.left_team, match.sets, frontend_references)
+            gfx.frontend.SanctionWindowReferee.apply_person_limitations (match.left_team, frontend_references)
+            gfx.frontend.SanctionWindowReferee.apply_sanction_limitations (match.left_team, frontend_references)
+            gfx.frontend.SanctionWindowReferee.on_load (match.left_team, match.right_team )
+            gfx.frontend.SanctionWindowReferee.sanction_button_pressed (match.left_team, match.left_team.PlayersList.load, 
+            match.left_team.PlayersList.scroll, match.right_team, match.right_team.PlayersList.load, match.right_team.PlayersList.scroll, 
+            frontend_references)
+            gfx.frontend.SanctionWindowReferee.person_button_pressed (match.left_team, match.right_team, frontend_references)
+            gfx.frontend.SanctionWindowReferee.cancel_button_pressed (match.left_team, match.right_team, frontend_references)
+            gfx.frontend.SanctionWindowReferee.save_button_pressed (match.officials[0].sanction, match.left_team, match.right_team, 
+            frontend_references)
 
         Uses:
             Config from Kivy.config 
@@ -621,6 +648,7 @@ CODE REFERENCES
 
                 Used by:
                     gfx.frontend.TeamSetUpReferee.header_button
+                    gfx.frontend.SanctionWindowReferee.sanction_button_pressed
 
         Uses: 
             path, getcwd from os
@@ -714,7 +742,7 @@ CODE REFERENCES
             gfx.frontend.SanctionWindowReferee.switch_people_list_opacity (ImageButton)
             gfx.frontend.SanctionWindowReferee.init_visual_elements (ToggleButton)
             gfx.frontend.SanctionWindowReferee.get_person_sanction_level (statuses, language_code)
-            gfx.frontend.SanctionWindowReferee.sanction_button_pressed (Button)
+            gfx.frontend.SanctionWindowReferee.sanction_button_pressed (Button, ToggleButton, indexes)
             gfx.frontend.SanctionWindowReferee.person_button_pressed (Button)
             gfx.frontend.SanctionWindowReferee.cancel_button_pressed (Button)
             gfx.frontend.SanctionWindowReferee.save_button_pressed (Button)
@@ -1788,6 +1816,9 @@ CODE REFERENCES
                     gfx.frontend.SanctionWindowReferee.init_visual_elements
                     gfx.frontend.SanctionWindowReferee.clear_chosen_person
                     gfx.frontend.SanctionWindowReferee.clear_chosen_sanction
+                    gfx.frontend.SanctionWindowReferee.apply_team_limitations
+                    gfx.frontend.SanctionWindowReferee.apply_person_limitations
+                    gfx.frontend.SanctionWindowReferee.cancel_button_pressed
 
                 def __init__
 
@@ -1797,6 +1828,7 @@ CODE REFERENCES
                         Toggle Button group for left team tab and right team tab.
                         This design also includes scrolling. It is done by invisible slider which movement is then
                         processed.
+                        
                     Parameters: 
                         self: gfx.frontend.SanctionWindowReferee.SharedArea
                         team: str 'A' or 'B'
@@ -1878,11 +1910,14 @@ CODE REFERENCES
                     DVA.pyw (match, frontend_references as gui)
 
                 Used by:
+                    gfx.frontend.SanctionWindowReferee.on_load
+                    gfx.frontend.SanctionWindowReferee.sanction_button_pressed
+                    gfx.frontend.SanctionWindowReferee.person_button_pressed
             
             def calculate_popup
 
                 Info:
-                    This is a button that calculates if we need to show popup(s) to the user.
+                    This is a function that calculates if we need to show popup(s) to the user.
                     In case of this screen, we only have one popup to possibly show - reminder to
                     use expulsion instead of the penalty at the set- / match- point (if active by rules)
 
@@ -1907,6 +1942,7 @@ CODE REFERENCES
                     match, match.sets, match.left_team, match.sets[0].score from DVA.pyw
 
                 Used by:
+                    gfx.frontend.SanctionWindowReferee.on_load
             
             def enable_every_sanction
 
@@ -1924,8 +1960,10 @@ CODE REFERENCES
                 Uses:
                     match.left_team, frontend_references as gui from DVA.pyw
                     gfx.frontend.SanctionWindowReferee.SharedArea
+                    gfx.frontend.SanctionWindowReferee.person_button_pressed
 
                 Used by:
+                    gfx.frontend.SanctionWindowReferee.person_button_pressed
 
             def get_people_list
 
@@ -1945,6 +1983,7 @@ CODE REFERENCES
 
                 Used by:
                     gfx.frontend.SanctionWindowReferee.init_visual_elements
+                    gfx.frontend.SanctionWindowReferee.apply_sanction_limitations
 
             def switch_people_list_opacity
 
@@ -1967,6 +2006,7 @@ CODE REFERENCES
                     gfx.frontend.SanctionWindowReferee.clear_chosen_person
 
                 Used by:
+                    gfx.frontend.SanctionWindowReferee.sanction_button_pressed
 
             def init_visual_elements
 
@@ -1999,6 +2039,7 @@ CODE REFERENCES
                     gfx.visual_elements.TeamName, gfx.visual_elements.TeamName.load
 
                 Used by:
+                    gfx.frontend.SanctionWindowReferee.on_load
 
             def clear_chosen_person
 
@@ -2019,6 +2060,8 @@ CODE REFERENCES
 
                 Used by:
                     gfx.frontend.SanctionWindowReferee.switch_people_list_opacity
+                    gfx.frontend.SanctionWindowReferee.apply_sanction_limitations
+                    gfx.frontend.SanctionWindowReferee.cancel_button_pressed
 
             def clear_chosen_sanction
 
@@ -2038,12 +2081,15 @@ CODE REFERENCES
                     gfx.frontend.SanctionWindowReferee.SharedArea
 
                 Used by:
+                    gfx.frontend.SanctionWindowReferee.apply_team_limitations
+                    gfx.frontend.SanctionWindowReferee.apply_person_limitations
+                    gfx.frontend.SanctionWindowReferee.cancel_button_pressed
 
             def get_person_sanction_level
 
                 Info:
                     This is a function that takes person's name, find this person, and get their current
-                    sanction levet.
+                    sanction level.
 
                 Structure:
                     person: str
@@ -2067,6 +2113,8 @@ CODE REFERENCES
                     py.match.objects.Person.get_sanction_level
 
                 Used by:
+                    gfx.frontend.SanctionWindowReferee.apply_person_limitations
+                    gfx.frontend.SanctionWindowReferee.apply_sanction_limitations
 
             def apply_team_limitations
 
@@ -2096,8 +2144,14 @@ CODE REFERENCES
                     None
 
                 Uses:
+                    py.match.match_config, py.match.config.SANCTIONS_LEVELS
+                    gfx.frontend.SanctionWindowReferee.SharedArea
+                    match.left_team, match.sets , frontend_references as gui from DVA.pyw
+                    gfx.frontend.SanctionWindowReferee.clear_chosen_sanction
 
                 Used by:
+                    gfx.frontend.SanctionWindowReferee.on_load
+                    gfx.frontend.SanctionWindowReferee.person_button_pressed
 
             def apply_person_limitations
 
@@ -2120,8 +2174,15 @@ CODE REFERENCES
                     None
 
                 Uses:
+                    match.left_team, frontend_references as gui from DVA.pyw
+                    py.match.match_config, py.match.match_config.SANCTIONS_LEVELS
+                    gfx.frontend.SanctionWindowReferee.get_person_sanction_level
+                    gfx.frontend.SanctionWindowReferee.clear_chosen_sanction
+                    gfx.frontend.SanctionWindowReferee.SharedArea
 
                 Used by:
+                    gfx.frontend.SanctionWindowReferee.on_load
+                    gfx.frontend.SanctionWindowReferee.person_button_pressed
 
             def apply_sanction_limitations
 
@@ -2153,9 +2214,16 @@ CODE REFERENCES
                     people_list: list of people to load in TeamPeopleList
 
                 Uses:
+                    match.left_team, frontend_references as gui from DVA.pyw 
+                    py.match.match_config, py.match.match_config.SANCTIONS_LEVELS
+                    gfx.frontend.SanctionWindowReferee.get_person_sanction_level
+                    gfx.frontend.SanctionWindowReferee.clear_chosen_person
+                    gfx.frontend.SanctionWindowReferee.get_people_list
 
                 Used by:
                     gfx.frontend.SanctionWindowReferee.init_visual_elements
+                    gfx.frontend.SanctionWindowReferee.on_load
+                    gfx.frontend.SanctionWindowReferee.sanction_button_pressed
 
             def on_load
 
@@ -2173,6 +2241,14 @@ CODE REFERENCES
                     None
 
                 Uses:
+                    match.left_team, match.right_team from DVA.pyw
+                    gfx.frontend.SanctionWindowReferee.set_save_button_state
+                    gfx.frontend.SanctionWindowReferee.apply_team_limitations
+                    gfx.frontend.SanctionWindowReferee.apply_person_limitations
+                    gfx.frontend.SanctionWindowReferee.apply_sanction_limitations
+                    gfx.frontend.SanctionWindowReferee.calculate_popup
+                    gfx.frontend.SanctionWindowReferee.init_visual_elements
+
 
                 Used by:
                     gfx.frontend.SanctionWindowReferee.header_button
@@ -2198,6 +2274,13 @@ CODE REFERENCES
                     None
 
                 Uses:
+                    ToggleButton, indexes from gfx.frontend
+                    gfx.frontend.SanctionWindowReferee.switch_people_list_opacity
+                    gfx.frontend.SanctionWindowReferee.apply_sanction_limitations
+                    gfx.frontend.SanctionWindowReferee.set_save_button_state
+                    match.left_team, match.left_team.PlayersList.load, match.left_team.PlayersList.scroll,
+                    match.right_team, match.right_team.PlayersList.load, match.right_team.PlayersList.scroll,
+                    frontend_references as gui from DVA.pyw
 
                 Used by:
                     gfx.frontend.SanctionWindowReferee.__init__
@@ -2221,6 +2304,11 @@ CODE REFERENCES
                     None
 
                 Uses:
+                    match.left_team, match.right_team, frontend_references as gui from DVA.pyw 
+                    gfx.frontend.SanctionWindowReferee.apply_person_limitations
+                    gfx.frontend.SanctionWindowReferee.apply_team_limitations
+                    gfx.frontend.SanctionWindowReferee.enable_every_sanction
+                    gfx.frontend.SanctionWindowReferee.set_save_button_state
 
                 Used by:
                     gfx.frontend.SanctionWindowReferee.__init__
@@ -2240,12 +2328,17 @@ CODE REFERENCES
                     3)Release all buttons.
 
                 Return:
-                    None.
+                    None
 
                 Uses:
+                    match.left_team, match.right_team, frontend_references as gui
+                    gfx.frontend.SanctionWindowReferee.SharedArea
+                    gfx.frontend.SanctionWindowReferee.clear_chosen_person
+                    gfx.frontend.SanctionWindowReferee.clear_chosen_sanction
 
                 Used by:
                     gfx.frontend.SanctionWindowReferee.__init__
+                    gfx.frontend.SanctionWindowReferee.save_button_pressed
 
             def save_button_pressed
 
@@ -2270,6 +2363,8 @@ CODE REFERENCES
                     None
 
                 Uses:
+                    match.officials[0].sanction, match.left_team, match.right_team, frontend_references as gui from DVA.pyw 
+                    gfx.frontend.SanctionWindowReferee.cancel_button_pressed
 
                 Used by:
                     gfx.frontend.SanctionWindowReferee.__init__
@@ -2479,6 +2574,23 @@ CODE REFERENCES
 
                 Used by:
                     gfx.frontend.CoinTossWindow.save_button
+
+    py.match.match_config
+
+        Structure:
+
+            SANCTIONS_LEVELS: list
+
+                Used by:
+                    gfx.frontend.SanctionWindowReferee.apply_team_limitations
+                    gfx.frontend.SanctionWindowReferee.apply_person_limitations
+                    gfx.frontend.SanctionWindowReferee.apply_sanction_limitations
+
+        Used by:
+
+            gfx.frontend.SanctionWindowReferee.apply_team_limitations
+            gfx.frontend.SanctionWindowReferee.apply_person_limitations
+            gfx.frontend.SanctionWindowReferee.apply_sanction_limitations
 
     meta.app_config
 

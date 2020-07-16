@@ -1308,9 +1308,34 @@ class LineUpSetUpReferee(LineUpSetUpBase):
 
 class SanctionsWindowReferee(Screen):
     
+    '''
+    This is a class for Sanctions screen. It allows users to issue sanctions to staff and players. It has no base and meant to be used directly 
+    by the referees as only they can issue sanctions.
+    '''
+
     class SharedArea(GridLayout):
 
+        '''
+        This is a subclass for the screen's main content. Even though there's no base for this screen, it is still a good idea to use 
+        subclasses for visual content.
+        '''
+
         def __init__(self, team):
+
+            '''
+            This is a initialization function for this content class. It only deals with design and binding.
+            Unlike other __init__ functions, this also takes additional argument 'team' (str) to differ between
+            Toggle Button group for left team tab and right team tab.
+            This design also includes scrolling. It is done by invisible slider which movement is then
+            processed.
+                
+            Parameters: 
+                self: gfx.frontend.SanctionWindowReferee.SharedArea
+                team: str 'A' or 'B'
+
+            Return:
+                None 
+            '''
 
             super().__init__()
 
@@ -1373,6 +1398,17 @@ class SanctionsWindowReferee(Screen):
 
     def header_button(self, button):
         
+        '''
+        This is a function that processes header buttons presses.
+
+        Parameters:
+            self: gfx.frontend.SanctionWindowReferee
+            button: gfx.frontend.TabbedPanelHeader
+
+        Return:
+            None
+        '''
+
         from DVA import frontend_references as gui
 
         if button == gui.get('MatchWindowRefereeSanctionsTeamATab'):
@@ -1381,6 +1417,17 @@ class SanctionsWindowReferee(Screen):
             self.on_load('B', scroll_get_indexes('Sanctions', 'B')[0], scroll_get_indexes('Sanctions', 'B')[1], False)
 
     def __init__(self):
+
+        '''
+        This is main initialization function. It creates, and loads main window frame, creates content subclass,
+        and binds all the widgets.
+
+        Parameters:
+            self: gfx.frontend.SanctionWindowReferee
+
+        Return:
+            None
+        '''
 
         super().__init__()
 
@@ -1438,7 +1485,30 @@ class SanctionsWindowReferee(Screen):
         self.sanction_chosen_B = ''
 
     def set_save_button_state(self, team):
-        
+
+        '''
+        This is a button that calculates save button state. It should be normal if the user have chosemn
+        both sanction and person, and disabled otherwise. 
+
+        Structure:
+            sanction_chosen: str
+            person_chosen: str
+
+        Parameters:
+            self: gfx.frontend.LineUpSetUpBase
+            team: py.match.objects.Team
+
+        Step by step:
+            1)Set button's state to disabled.
+            2)Go through sanction buttons on both sides and check if any of them is active. 
+            3)Go through players list and check if any button is active.
+            4)If 2 and 3 are true, or 2 is true and it's a delay sanction:
+                5-1)Set button's state to normal.
+
+        Return:
+            None
+        '''
+
         from DVA import match, frontend_references as gui
           
         gui.get('MatchWindowRefereeSanctionsTabSaveButton').disabled = True
@@ -1460,6 +1530,26 @@ class SanctionsWindowReferee(Screen):
 
     def calculate_popup(self, team):
 
+        '''
+        This is a function that calculates if we need to show popup(s) to the user.
+        In case of this screen, we only have one popup to possibly show - reminder to
+        use expulsion instead of the penalty at the set- / match- point (if active by rules)
+
+        Parameters:
+            self: gfx.frontend.SanctionWindowReferee
+            team: py.match.objects.Team
+
+        Step by step:
+            1)If this rule is active, 
+                2-1)Get the current set.
+                3-1)If one more point for the leading team will end this set in respect to minimal difference,
+                    4-1-1)Same thing in respect to minimal points amount:
+                        5-1-1-1)Show the popup.
+
+        Return:
+            None
+        '''
+
         from DVA import match
 
         if expulsions_instead_of_penalties_on_set_point:
@@ -1476,6 +1566,18 @@ class SanctionsWindowReferee(Screen):
 
     def enable_every_sanction(self, team):
 
+        '''
+        This function just reloads the state of every sanction image to normal when 
+        we need to.
+
+        Parameters:
+            self: gfx.frontend.SanctionWindowReferee
+            team: py.match.objects
+
+        Return:
+            None
+        '''
+
         from DVA import match, frontend_references as gui
 
         for direction in ('Left', 'Right'):
@@ -1484,11 +1586,38 @@ class SanctionsWindowReferee(Screen):
 
     def get_people_list(self, team):
 
+        '''
+        This is a function that uses a more generic core function to get list of peoples objects to be used in loading players list on the 
+        screen. 
+
+        Parameters:
+            self: TeamSetUpBase
+            team: py.match.objects.Team
+
+        Return:
+            get_people_list(team, with_stuff=True, with_expulsed_players=True, with_disqualified_players=True): function call 
+            with given parameters that returns list with Player and Stuff objects.
+        '''
+
         from py.core import get_people_list
 
         return get_people_list(team, True, True)
 
     def switch_people_list_opacity(self, team, button):
+
+        '''
+        Just like in its name, this function change people list's opacity to the opposite.
+        This is used for selecting delay sanction which is issued in the name of the team,
+        and deselecting it.
+
+        Parameters:
+            self: gfx.frontend.SanctionWindowReferee
+            team: py.match.objects.Team
+            button: gfx.frontend.ImageButton
+
+        Return:
+            None
+        '''
 
         from DVA import match, frontend_references as gui
         
@@ -1506,6 +1635,25 @@ class SanctionsWindowReferee(Screen):
 
     def init_visual_elements(self, team, start_index, end_index, custom_people_list=False):
 
+        '''
+        Just like other functions with this name, it deals with connecting screen's widgets to Visual Elements,
+        and processing them.
+        This specifically deals with TeamPeopleLists and TeamNames.
+        It has sort of specific argument 'custom_people_list'. Basically, when we select a sanction, the app
+        automatically removes people not eligable to get this sanction from the people list. This argument allows for 
+        reloading the modified list when scrolling. Otherwise, the full list would be shown.
+
+        Parameters:
+            self: gfx.frontend.SanctionWindowReferee
+            team: py.match.objects.Team 
+            start_index: int 
+            end_index: int
+            custom_people_list: bool 
+
+        Return:
+            None
+        '''
+
         from DVA import match, frontend_references as gui
         from gfx.visual_elements import TeamPeopleList, TeamName
        
@@ -1522,6 +1670,18 @@ class SanctionsWindowReferee(Screen):
 
     def clear_chosen_person(self, team):
 
+        '''
+        This is a function that clears chosen person for this team's tab:both graphically (release the button) and codely 
+        (setting variable value to '')
+
+        Parameters:
+            self: gfx.frontend.SanctionWindowReferee
+            team: py.match.objects.Team
+
+        Return:
+            None
+        '''
+
         from DVA import match, frontend_references as gui
         
         for button in gui.get('MatchWindowRefereeSanctionsTeam' + ('A' if team == match.left_team else 'B') + 'PEOPLELIST').children:
@@ -1531,6 +1691,18 @@ class SanctionsWindowReferee(Screen):
 
     def clear_chosen_sanction(self, team):
         
+        '''
+        This is a function that clears chosen sanction for this team's tab: both graphically (release the button) and codely 
+        (setting variable value to '')
+
+        Parameters:
+            self: gfx.frontend.SanctionWindowReferee
+            team: py.match.objects.Team
+
+        Return:
+            None
+        '''
+
         from DVA import match, frontend_references as gui
         
         for direction in ('Right', 'Left'):
@@ -1540,6 +1712,27 @@ class SanctionsWindowReferee(Screen):
             setattr(self, 'sanction_chosen_' + ('A' if team == match.left_team else 'B'), '')
 
     def get_person_sanction_level(self, team, person_name_string):
+
+        '''
+        This is a function that takes person's name, find this person, and get their current sanction level.
+
+        Structure:
+            person: str
+
+        Parameters:
+            self: gfx.frontend.SanctionWindowReferee
+            team: py.match.objects.Team 
+            person_name_string: str
+
+        Step by step:
+            1)Strip person's name string of all numbers / prefixes.
+            2)Find out who this person is.
+            3)Get their sanction level.
+
+        Return:
+            person.get_sanction_level(): function call that returns list of 
+            [person's sanction level, amount of sanctions of these level (for when multiple is/isn't allowed)]
+        '''
 
         person = ''
 
@@ -1557,6 +1750,32 @@ class SanctionsWindowReferee(Screen):
         if person != '': return person.get_sanction_level()
 
     def apply_team_limitations(self, team):
+
+        '''
+        This is a function that disables and hides sanctions that team and / or any of its players is not allowed to receive due to
+        amount limitations (in standard rules, yellow cards).
+        It does so by utilizing two list: current amount of sanctions received by the team, and their max amount.
+
+        Structure:
+            sanctions_request: list 
+            sanctions_allowed: list
+
+        Parameters:
+            self: gfx.frontend.SanctionWindowReferee
+            team: py.match.objects.Team
+
+        Step by step:
+            1)Create and fill list of amount of team's sanctions, and max values of sanctions allowed, both by type.
+            2)Disable all buttons, and release every one except for the current one (obviously).
+            3)Calculate how many sanctions the team has already received, sort by type.
+            4)If the team has reached limit for the sanction, disable it.
+            5)Separately process delay warning. #TODO why though? (I just don't remember) Also, don't we then need to process delay
+            penalties and other cards for custom rules set?
+            6)If the currently selected sanction is not allowed, clear it.
+
+        Return:
+            None
+        '''
 
         from DVA import match, frontend_references as gui
 
@@ -1593,7 +1812,26 @@ class SanctionsWindowReferee(Screen):
         
     def apply_person_limitations(self, team, person_name_string):
         
-        from DVA import match, frontend_references as gui
+        '''
+        This is a function that disables and hides sanction that the person is not allowed to receive due to
+        amount limitations (in standard rules, any previous card, as well as yellow if already issued to any other player).
+
+        Parameters:
+            self: gfx.frontend.SanctionWindowReferee
+            team: py.match.objects.Team
+            person_name_string: str
+
+        Step by step:
+            1)If the person is not eligable to the currently selected sanction, clear it (the sanction)
+            2)Disable delay sanction. #TODO shouldn't we include customization possibilities for, an example, delay sanction to players?
+            3)Repeat step 1, for some, reason, but just partly. #TODO why though again?
+            4)Repeat steps 2 and 3. #TODO okey, wth is going on here? Definetely missing something.
+
+        Return:
+            None
+        '''
+
+        from DVA import match, frontend_references as gui #TODO there are some problems with this function as well as with the other ones.
        
         if getattr(self, 'sanction_chosen_' + ('A' if team == match.left_team else 'B')) != '':
             if SANCTIONS_LEVELS.index(getattr(self, 'sanction_chosen_' + ('A' if team == match.left_team else 'B'))) < SANCTIONS_LEVELS.index(self.get_person_sanction_level(team, person_name_string)[0]):
@@ -1638,6 +1876,34 @@ class SanctionsWindowReferee(Screen):
 
     def apply_sanction_limitations(self, team):
         
+        '''
+        This is a function that disables and hides people that the sanction is not allowed to be issued to due to
+        amount limitations (in standard rules, any previous card, as well as yellow if already issued to any other player).
+        Unlike other two functions above, it does not apply directly but rather return list of people to updatr TeamPeopleList.
+
+        Structure:
+            person_list: list
+
+        Parameters:
+            self: gfx.frontend.SanctionWindowReferee
+            team: py.match.objects.Team
+
+        Step by step:
+
+            1-1)If the user has chosen the player:
+                2)Append everyone from staff who's not disqualified. #TODO I mean that's obvious, but once again, place
+                for customization... Also, make check for current sanction, not for disqualification. Also, what if we want to issue,
+                for example, yellow, and the staff has a red card? Will this function clear that? Will the apply_person_limitations 
+                function clear that?
+                3-1-1)For each player, if their current sanction level is below the sanction, or limit hasn't be reached yet, append them.
+                3-1-2)Else, if not, and if it's chosen player, clear them.
+                4-1)Return the list we've got.
+            1-2)Else, return the regular function call.
+
+        Return:
+            people_list: list of people to load in TeamPeopleList
+        '''
+
         from DVA import match, frontend_references as gui
         
         if getattr(self, 'sanction_chosen_' + ('A' if team == match.left_team else 'B')) != '':
@@ -1674,7 +1940,21 @@ class SanctionsWindowReferee(Screen):
     
     def on_load(self, team, start_index, end_index, is_scrolling=False):
 
-        from DVA import match, frontend_references as gui
+        '''
+        This is a function that loads screen's logic.
+
+        Parameters:
+            self: gfx.frontend.SanctionWindowReferee
+            team: py.match.objects.Team
+            start_index: int
+            end_index: int 
+            is_scrolling: bool
+
+        Return:
+            None
+        '''
+
+        from DVA import match
      
         if team == 'A':
 
@@ -1699,6 +1979,25 @@ class SanctionsWindowReferee(Screen):
             self.init_visual_elements(match.right_team, start_index, end_index, is_scrolling)  
 
     def sanction_button_pressed(self, button):
+
+        '''
+        This is a functions that processes press on a sanction button, both graphically and codely. 
+
+        Parameters:
+            self: gfx.frontend.SanctionWindowReferee
+            button: gfx.frontend.Button
+
+        Step by step:
+            1)Get correct tab.
+            2)Update tab's sanction chosen.
+            3)Swithc people list's opacity (which will work if necessary).
+            4)Load and scroll TeamPeopleList.
+            5)Update scrolling indexes.
+            6)Setting save button state.
+
+        Return:
+            None
+        '''
 
         from DVA import match, frontend_references as gui 
 
@@ -1732,6 +2031,23 @@ class SanctionsWindowReferee(Screen):
 
     def person_button_pressed(self, button):
 
+        '''
+        This is a functions that processes press on a player button, both graphically and codely. 
+
+        Parameters:
+            self: gfx.frontend.SanctionWindowReferee
+            button: gfx.frontend.Button
+
+        Step by step:
+            1)Get correct tab.
+                2-1)If the user's pressing down, update tab's selected person, and apply their limitations.
+                2-2)Else, clear tab's selected person, reload sanctions and team's limitations.
+            3)Set save button state.
+
+        Return:
+            None
+        '''
+
         from DVA import match, frontend_references as gui
 
         if gui.get('MatchWindowRefereeSanctionsTabHeader').current_tab == gui.get('MatchWindowRefereeSanctionsTeamATab'):
@@ -1760,6 +2076,22 @@ class SanctionsWindowReferee(Screen):
 
     def cancel_button_pressed(self, button):
         
+        '''
+        This is a functions that processes press on a cancel button, both graphically and codely. 
+
+        Parameters:
+            self: gfx.frontend.SanctionWindowReferee
+            button: gfx.frontend.Button
+
+        Step by step:
+            1)Get correct tab.
+            2)Clear tab's selected sanction and player.
+            3)Release all buttons.
+
+        Return:
+            None
+        '''
+
         from DVA import match, frontend_references as gui
         
         if gui.get('MatchWindowRefereeSanctionsTabHeader').current_tab == gui.get('MatchWindowRefereeSanctionsTeamATab'):
@@ -1788,6 +2120,27 @@ class SanctionsWindowReferee(Screen):
 
     def save_button_pressed(self, *args):
         
+        '''
+        This is a functions that processes press on a save button, both graphically and codely. 
+
+        Structure:
+            sanction_chosen: str
+            person_chosen: str
+
+        Parameters:
+            self: gfx.frontend.SanctionWindowReferee
+            button: gfx.frontend.Button
+        
+        Step by step:
+            1)Copy class' variables to function's ones, and delete the former.
+            2)Call the respective function of the match official object.
+            3)If the sanction type does not require switching to another screen, clear the current screen 
+            by calling respective function.
+
+        Return:
+            None
+        '''
+
         from DVA import match, frontend_references as gui
 
         if gui.get('MatchWindowRefereeSanctionsTabHeader').current_tab == gui.get('MatchWindowRefereeSanctionsTeamATab'):
