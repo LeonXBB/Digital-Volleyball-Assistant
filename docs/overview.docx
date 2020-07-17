@@ -510,6 +510,46 @@ CODE REFERENCES
                 From that functuin, make references to the widgets, represented as elements - members of the screens' structure.
                 Every widget included in the dictionary shall exist in these references.
 
+        #TODOS:
+
+            1)Define the STRUCTURE field better.
+
+            2)For using DVA.match:
+
+                1)For info in USES and USED BY: should the final elements of py.match.objects classes structures:
+                    1)Be linked to DVA.pyw?
+                    2)Be linked to the place where they are actually called?
+                    3)Be linked to Match object initialization?
+                    4)Be not linked at all?
+                    (I'm rooting for the third option)
+                
+                2)How should we link to specific exemplar of the class and not the class itself when the class has more than one exemplar 
+                and they may be different (match.sets[-1])
+                
+                3)How should we process links that are not related to DVA.match directly but rather implicitly?
+                Like, in this code 'for team in (match.left_team, match.right_team): print(team.long_name)'
+                we should link to match.left_team, match.right_team (obviously), but should we also link to 
+                match.left_team.long_name, match.right_team.long_name as they both participate? The 'General Structure' part above leans
+                to 'Yes' but it's more like a general guideline to present a generic sense of this field, not intended to be used directly
+                in every situation.
+                Doing so may increase writing time and decrease readability but not doing so may lead to missing some important links.
+                Currently, the style changes from 'Yes' to 'No' cause the design idea was changed midway.
+
+            3)Currently, we not linking to class's variable but do link to class's functions. 
+            The general structure says that we should not show links to what we have already shown links to in Parameters senction to avoid
+            double-usage and confusion. We have shown link to a class in parameter 'self'. 
+            We, however, still show links to class's function separately cause they exist on the same level among themselves and are semi-independent
+            from the class: change in them will likely not affect the class itself.
+            But we do not do the same for class's variables argumentating it (in my head) by the fact that they are dependent and will not exist 
+            independently, even though they are subject to change as well.
+            We need to find some consistancy!
+
+            4)Add some consistancy in button-processing functions' names.
+
+            5)We're currently linking to __init__ function only from something that is directly linked to said function, and when we're linking
+            to an exemplar of an objects we're linking to the class itself. This is correct 'formattingly' but obviously wrong from Python
+            point of view. Should we fix it?
+
     run.pyw
 
         Info: 
@@ -620,6 +660,19 @@ CODE REFERENCES
             match.sets[-1].wrong_sub_warned_A, match.sets[-1].wrong_sub_warned_B, match.sets[-1].extra_sub_warned_A, 
             match.sets[-1].extra_sub_warned_B, match.left_team)
             gfx.frontend.SubstitutionsWindowBase.forced_disable_enable (match.left_team, frontend_references)
+            gfx.frontend.SubstitutionsWindowBase.init_visual_elements (match.left_team, match.right_team, match.sets[-1].sanctions[-1].person, 
+            frontend_references)
+            gfx.frontend.SubstitutionsWindowBase.on_load (match.left_team, match.right_team)
+            gfx.frontend.SubstitutionsWindowBase.on_court_player_button_pressed (match.left_team, match.left_team.players, match.right_team, 
+            match.right_team.players, frontend_references)
+            gfx.frontend.SubstitutionsWindowBase.on_bench_player_button_pressed (match.left_team, match.left_team.players, match.right_team, 
+            match.right_team.players, frontend_references)
+            gfx.frontend.SubstitutionsWindowBase.next_button (match.left_team, match.left_team.head_coach, 
+            match.left_team.head_coach.substitution, match.right_team, match.right_team.head_coach, match.right_team.head_coach.substitution, 
+            frontend_references)
+            gfx.frontend.SubstitutionsWindowBase.cancel_button (frontend_references)
+
+            gfx.frontend.SubstitutionsWindowReferee.header_button (frontend_references)
 
         Uses:
             Config from Kivy.config 
@@ -763,6 +816,14 @@ CODE REFERENCES
             reverse_substitutions_amount_final_set, substitution_errors, language_code)
             gfx.frontend.SubstitutionsWindowBase.get_players_list (players_in_team)
             gfx.frontend.SubstitutionsWindowBase.get_subs_list (players_in_team, libero_allowed_to_substitute)
+            gfx.frontend.SubstitutionsWindowBase.init_visual_elements (ToggleButton)
+            gfx.frontend.SubstitutionsWindowBase.on_court_player_button_pressed (Button)
+            gfx.frontend.SubstitutionsWindowBase.on_bench_player_button_pressed (Button)
+            gfx.frontend.SubstitutionsWindowBase.next_button (Button)
+            gfx.frontend.SubstitutionsWindowBase.cancel_button (Button)
+
+            gfx.frontend.SubstitutionsWindowReferee.__init__ (TabbedPanel, TabbedPanelHeader)
+            gfx.frontend.SubstitutionsWindowReferee.header_button (Button)
 
         class Application
 
@@ -2411,10 +2472,10 @@ CODE REFERENCES
 
                 requests_counter: int
                         
-                player_out_A: str
-                player_in_A: str
-                player_out_B: str
-                player_in_B: str
+                player_out_A: py.match.objects.Player object
+                player_in_A: py.match.objects.Player object
+                player_out_B: py.match.objects.Player object
+                player_in_B: py.match.objects.Player object
 
                 forced_A: bool
                 forced_B: bool
@@ -2437,6 +2498,8 @@ CODE REFERENCES
                 gfx.frontend.SubstitutionsWindowBase.next_button
                 gfx.frontend.SubstitutionsWindowBase.cancel_button
 
+                gfx.frontend.SubstitutionsWindowReferee
+                
             class SharedArea
 
                 Info:
@@ -2457,6 +2520,10 @@ CODE REFERENCES
 
                     gfx.frontend.SubstitutionsWindowBase.set_save_button_state
                     gfx.frontend.SubstitutionsWindowBase.calculate_pop_ups
+                    gfx.frontend.SubstitutionsWindowBase.init_visual_elements
+                    gfx.frontend.SubstitutionsWindowBase.cancel_button
+
+                    gfx.frontend.SubstitutionsWindowReferee.__init__ (TabbedPanel, TabbedPanelHeader)
 
                 def __init__
 
@@ -2510,6 +2577,9 @@ CODE REFERENCES
                     gfx.frontend.SubstitutionsWindowBase.SharedArea
 
                 Used by:
+                    gfx.frontend.SubstitutionsWindowBase.on_load
+                    gfx.frontend.SubstitutionsWindowBase.on_court_player_button_pressed
+                    gfx.frontend.SubstitutionsWindowBase.on_bench_player_button_pressed
 
             def get_subs_requests
 
@@ -2605,6 +2675,9 @@ CODE REFERENCES
                     gfx.frontend.PopUpWindow.show_popup
 
                 Used by:
+                    gfx.frontend.SubstitutionsWindowBase.on_load
+                    gfx.frontend.SubstitutionsWindowBase.on_court_player_button_pressed
+                    gfx.frontend.SubstitutionsWindowBase.on_bench_player_button_pressed
 
             def get_players_list
 
@@ -2627,6 +2700,7 @@ CODE REFERENCES
                     gfx.frontend.players_in_team
 
                 Used by:
+                    gfx.frontend.SubstitutionsWindowBase.init_visual_elements
 
             def get_subs_list
 
@@ -2647,6 +2721,7 @@ CODE REFERENCES
                     libero_allowed_to_substitute, players_in_team from gfx.frontend
 
                 Used by:
+                    gfx.frontend.SubstitutionsWindowBase.init_visual_elements
 
             def forced_disable_enable
 
@@ -2667,65 +2742,134 @@ CODE REFERENCES
                     match.left_team, frontend_references as gui from DVA.pyw
 
                 Used by:
+                    gfx.frontend.SubstitutionsWindowBase.on_load
 
             def init_visual_elements
 
                 Info:
+                    Just like other functions with this name, it deals with connecting screen's widgets to Visual Elements,
+                    and processing them.
+                    This specifically deals with TeamPeopleLists and TeamNames.
+                    There are two TeamPeopleList used in this screen: one for players on court and another one for players on bench.
+                    There's also special 'forced' parameters which determines if the substitution is forced (i.e result of a sanction),
+                    and thus the players on court should include sanctioned player (unlike ordinary substitutions), as well as that 
+                    they should be pre-selected, and others disabled.
 
                 Parameters:
+                    self: gfx.frontend.SubstitutionsWindowBase
+                    team: py.match.objects.Team 
+                    start_index: int 
+                    end_index: int
+                    forced: bool
+
+                Step by step:
+                    1)Create and load teams' names.
+                    2)Create and load team's list of on-court players.
+                        3-1)If not forced, scroll it between given indexes, remembering the selected player (if any).
+                        3-2)Else, scroll between given indexes, selecting sanctioned player as player out and disableing others.
+                    
+                    4)Create and load team's list of on-bench players.
+                    5)If not forced, scroll it to given indexes. #TODO why we're not scrolling in any case though? 
 
                 Return:
+                    None
 
                 Uses:
+                    match.left_team, match.right_team, match.sets[-1].sanctions[-1].person, frontend_references as gui from DVA.pyw
+                    gfx.visual_elements.TeamName, gfx.visual_elements.TeamName.load
+                    gfx.visual_elements.TeamPeopleList, gfx.visual_elements.TeamPeopleList.load, gfx.visual_elements.TeamPeopleList.scroll 
+                    gfx.frontend.SubstitutionsWindowBase.SharedArea
+                    gfx.frontend.SubstitutionsWindowBase.get_players_list
+                    gfx.frontend.SubstitutionsWindowBase.get_subs_list
+                    gfx.frontend.ToggleButton
 
                 Used by:
+                    gfx.frontend.SubstitutionsWindowBase.on_load
 
             def on_load
 
                 Info:
+                    This is a function that loads screen's logic.
 
                 Parameters:
+                    self: gfx.frontend.SubstitutionsWindowBase
+                    team: str - 'A' or 'B'
+                    start_index: int
+                    end_index: int
+                    forced: bool=False
 
                 Return:
+                    None
 
                 Uses:
+                    match.left_team, match.right_team from DVA.pyw
+                    gfx.frontend.SubstitutionsWindowBase.set_save_button_state
+                    gfx.frontend.SubstitutionsWindowBase.calculate_pop_ups
+                    gfx.frontend.SubstitutionsWindowBase.init_visual_elements
+                    gfx.frontend.SubstitutionsWindowBase.forced_disable_enable
 
                 Used by:
                     gfx.frontend.SubstitutionsWindowBase.calculate_pop_ups
+                    gfx.frontend.SubstitutionsWindowReferee.header_button
 
             def on_court_player_button_pressed
 
                 Info:
-
+                    This is a button that processes pressed on on-court players list.
+                    
                 Parameters:
+                    self: gfx.frontend.SubstitutionsWindowBase
+                    button: gfx.frontend.Button
 
                 Return:
+                    None
 
                 Uses:
+                    match.left_team, match.left_team.players, match.right_team, match.right_team.players, frontend_references from DVA.pyw
+                    gfx.frontend.SubstitutionsWindowBase.set_save_button_state
+                    gfx.frontend.SubstitutionsWindowBase.calculate_pop_ups
 
                 Used by:
+                    gfx.frontend.SubstitutionsWindowReferee.__init__ (TabbedPanel, TabbedPanelHeader)
 
             def on_bench_player_button_pressed
 
                 Info:
-
+                    This is a button that processes pressed on on-bench players list.
+                    
                 Parameters:
+                    self: gfx.frontend.SubstitutionsWindowBase
+                    button: gfx.frontend.Button
 
                 Return:
+                    None
 
                 Uses:
+                    match.left_team, match.left_team.players, match.right_team, match.right_team.players, frontend_references from DVA.pyw
+                    gfx.frontend.SubstitutionsWindowBase.set_save_button_state
+                    gfx.frontend.SubstitutionsWindowBase.calculate_pop_ups
 
                 Used by:
+                    gfx.frontend.SubstitutionsWindowReferee.__init__ (TabbedPanel, TabbedPanelHeader)
 
             def next_button
 
                 Info:
+                    This is a functions that processes press on a save button, both graphically and codely. 
 
                 Parameters:
+                    self: gfx.frontend.SubstitutionsWindowBase
+                    button: gfx.frontend.Button
 
                 Return:
+                    None
 
                 Uses:
+                    match.left_team, match.left_team.head_coach, match.left_team.head_coach.substitution, 
+                    match.right_team, match.right_team.head_coach, match.right_team.head_coach.substitution, 
+                    frontend_references as gui from DVA.pyw
+                    py.match.objects.HeadCoach, py.match.objects.HeadCoach.substitution
+                    gfx.frontend.SubstitutionsWindowBase.cancel_button 
 
                 Used by:
                     gfx.frontend.SubstitutionsWindowBase.__init__
@@ -2733,15 +2877,76 @@ CODE REFERENCES
             def cancel_button
 
                 Info:
+                    This is a functions that processes press on a cancel button, both graphically and codely. 
 
                 Parameters:
+                    self: gfx.frontend.SubstitutionsWindowBase
+                    button: gfx.frontend.Button
 
                 Return:
+                    None
 
                 Uses:
+                    gfx.frontend.SubstitutionsWindowBase.SharedArea
+                    frontend_references as gui from DVA.pyw
 
                 Used by:
                     gfx.frontend.SubstitutionsWindowBase.__init__
+                    gfx.frontend.SubstitutionsWindowBase.next_button
+
+        class SubstitutionsWindowReferee
+
+            Info:
+                This is implementation of the Base Substitutions screen for referee users. It contains of tabbed panel for two teams and said base for each team.
+
+            Structure:
+                def __init__
+                def header_button
+
+            Uses:
+                gfx.frontend.SubstitutionsWindowBase (inheiritance)
+
+            Used by:
+                gfx.frontend.SubstitutionsWindowReferee.__init__
+                gfx.frontend.SubstitutionsWindowReferee.header_button
+
+            def __init__
+
+                Info:
+                    The initializating function for the class.
+
+                Parameters:
+                    self: gfx.frontend.SubstitutionsWindowReferee
+
+                Return:
+                    None
+
+                Uses:
+                    TabbedPanel, TabbedPanelHeader from gfx.frontend
+                    gfx.frontend.SubstitutionsWindowBase.SharedArea
+                    gfx.frontend.SubstitutionsWindowBase.on_court_player_button_pressed
+                    gfx.frontend.SubstitutionsWindowBase.on_bench_player_button_pressed
+                    gfx.frontend.SubstitutionsWindowReferee.header_button
+
+            def header_button
+
+                Info:
+                    The header-button pressing processign function.
+
+                Parameters:
+                    self: SubstitutionsWindowReferee
+                    button: gfx.frontend.Button
+
+                Return:
+                    None
+
+                Uses:
+                    gfx.frontend.SubstitutionsWindowBase.on_load
+                    gfx.frontend.scroll_get_indexes
+                    frontend_references as gui from DVA.pyw
+
+                Used by:
+                    gfx.frontend.SubstitutionsWindowReferee.__init__
 
         class MatchWindowReferee
 
@@ -2766,6 +2971,7 @@ CODE REFERENCES
 
             Used by:
                 gfx.frontend.SanctionWindowReferee.header_button
+                gfx.frontend.SubstitutionsWindowReferee.header_button
 
     gfx.visual_elements
         
@@ -2776,6 +2982,7 @@ CODE REFERENCES
                 gfx.frontend.TeamSetUpBase.init_visual_elements
                 gfx.frontend.LineUpSetUpBase.init_visual_elements
                 gfx.frontend.SanctionWindowReferee.init_visual_elements
+                gfx.frontend.SubstitutionsWindowBase.init_visual_elements
 
             def load:
 
@@ -2784,24 +2991,28 @@ CODE REFERENCES
                     gfx.frontend.TeamSetUpBase.init_visual_elements
                     gfx.frontend.LineUpSetUpBase.init_visual_elements
                     gfx.frontend.SanctionWindowReferee.init_visual_elements
+                    gfx.frontend.SubstitutionsWindowBase.init_visual_elements
 
         TeamPeopleList:
 
             Used by:
                 gfx.frontend.TeamSetUpBase.load_players_list
                 gfx.frontend.SanctionWindowReferee.init_visual_elements
+                gfx.frontend.SubstitutionsWindowBase.init_visual_elements
 
             def load:
 
                 Used by:
                     gfx.frontend.TeamSetUpBase.load_players_list
                     gfx.frontend.SanctionWindowReferee.init_visual_elements
+                    gfx.frontend.SubstitutionsWindowBase.init_visual_elements
 
             def scroll:
 
                 Used by:
                     gfx.frontend.TeamSetUpBase.load_players_list
                     gfx.frontend.SanctionWindowReferee.init_visual_elements
+                    gfx.frontend.SubstitutionsWindowBase.init_visual_elements
 
         TeamSetUp:
 
@@ -2893,11 +3104,7 @@ CODE REFERENCES
                 SetUp: gfx.visual_elements.TeamSetUp
                 long_name: str
                 head_coach: py.match.objects.HeadCoach 
-
-                    Used by: 
-                        gfx.frontend.TeamSetUpBase.save_button
-                        gfx.frontend.LineUpSetUpBase.save_button
-
+                players: list of py.match.objects.Player 
                 expulsed_players: list of py.match.objects.Player 
                 disqualified_players: list of py.match.objects.Player 
 
@@ -2940,6 +3147,7 @@ CODE REFERENCES
                 wrong_sub_warned_B: bool
                 extra_sub_warned_A: bool
                 extra_sub_warned_B: bool 
+                sanctions: list of py.match.Sanction
 
         class Person
 
@@ -2953,10 +3161,12 @@ CODE REFERENCES
             Structure:
                 def team_set_up
                 def line_up_set_up
+                def substitution
 
             Used by:
                 gfx.frontend.TeamSetUpBase.save_button
                 gfx.frontend.LineUpSetUpBase.save_button
+                gfx.frontend.SubstitutionsWindowBase.next_button
 
             def team_set_up:
 
@@ -2969,6 +3179,11 @@ CODE REFERENCES
                 Used by:
                     gfx.frontend.LineUpSetUpBase.save_button
 
+            def substitution:
+
+                Used by:
+                    gfx.frontend.SubstitutionsWindowBase.next_button
+
         class Official 
 
             Structure:
@@ -2980,6 +3195,16 @@ CODE REFERENCES
                     gfx.frontend.CoinTossWindow.save_button
 
         class Substitution
+
+            Structure:
+
+                score: list of int
+
+        class Sanction:
+
+            structure:
+
+                person: str
 
     py.match.match_config
 

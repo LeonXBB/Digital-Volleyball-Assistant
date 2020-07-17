@@ -2533,6 +2533,35 @@ class SubstitutionsWindowBase(Screen):
 
     def init_visual_elements(self, team, start_index, end_index, forced):
         
+        '''
+        Just like other functions with this name, it deals with connecting screen's widgets to Visual Elements,
+        and processing them.
+        This specifically deals with TeamPeopleLists and TeamNames.
+        There are two TeamPeopleList used in this screen: one for players on court and another one for players on bench.
+        There's also special 'forced' parameters which determines if the substitution is forced (i.e result of a sanction),
+        and thus the players on court should include sanctioned player (unlike ordinary substitutions), as well as that 
+        they should be pre-selected, and others disabled.
+
+        Parameters:
+            self: gfx.frontend.SubstitutionsWindowBase
+            team: py.match.objects.Team 
+            start_index: int 
+            end_index: int
+            forced: bool
+
+        Step by step:
+            1)Create and load teams' names.
+            2)Create and load team's list of on-court players.
+                3-1)If not forced, scroll it between given indexes, remembering the selected player (if any).
+                3-2)Else, scroll between given indexes, selecting sanctioned player as player out and disableing others.
+            
+            4)Create and load team's list of on-bench players.
+            5)If not forced, scroll it to given indexes. #TODO why we're not scrolling in any case though? 
+
+        Return:
+            None
+        '''
+
         from DVA import match, frontend_references as gui
         from gfx.visual_elements import TeamPeopleList, TeamName
 
@@ -2567,15 +2596,29 @@ class SubstitutionsWindowBase(Screen):
             else:
                 team.PlayersList.scroll(start_index, end_index, ToggleButton, with_numbers=True, choice_data='')
         
-    def on_load(self, team, start_index, end_index, forced=False, *args):
+    def on_load(self, team, start_index, end_index, forced=False):
 
-        from DVA import match, frontend_references as gui
+        '''
+        This is a function that loads screen's logic.
+
+        Parameters:
+            self: gfx.frontend.SubstitutionsWindowBase
+            team: str - 'A' or 'B'
+            start_index: int
+            end_index: int
+            forced: bool=False
+
+        Return:
+            None
+        '''
+
+        from DVA import match
         
         if team == 'A':
 
             self.forced_A = forced
            
-            self.get_save_button_state(match.left_team)
+            self.set_save_button_state(match.left_team)
             self.calculate_pop_ups(match.left_team)
             self.init_visual_elements(match.left_team, start_index, end_index, self.forced_A)
             self.forced_disable_enable(match.left_team, self.forced_A)
@@ -2584,69 +2627,102 @@ class SubstitutionsWindowBase(Screen):
            
             self.forced_B = forced
 
-            self.get_save_button_state(match.right_team)
+            self.set_save_button_state(match.right_team)
             self.calculate_pop_ups(match.right_team)
             self.init_visual_elements(match.right_team, start_index, end_index, self.forced_B)
             self.forced_disable_enable(match.right_team, self.forced_B)
 
-    def on_court_player_button_pressed(self, *args):
+    def on_court_player_button_pressed(self, button):
         
+        '''
+        This is a button that processes pressed on on-court players list.
+                    
+        Parameters:
+            self: gfx.frontend.SubstitutionsWindowBase
+            button: gfx.frontend.Button
+
+        Return:
+            None
+        '''
+
         from DVA import match, frontend_references as gui
 
         if gui.get('MatchWindowRefereeSubstitutionsTabHeader').current_tab == gui.get('MatchWindowRefereeSubstitutionsTabTeamATab'):
 
             self.player_out_A = ''
 
-            self.get_save_button_state(match.left_team)
-            if args[0].state == 'down':
-                self.calculate_pop_ups(match.left_team, args[0].text, 'Bench')
+            self.set_save_button_state(match.left_team)
+            if button.state == 'down':
+                self.calculate_pop_ups(match.left_team, button.text, 'Bench')
 
             for player in match.left_team.players:
-                if args[0].text == str(player.number) + ' ' + player.name_string and args[0].state == 'down':
+                if button.text == str(player.number) + ' ' + player.name_string and button.state == 'down':
                     self.player_out_A = player                               
            
         elif gui.get('MatchWindowRefereeSubstitutionsTabHeader').current_tab == gui.get('MatchWindowRefereeSubstitutionsTabTeamBTab'):
 
             self.player_out_B = ''
 
-            self.get_save_button_state(match.right_team)
-            if args[0].state == 'down':
-                self.calculate_pop_ups(match.right_team, args[0].text, 'Bench')
+            self.set_save_button_state(match.right_team)
+            if button.state == 'down':
+                self.calculate_pop_ups(match.right_team, button.text, 'Bench')
 
             for player in match.right_team.players:
-                if args[0].text == str(player.number) + ' ' + player.name_string and args[0].state == 'down':
+                if button.text == str(player.number) + ' ' + player.name_string and button.state == 'down':
                     self.player_out_B = player                               
 
-    def on_bench_player_button_pressed(self, *args):
+    def on_bench_player_button_pressed(self, button):
         
+        '''
+        This is a button that processes pressed on on-bench players list.
+            
+        Parameters:
+            self: gfx.frontend.SubstitutionsWindowBase
+            button: gfx.frontend.Button
+
+        Return:
+            None
+        '''
+
         from DVA import match, frontend_references as gui
 
         if gui.get('MatchWindowRefereeSubstitutionsTabHeader').current_tab == gui.get('MatchWindowRefereeSubstitutionsTabTeamATab'):
             
             self.player_in_A = ''
 
-            self.get_save_button_state(match.left_team)
-            if args[0].state == 'down':
-                self.calculate_pop_ups(match.left_team, args[0].text, 'Court')
+            self.set_save_button_state(match.left_team)
+            if button.state == 'down':
+                self.calculate_pop_ups(match.left_team, button.text, 'Court')
 
             for player in match.left_team.players:
-                if args[0].text == str(player.number) + ' ' + player.name_string and args[0].state == 'down':
+                if button.text == str(player.number) + ' ' + player.name_string and button.state == 'down':
                     self.player_in_A = player
 
         elif gui.get('MatchWindowRefereeSubstitutionsTabHeader').current_tab == gui.get('MatchWindowRefereeSubstitutionsTabTeamBTab'):
 
             self.player_in_B = ''
 
-            self.get_save_button_state(match.right_team)
-            if args[0].state == 'down':
-                self.calculate_pop_ups(match.right_team, args[0].text, 'Court')
+            self.set_save_button_state(match.right_team)
+            if button.state == 'down':
+                self.calculate_pop_ups(match.right_team, button.text, 'Court')
 
             for player in match.right_team.players:
-                if args[0].text == str(player.number) + ' ' + player.name_string and args[0].state == 'down':
+                if button.text == str(player.number) + ' ' + player.name_string and button.state == 'down':
                     self.player_in_B = player                               
 
-    def next_button(self, *args):
+    def next_button(self, button):
         
+        '''
+        This is a functions that processes press on a save button, both graphically and codely. 
+
+        Parameters:
+            self: gfx.frontend.SubstitutionsWindowBase
+            button: gfx.frontend.Button
+
+        Return:
+            None
+        '''
+
         from DVA import match, frontend_references as gui
         from py.match.objects import HeadCoach
 
@@ -2664,34 +2740,45 @@ class SubstitutionsWindowBase(Screen):
             else:
                 HeadCoach.substitution(None, match.right_team, self.player_in_B, self.player_out_B, self.requests_counter, self.forced_B)
 
-        self.cancel_button(args)
+        self.cancel_button(button)
 
-    def cancel_button(self, *args):
+    def cancel_button(self, button):
         
+        '''
+        This is a functions that processes press on a cancel button, both graphically and codely. 
+
+        Parameters:
+            self: gfx.frontend.SubstitutionsWindowBase
+            button: gfx.frontend.Button
+
+        Return:
+            None
+        '''
+
         from DVA import frontend_references as gui
 
         if gui.get('MatchWindowRefereeSubstitutionsTabHeader').current_tab == gui.get('MatchWindowRefereeSubstitutionsTabTeamATab'):
             
-            for button in gui.get('MatchWindowRefereeSubstitutionsTabTeamAOnCourtPLAYERSLIST').children:
-                if button.state == 'down':
-                    button.state = 'normal'
+            for _button_ in gui.get('MatchWindowRefereeSubstitutionsTabTeamAOnCourtPLAYERSLIST').children:
+                if _button_.state == 'down':
+                    _button_.state = 'normal'
                 
-            for button in gui.get('MatchWindowRefereeSubstitutionsTabTeamAOnBenchPLAYERSLIST').children:
-                if button.state == 'down':
-                    button.state = 'normal'
+            for _button_ in gui.get('MatchWindowRefereeSubstitutionsTabTeamAOnBenchPLAYERSLIST').children:
+                if _button_.state == 'down':
+                    _button_.state = 'normal'
         
             self.player_in_A = ''
             self.player_out_A = ''
 
         elif gui.get('MatchWindowRefereeSubstitutionsTabHeader').current_tab == gui.get('MatchWindowRefereeSubstitutionsTabTeamBTab'):
             
-            for button in gui.get('MatchWindowRefereeSubstitutionsTabTeamBOnCourtPLAYERSLIST').children:
-                if button.state == 'down':
-                    button.state = 'normal'
+            for _button_ in gui.get('MatchWindowRefereeSubstitutionsTabTeamBOnCourtPLAYERSLIST').children:
+                if _button_.state == 'down':
+                    _button_.state = 'normal'
                 
-            for button in gui.get('MatchWindowRefereeSubstitutionsTabTeamBOnBenchPLAYERSLIST').children:
-                if button.state == 'down':
-                    button.state = 'normal'
+            for _button_ in gui.get('MatchWindowRefereeSubstitutionsTabTeamBOnBenchPLAYERSLIST').children:
+                if _button_.state == 'down':
+                    _button_.state = 'normal'
         
             self.player_in_B = ''
             self.player_out_B = ''
@@ -2699,8 +2786,23 @@ class SubstitutionsWindowBase(Screen):
 
 class SubstitutionsWindowReferee(SubstitutionsWindowBase):
 
+    '''
+    This is implementation of the Base Substitutions screen for referee users. It contains of tabbed panel for two teams and said base for 
+    each team.
+    '''
+
     def __init__(self):
         
+        '''
+        The initializating function for the class.
+
+        Parameters:
+            self: gfx.frontend.SubstitutionsWindowReferee
+
+        Return:
+            None
+        '''
+
         super().__init__()
 
         self.design.main_widget.referee_or_shared_area_spot.cols = 1
@@ -2736,13 +2838,13 @@ class SubstitutionsWindowReferee(SubstitutionsWindowBase):
         self.design.main_widget.referee_or_shared_area_spot.content.team_A.bind(on_release=self.header_button)
         self.design.main_widget.referee_or_shared_area_spot.content.team_B.bind(on_release=self.header_button)       
 
-    def header_button(self, *args):
+    def header_button(self, button):
 
         from DVA import frontend_references as gui
 
-        if args[0] == gui.get('MatchWindowRefereeSubstitutionsTabTeamATab'):
+        if button == gui.get('MatchWindowRefereeSubstitutionsTabTeamATab'):
             self.on_load('A', scroll_get_indexes('Substitutions', 'A')[0], scroll_get_indexes('Substitutions', 'A')[1], False)
-        elif args[0] == gui.get('MatchWindowRefereeSubstitutionsTabTeamBTab'):
+        elif button == gui.get('MatchWindowRefereeSubstitutionsTabTeamBTab'):
             self.on_load('B', scroll_get_indexes('Substitutions', 'B')[0], scroll_get_indexes('Substitutions', 'B')[1], False)
 
 
