@@ -2994,11 +2994,20 @@ CODE REFERENCES
                 def cancel_button_pressed
                 def save_button_pressed
 
+                team: py.match.Team object
+
             Uses:
                 gfx.frontend.Screen (inheiritance)
 
             Used by:
-
+                gfx.frontend.ProtestWindowBase.__init__
+                gfx.frontend.ProtestWindowBase.calculate_pop_ups
+                gfx.frontend.ProtestWindowBase.init_visual_elements
+                gfx.frontend.ProtestWindowBase.on_load
+                gfx.frontend.ProtestWindowBase.on_text_input_click
+                gfx.frontend.ProtestWindowBase.cancel_button_pressed
+                gfx.frontend.ProtestWindowBase.save_button_pressed
+                
                 gfx.frontend.ProtestWindowReferee
 
             class SharedArea
@@ -3109,6 +3118,9 @@ CODE REFERENCES
                         None
 
                     Uses:
+                        py.match.objects.HeadCoach.write_protest
+                        sm, frontend_references as gui from DVA.pyw
+                        gfx.frontend.EndWindowBase.on_load
 
                     Used by:
 
@@ -3352,6 +3364,10 @@ CODE REFERENCES
                 gfx.frontend.SubstitutionsWindowBase.get_subs_list
                 gfx.frontend.SubstitutionsWindowBase.forced_disable_enable
                 gfx.frontend.SubstitutionsWindowBase.init_visual_elements
+
+                gfx.frontend.ProtestWindowBase
+                gfx.frontend.ProtestWindowBase.calculate_pop_ups
+                gfx.frontend.ProtestWindowBase.init_visual_elements
 
         class Set
 
