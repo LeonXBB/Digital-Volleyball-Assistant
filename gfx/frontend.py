@@ -2850,6 +2850,12 @@ class SubstitutionsWindowReferee(SubstitutionsWindowBase):
 
 class ProtestWindowBase(Screen):
 
+    '''
+    This is a base class for Substitutions screen. It is meant to be used as an inheiritance object for 
+    user status-specific classes.
+    Substitutions screen is a screen that provides user with the ability to write protest about referees.
+    '''
+
     class SharedPart(GridLayout):
 
         def __init__(self):
@@ -2926,20 +2932,20 @@ class ProtestWindowBase(Screen):
         if self.mode == 'write':
             self.design.main_widget.buttons.disabled = False
 
-    def on_text_input_click(self, *args):
+    def on_text_input_click(self, text_input):
         
         from DVA import match, frontend_references as gui
          
-        if args[0].focus and self.mode == 'declare':
+        if text_input.focus and self.mode == 'declare':
 
-            if args[0] == gui.get('MatchWindowRefereeProtestsTabTeamATextInput'):
+            if text_input == gui.get('MatchWindowRefereeProtestsTabTeamATextInput'):
                 self.calculate_pop_ups(match.left_team)
                 gui.get('MatchWindowRefereeProtestsTabTeamATextInput').focus = False
-            elif args[0] == gui.get('MatchWindowRefereeProtestsTabTeamBTextInput'):
+            elif text_input == gui.get('MatchWindowRefereeProtestsTabTeamBTextInput'):
                 self.calculate_pop_ups(match.right_team)
                 gui.get('MatchWindowRefereeProtestsTabTeamBTextInput').focus = False
 
-    def cancel_button_pressed(self, *args):
+    def cancel_button_pressed(self, button):
         
         from DVA import sm, frontend_references as gui
         
@@ -2948,7 +2954,7 @@ class ProtestWindowBase(Screen):
         sm.switch_to(gui.get('EndWindowReferee'))
         gui.get('EndWindowReferee').on_load()
 
-    def save_button_pressed(self, *args):
+    def save_button_pressed(self, button):
         
         from py.match.objects import HeadCoach
         from DVA import sm, frontend_references as gui
@@ -2964,7 +2970,22 @@ class ProtestWindowBase(Screen):
 
 class ProtestWindowReferee(ProtestWindowBase):
 
+    '''
+    This is implementation of the Base Substitutions screen for referee users. It contains of tabbed panel for two teams and said base for each team.
+    '''
+
     def __init__(self):
+
+        '''
+        The initializating function for the class.
+
+        Parameters:
+            self: gfx.frontend.ProtestWindowReferee
+
+        Return:
+            None
+        '''
+
         super().__init__()
 
         self.design.main_widget.referee_or_text_input_spot.rows = 1
@@ -2994,13 +3015,24 @@ class ProtestWindowReferee(ProtestWindowBase):
         self.design.add_widget(self.design.main_widget)
         self.add_widget(self.design)
 
-    def header_button(self, *args):
+    def header_button(self, button):
         
+        '''
+        The header-button pressing processign function.
+
+        Parameters:
+            self: SubstitutionsWindowReferee
+            button: gfx.frontend.Button
+
+        Return:
+            None
+        '''
+
         from DVA import frontend_references as gui
 
-        if args[0] == gui.get('MatchWindowRefereeProtestsTabTeamATab'):
+        if button == gui.get('MatchWindowRefereeProtestsTabTeamATab'):
             self.on_load('A')
-        elif args[0] == gui.get('MatchWindowRefereeProtestsTabTeamBTab'):
+        elif button == gui.get('MatchWindowRefereeProtestsTabTeamBTab'):
             self.on_load('B')
 
 

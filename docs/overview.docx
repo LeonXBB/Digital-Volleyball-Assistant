@@ -1,10 +1,7 @@
 Note 1: Excuse my anglais.
 Note 2: Do as I say, not as I do.
-Note 3:
-TODO: make it an actual docx with hyperlinks and crossreferences to different elements (classes, functions, 
-parameters etc). Also, do some general formatting.
-Note 4: Don't try to understand formatting.
-Note 5: There may be errors in reference list.
+Note 3: Don't try to understand line formatting. For references list rules, see below.
+Note 4: There may be (lots of) errors in reference list.
 
 As in its name, this app is designed to help volleyball enthusiasts and professionals, such as coaches, 
 players, officials etc with sport-related activities, both during and off-match. 
@@ -550,6 +547,9 @@ CODE REFERENCES
             to an exemplar of an objects we're linking to the class itself. This is correct 'formattingly' but obviously wrong from Python
             point of view. Should we fix it?
 
+            6)Make it an actual docx with hyperlinks and crossreferences to different elements (classes, functions, 
+            parameters etc). Also, do some general formatting.
+
     run.pyw
 
         Info: 
@@ -674,6 +674,8 @@ CODE REFERENCES
 
             gfx.frontend.SubstitutionsWindowReferee.header_button (frontend_references)
 
+            gfx.frontend.ProtestWindowReferee.header_button (frontend_references)
+
         Uses:
             Config from Kivy.config 
             app_icon_path, app_resizable, app_width, app_height from meta.app_config
@@ -701,14 +703,36 @@ CODE REFERENCES
             class TeamSetUpReferee
             class LineUpSetUpBase
             class LineUpSetUpReferee
-
+            class SanctionsWindowReferee
+            class SubstitutionsWindowBase
+            class SubstitutionsWindowReferee
+            class ProtestWindowBase
+            class ProtestWindowReferee
+            class MatchWindowBase
+            class MatchWindowReferee
+            class EndWindowBase
+            class EndWindowReferee
+            class IntervalWindowBase
+            class IntervalWindowReferee
+            class CaptainChooser
+            class ProtestCreationWindow
+            class ProtocolViewWindow
+            class MatchEndTextInput
+            class SaveProtocolFileChooser
+            class PopUpWindow
+            class BackgroundWindow
             class TeamWidget
+            class ButtonImage
+            class ButtonLabel
 
             indxes: list - list containing values for current position of all scrollbars, separately for each tab
 
                 Used by:
                     gfx.frontend.TeamSetUpReferee.header_button
                     gfx.frontend.SanctionWindowReferee.sanction_button_pressed
+
+            def scroll_init
+            def scroll_get_indexes
 
         Uses: 
             path, getcwd from os
@@ -824,6 +848,11 @@ CODE REFERENCES
 
             gfx.frontend.SubstitutionsWindowReferee.__init__ (TabbedPanel, TabbedPanelHeader)
             gfx.frontend.SubstitutionsWindowReferee.header_button (Button)
+
+            gfx.frontend.ProtestWindowBase (Screen)
+
+            gfx.frontend.ProtestWindowReferee.__init__ (TabbedPanel, TabbedPanelHeader)
+            gfx.frontend.ProtestWindowReferee.header_button (Button)
 
         class Application
 
@@ -2893,7 +2922,7 @@ CODE REFERENCES
                 Used by:
                     gfx.frontend.SubstitutionsWindowBase.__init__
                     gfx.frontend.SubstitutionsWindowBase.next_button
-
+        
         class SubstitutionsWindowReferee
 
             Info:
@@ -2947,6 +2976,193 @@ CODE REFERENCES
 
                 Used by:
                     gfx.frontend.SubstitutionsWindowReferee.__init__
+
+        class ProtestWindowBase
+
+            Info:
+                This is a base class for Substitutions screen. It is meant to be used as an inheiritance object for 
+                user status-specific classes.
+                Substitutions screen is a screen that provides user with the ability to write protest about referees.
+
+            Structure:
+                class SharedArea
+                def __init__
+                def calculate_pop_ups
+                def init_visual_elements
+                def on_load
+                def on_text_input_click
+                def cancel_button_pressed
+                def save_button_pressed
+
+            Uses:
+                gfx.frontend.Screen (inheiritance)
+
+            Used by:
+
+                gfx.frontend.ProtestWindowReferee
+
+            class SharedArea
+
+                Info:
+
+
+                Structure:
+                    def __init__
+
+                Uses:
+
+                Used by:
+                    gfx.frontend.ProtestWindowReferee.__init__
+
+                def __init__
+
+                    Info:
+
+                    Parameters:
+
+                    Return:
+
+                    Uses:
+
+            def __init__
+
+                    Info:
+
+                    Parameters:
+
+                    Return:
+
+                    Uses:
+
+            def calculate_pop_ups
+
+                    Info:
+
+                    Parameters:
+
+                    Return:
+
+                    Uses:
+
+                    Used by:
+
+            def init_visual_elements
+
+                    Info:
+
+                    Parameters:
+
+                    Return:
+
+                    Uses:
+
+                    Used by:
+
+            def on_load
+
+                    Info:
+
+                    Parameters:
+
+                    Return:
+
+                    Uses:
+
+                    Used by:
+                        gfx.frontend.ProtestWindowReferee.header_button
+
+            def on_text_input_click
+
+                    Info:
+
+                    Parameters:
+
+                    Return:
+
+                    Uses:
+
+                    Used by:
+                        gfx.frontend.ProtestWindowReferee.__init__
+
+            def cancel_button_pressed
+
+                    Info:
+
+                    Parameters:
+
+                    Return:
+
+                    Uses:
+
+                    Used by:
+
+            def save_button_pressed
+            
+                    Info:
+                        This is a functions that processes press on a save button, both graphically and codely. 
+
+                    Parameters:
+                        self: gfx.frontend.ProtestWindowBase
+                        button: gfx.frontend.Button
+
+                    Return:
+                        None
+
+                    Uses:
+
+                    Used by:
+
+        class ProtestWindowReferee
+
+            Info:
+                This is implementation of the Base Substitutions screen for referee users. It contains of tabbed panel for two teams and said base for each team.
+
+            Structure:
+                def __init__
+                def header_button
+
+            Uses:
+                gfx.frontend.ProtestWindowBase (inheiritance)
+
+            Used by:
+                gfx.frontend.ProtestWindowReferee.__init__
+                gfx.frontend.ProtestWindowReferee.header_button
+
+            def __init__
+
+                Info:
+                    The initializating function for the class.
+
+                Parameters:
+                    self: gfx.frontend.ProtestWindowReferee
+
+                Return:
+                    None
+
+                Uses:
+                    TabbedPanel, TabbedPanelHeader from gfx.frontend
+                    gfx.frontend.ProtestWindowBase.SharedArea
+                    gfx.frontend.ProtestWindowReferee.header_button
+                    gfx.frontend.ProtestWindowBase.on_text_input_click
+
+            def header_button
+
+                Info:
+                    The header-button pressing processign function.
+
+                Parameters:
+                    self: ProtestWindowReferee
+                    button: gfx.frontend.Button
+
+                Return:
+                    None
+
+                Uses:
+                    frontend_references as gui from DVA.pyw
+                    gfx.frontend.ProtestWindowBase.on_load
+
+                Used by:
+                    gfx.frontend.ProtestWindowReferee.__init__
 
         class MatchWindowReferee
 
@@ -3193,6 +3409,11 @@ CODE REFERENCES
 
                 Used by:
                     gfx.frontend.CoinTossWindow.save_button
+
+        class Player:
+
+            Used by:
+                gfx.frontend.SubstitutionsWindowBase
 
         class Substitution
 
