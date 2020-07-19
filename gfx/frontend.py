@@ -2853,13 +2853,29 @@ class ProtestWindowBase(Screen):
     '''
     This is a base class for Substitutions screen. It is meant to be used as an inheiritance object for 
     user status-specific classes.
-    Substitutions screen is a screen that provides user with the ability to write protest about referees.
+    Protest screen is a screen that provides user with the ability to write protest about referees.
     '''
 
     class SharedPart(GridLayout):
 
+        '''
+        This is a class for the shared area. Two objects of this will be used in referee's children
+        class to represent different teams' lists using tabs, and other childrens classes will use
+        it once as a window's content to insert.
+        '''
+
         def __init__(self):
             
+            '''
+            This is a initialization function for this content class. It only deals with design.
+
+            Parameters:
+                self: gfx.frontend.ProtestWindowBase.SharedArea
+
+            Return:
+                None
+            '''
+
             super().__init__()
 
             self.rows = 1
@@ -2871,6 +2887,17 @@ class ProtestWindowBase(Screen):
             self.add_widget(self.content)
 
     def __init__(self):
+
+        '''
+        This is main initializating function of the screen. Just like other screens' __init__ function it only deals with 
+        design and bonding.
+
+        Parameters:
+            self: gfx.frontend.ProtestWindowBase
+
+        Return:
+            None
+        '''
 
         super().__init__()
 
@@ -2894,6 +2921,17 @@ class ProtestWindowBase(Screen):
 
     def calculate_pop_ups(self, team):
         
+        '''
+        This is a function that determines either we need to show the user invitation to declare a protest or not.
+
+        Parameters:
+            self: gfx.frontend.ProtestWindowBase
+            team: py.match.objects.Team 
+
+        Return:
+            None
+        '''
+
         from DVA import match
         
         if team.protest == '' and match.status != 'Finished':
@@ -2901,6 +2939,18 @@ class ProtestWindowBase(Screen):
 
     def init_visual_elements(self, team):
         
+        '''
+        This is a funtion that's responsible for loading visual elements of the screen. 
+        In this screen we only use teams' names twice: on the tab itself, and on the screen wripped in some text.
+
+        Parameters:
+            self: gfx.frontend.ProtestWindowBase
+            team: py.match.objects.Team
+
+        Return:
+            None
+        '''
+
         from DVA import match, frontend_references as gui
         from gfx.visual_elements import TeamName
 
@@ -2917,6 +2967,20 @@ class ProtestWindowBase(Screen):
 
     def on_load(self, team, mode='declare', team_object=''):
         
+        '''
+        This is a function that loads screen's logic. It is responsible for loading visual elements, defocusing the text input area to avoid double 
+        clicking, and also for enabeling user's ability to save / cancel.
+
+        Parameters:
+            self: gfx.frontend.ProtestWindowBase
+            team: str - 'A' or 'B'
+            mode: str - 'declare' or 'write'
+            team_object: py.match.objects.Team
+
+        Return:
+            None
+        '''
+
         from DVA import match, frontend_references as gui
 
         self.mode = mode
@@ -2934,6 +2998,19 @@ class ProtestWindowBase(Screen):
 
     def on_text_input_click(self, text_input):
         
+        '''
+        This is a function that processes presses on text inpute field. It is responsible for calculation if need to show the user invitation to 
+        declare a protest (during the match), or if we should actually allow them to write it (after the match, with auto-switch). It also defocuses the
+        text input area to avoid faux clicking on it at the next screen touch.
+
+        Parameters:
+            self: gfx.frontend.ProtestWindowBase
+            text_input: gfx.frontend.TextInput
+
+        Return:
+            None
+        '''
+
         from DVA import match, frontend_references as gui
          
         if text_input.focus and self.mode == 'declare':
@@ -2947,6 +3024,17 @@ class ProtestWindowBase(Screen):
 
     def cancel_button_pressed(self, button):
         
+        '''
+        This is a functions that processes press on a clear button, both graphically and codely. 
+
+        Parameters:
+            self: gfx.frontend.ProtestWindowBase
+            button: gfx.frontend.Button
+
+        Return:
+            None
+        '''
+
         from DVA import sm, frontend_references as gui
         
         self.team.protest = ''
@@ -2956,6 +3044,17 @@ class ProtestWindowBase(Screen):
 
     def save_button_pressed(self, button):
         
+        '''
+        This is a functions that processes press on a save button, both graphically and codely. 
+
+        Parameters:
+            self: gfx.frontend.ProtestWindowBase
+            button: gfx.frontend.Button
+
+        Return:
+            None
+        '''
+
         from py.match.objects import HeadCoach
         from DVA import sm, frontend_references as gui
 

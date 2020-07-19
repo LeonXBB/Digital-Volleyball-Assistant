@@ -471,9 +471,11 @@ CODE REFERENCES
             It is not only limited to the 'import' command but also to any link in a code.
             And even when the link is not done directly in the code, but another element is still being implicitly used, it still has
             to be shown.
-            Basically, any element, change in which will lead to change in behavior in the current element, shall be listed here.
+            Basically, any element, change in which will (or may, if it's completely different part of the programm and we don't know what's going on there)
+            lead to change in behavior in the current element, shall be listed here.
 
-            Links should be a two-way street, generally (if one element uses another, another element is used by the first one).
+            Links should be a two-way street, generally (if one element uses another, another element is used by the first one), except for when we're using
+            some element shown in USED BY in either STRUCTURE or PARAMETERS, we don't need to show it in USES.
 
             Brackets may specify what / where / in what way the link is being used.
 
@@ -482,18 +484,20 @@ CODE REFERENCES
 
         Note about using DVA.match in USES and USED BY:
             
-            #TODO (for attention)
-
-            LONG STORY SHORT:
+            LONG STORY SHORT, AS FOR NOW:
                 When making a call to something that's part of huge DVA.match sub-structure throug match variable, 
                     only show references to DVA.pyw.
                 When making a call to something that's part of the sub-structure part, but calling the element itself,
                     only show references to that element.
                 
-                Why?
-                    All of the three 1)the DVA.match 'mega-class', 2)the format of references I've designed for myself,
-                    and 3)'Structure' field of said references format, are a mess and I don't know how to deal with and process them 
-                    correctly.
+            Why?
+                All of the three 1)the DVA.match 'mega-class', 2)the format of references I've designed for myself,
+                and 3)'Structure' field of said references format, are a mess and I don't know how to deal with and process them 
+                correctly.
+
+            IN THE FUTURE:
+                This, however, is subject to change: all the references will be done directly to the respective elements all the time,
+                with links to / from 'DVA.match' only to be used for 'match' variable itself.
 
         Note about using DVA.frontend_references in USES and USED BY:
             
@@ -519,7 +523,10 @@ CODE REFERENCES
                     3)Be linked to Match object initialization?
                     4)Be not linked at all?
                     (I'm rooting for the third option)
-                
+                    
+                    (It sort of contradicts with what has been writen earlier because this section was written before. Currently, 2nd and 3rd (as part of 2nd) propositions 
+                    will like be implemented.)
+
                 2)How should we link to specific exemplar of the class and not the class itself when the class has more than one exemplar 
                 and they may be different (match.sets[-1])
                 
@@ -531,6 +538,9 @@ CODE REFERENCES
                 in every situation.
                 Doing so may increase writing time and decrease readability but not doing so may lead to missing some important links.
                 Currently, the style changes from 'Yes' to 'No' cause the design idea was changed midway.
+                
+                Other option is to link to respective py.match.objects Object directly, like, in this case, py.match.objects.Team.long_name.
+                (look above for future plans on changing way linking to DVA.match works)
 
             3)Currently, we not linking to class's variable but do link to class's functions. 
             The general structure says that we should not show links to what we have already shown links to in Parameters senction to avoid
@@ -673,6 +683,13 @@ CODE REFERENCES
             gfx.frontend.SubstitutionsWindowBase.cancel_button (frontend_references)
 
             gfx.frontend.SubstitutionsWindowReferee.header_button (frontend_references)
+
+            gfx.frontend.ProtestWindowBase.calculate_pop_ups (match.status)
+            gfx.frontend.ProtestWindowBase.init_visual_elements (match.left_team, match.right_team, frontend_references)
+            gfx.frontend.ProtestWindowBase.on_load (match.left_team, match.right_team, frontend_references)
+            gfx.frontend.ProtestWindowBase.on_text_input_click (match.left_team, match.right_team, frontend_references)
+            gfx.frontend.ProtestWindowBase.cancel_button_pressed (sm, frontend_references)
+            gfx.frontend.ProtestWindowBase.save_button_pressed (sm, frontend_references)
 
             gfx.frontend.ProtestWindowReferee.header_button (frontend_references)
 
@@ -850,6 +867,13 @@ CODE REFERENCES
             gfx.frontend.SubstitutionsWindowReferee.header_button (Button)
 
             gfx.frontend.ProtestWindowBase (Screen)
+            gfx.frontend.ProtestWindowBase.SharedArea (GridLayout)
+            gfx.frontend.ProtestWindowBase.SharedArea.__init__ (GridLayout, Label, TextInput, protest_window, language_code)
+            gfx.frontend.ProtestWindowBase.__init__ (GridLayout, Button, Label, buttons, language_code)
+            gfx.frontend.ProtestWindowBase.init_visual_elements (protest_window, language_code)
+            gfx.frontend.ProtestWindowBase.on_text_input_click (TextInput)
+            gfx.frontend.ProtestWindowBase.cancel_button_pressed (Button)
+            gfx.frontend.ProtestWindowBase.save_button_pressed (Button)
 
             gfx.frontend.ProtestWindowReferee.__init__ (TabbedPanel, TabbedPanelHeader)
             gfx.frontend.ProtestWindowReferee.header_button (Button)
@@ -2982,7 +3006,7 @@ CODE REFERENCES
             Info:
                 This is a base class for Substitutions screen. It is meant to be used as an inheiritance object for 
                 user status-specific classes.
-                Substitutions screen is a screen that provides user with the ability to write protest about referees.
+                Protest screen is a screen that provides user with the ability to write protest about referees.
 
             Structure:
                 class SharedArea
@@ -2995,6 +3019,7 @@ CODE REFERENCES
                 def save_button_pressed
 
                 team: py.match.Team object
+                mode: str - 'declare' or 'write'
 
             Uses:
                 gfx.frontend.Screen (inheiritance)
@@ -3013,69 +3038,111 @@ CODE REFERENCES
             class SharedArea
 
                 Info:
-
+                    This is a class for the shared area. Two objects of this will be used in referee's children
+                    class to represent different teams' lists using tabs, and other childrens classes will use
+                    it once as a window's content to insert.
 
                 Structure:
                     def __init__
 
                 Uses:
+                    GridLayout from gfx.frontend (inheiritance)
 
                 Used by:
+                    gfx.frontend.ProtestWindowBase.SharedArea.__init__
+
                     gfx.frontend.ProtestWindowReferee.__init__
 
                 def __init__
 
                     Info:
+                        This is a initialization function for this content class. It only deals with design.
 
                     Parameters:
+                        self: gfx.frontend.ProtestWindowBase.SharedArea
 
                     Return:
+                        None
 
                     Uses:
+                        GridLayout, Label, TextInput, protest_window, language_code from gfx.frontend
 
             def __init__
 
                     Info:
+                        This is main initializating function of the screen. Just like other screens' __init__ function it only deals with 
+                        design and bonding.
 
                     Parameters:
+                        self: gfx.frontend.ProtestWindowBase
 
                     Return:
+                        None
 
                     Uses:
+                        GridLayout, Button, Label, buttons, language_code from gfx.frontend
+                        gfx.frontend.ProtestWindowBase.cancel_button_pressed
+                        gfx.frontend.ProtestWindowBase.save_button_pressed
 
             def calculate_pop_ups
 
                     Info:
+                        This is a function that determines either we need to show the user invitation to declare a protest or not.
 
                     Parameters:
+                        self: gfx.frontend.ProtestWindowBase
+                        team: py.match.objects.Team 
 
                     Return:
+                        None
 
                     Uses:
-
+                        match.status from DVA.pyw
+                        py.match.objects.Team.protest
+                        gfx.frontend.PopUpWindow.show_protest_creation_window
+                    
                     Used by:
+                        gfx.frontend.ProtestWindowBase.on_text_input_click
 
             def init_visual_elements
 
                     Info:
+                        This is a funtion that's responsible for loading visual elements of the screen. 
+                        In this screen we only use teams' names twice: on the tab itself, and on the screen wripped in some text.
 
                     Parameters:
+                        self: gfx.frontend.ProtestWindowBase
+                        team: py.match.objects.Team
 
                     Return:
+                        None
 
                     Uses:
+                        match.left_team, match.right_team, frontend_references as gui from DVA.pyw
+                        gfx.visual_elements.TeamName, gfx.visual_elements.TeamName.load 
+                        protest_window, language_code from gfx.frontend
 
                     Used by:
+                        gfx.frontend.ProtestWindowBase.on_load
 
             def on_load
 
                     Info:
+                        This is a function that loads screen's logic. It is responsible for loading visual elements, defocusing the text input area to avoid double 
+                        clicking, and also for enabeling user's ability to save / cancel.
 
                     Parameters:
+                        self: gfx.frontend.ProtestWindowBase
+                        team: str - 'A' or 'B'
+                        mode: str - 'declare' or 'write'
+                        team_object: py.match.objects.Team
 
                     Return:
+                        None
 
                     Uses:
+                        match.left_team, match.right_team, frontend_references as gui
+                        gfx.frontend.ProtestWindowBase.init_visual_elements
 
                     Used by:
                         gfx.frontend.ProtestWindowReferee.header_button
@@ -3083,12 +3150,20 @@ CODE REFERENCES
             def on_text_input_click
 
                     Info:
+                        This is a function that processes presses on text inpute field. It is responsible for calculation if need to show the user invitation to 
+                        declare a protest (during the match), or if we should actually allow them to write it (after the match, with auto-switch). It also defocuses the
+                        text input area to avoid faux clicking on it at the next screen touch.
 
                     Parameters:
+                        self: gfx.frontend.ProtestWindowBase
+                        text_input: gfx.frontend.TextInput
 
                     Return:
+                        None
 
                     Uses:
+                        match.left_team, match.right_team, frontend_references as gui from DVA.pyw
+                        gfx.frontend.ProtestWindowBase.calculate_pop_ups
 
                     Used by:
                         gfx.frontend.ProtestWindowReferee.__init__
@@ -3096,14 +3171,23 @@ CODE REFERENCES
             def cancel_button_pressed
 
                     Info:
+                        This is a functions that processes press on a clear button, both graphically and codely. 
 
                     Parameters:
+                        self: gfx.frontend.ProtestWindowBase
+                        button: gfx.frontend.Button
 
                     Return:
+                        None
 
                     Uses:
+                        sm, frontend_references as gui from DVA.pyw
+                        py.match.objects.Team.protest 
+                        gfx.frontend.EndWindowBase
+                        gfx.frontend.EndWindowBase.on_load
 
                     Used by:
+                        gfx.frontend.ProtestWindowBase.__init__
 
             def save_button_pressed
             
@@ -3120,9 +3204,11 @@ CODE REFERENCES
                     Uses:
                         py.match.objects.HeadCoach.write_protest
                         sm, frontend_references as gui from DVA.pyw
+                        gfx.frontend.EndWindowBase
                         gfx.frontend.EndWindowBase.on_load
 
                     Used by:
+                        gfx.frontend.ProtestWindowBase.__init__
 
         class ProtestWindowReferee
 
@@ -3183,12 +3269,29 @@ CODE REFERENCES
                 Used by:
                     gfx.frontend.SubstitutionsWindowBase.forced_disable_enable
 
+        class EndWindowBase:
+
+            Used by:
+                gfx.frontend.ProtestWindowBase.save_button_pressed
+                gfx.frontend.ProtestWindowBase.cancel_button_pressed
+
+            def on_load 
+
+                Used by:
+                    gfx.frontend.ProtestWindowBase.save_button_pressed
+                    gfx.frontend.ProtestWindowBase.cancel_button_pressed
+
         class PopUpWindow
 
             def show_popup:
 
                 Used by:
                     gfx.frontend.SubstitutionsWindowBase.calculate_pop_ups
+
+            def show_protest_creation_window:
+
+                Used by:
+                    gfx.frontend.ProtestWindowBase.calculate_pop_ups
 
         class TeamWidget
 
@@ -3211,6 +3314,7 @@ CODE REFERENCES
                 gfx.frontend.LineUpSetUpBase.init_visual_elements
                 gfx.frontend.SanctionWindowReferee.init_visual_elements
                 gfx.frontend.SubstitutionsWindowBase.init_visual_elements
+                gfx.frontend.ProtestWindowBase.init_visual_elements
 
             def load:
 
@@ -3220,6 +3324,7 @@ CODE REFERENCES
                     gfx.frontend.LineUpSetUpBase.init_visual_elements
                     gfx.frontend.SanctionWindowReferee.init_visual_elements
                     gfx.frontend.SubstitutionsWindowBase.init_visual_elements
+                    gfx.frontend.ProtestWindowBase.init_visual_elements
 
         TeamPeopleList:
 
@@ -3321,7 +3426,8 @@ CODE REFERENCES
                 right_team: py.match.objects.Team
                 sets: list of py.match.objects.Set 
                 officials: list of py.match.objects.Official
-            
+                status: str - 'Scheduled', 'Awaiting', 'Ongoing', 'Finished'
+
             Uses:
                 *all of its structure and all of structure's elements' structure.
 
@@ -3335,6 +3441,12 @@ CODE REFERENCES
                 players: list of py.match.objects.Player 
                 expulsed_players: list of py.match.objects.Player 
                 disqualified_players: list of py.match.objects.Player 
+                
+                protest: py.match.objects.Protest 
+
+                    Used by:
+                        gfx.frontend.ProtestWindowBase.cancel_button_pressed
+                        gfx.frontend.ProtestWindowBase.calculate_pop_ups
 
             Used by:
 
@@ -3368,6 +3480,7 @@ CODE REFERENCES
                 gfx.frontend.ProtestWindowBase
                 gfx.frontend.ProtestWindowBase.calculate_pop_ups
                 gfx.frontend.ProtestWindowBase.init_visual_elements
+                gfx.frontend.ProtestWindowBase.on_load
 
         class Set
 
@@ -3404,7 +3517,6 @@ CODE REFERENCES
 
                 Used by:
                     gfx.frontend.TeamSetUpBase.save_button
-
             
             def line_up_set_up:
 
@@ -3415,6 +3527,11 @@ CODE REFERENCES
 
                 Used by:
                     gfx.frontend.SubstitutionsWindowBase.next_button
+
+            def write_protest:
+
+                Used by:
+                    gfx.frontend.ProtestWindowBase.save_button_pressed
 
         class Official 
 
@@ -3442,6 +3559,11 @@ CODE REFERENCES
             structure:
 
                 person: str
+
+        class Protest:
+
+            Used by:
+                py.match.objects.Team
 
     py.match.match_config
 
