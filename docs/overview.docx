@@ -693,6 +693,10 @@ CODE REFERENCES
 
             gfx.frontend.ProtestWindowReferee.header_button (frontend_references)
 
+            gfx.frontend.MatchWindowBase.substitutions_button_pressed (frontend_references)
+            gfx.frontend.MatchWindowBase.match_button_pressed (frontend_references)
+            gfx.frontend.MatchWindowBase.protest_button_pressed (frontend_references)
+
         Uses:
             Config from Kivy.config 
             app_icon_path, app_resizable, app_width, app_height from meta.app_config
@@ -878,6 +882,18 @@ CODE REFERENCES
             gfx.frontend.ProtestWindowReferee.__init__ (TabbedPanel, TabbedPanelHeader)
             gfx.frontend.ProtestWindowReferee.header_button (Button)
 
+            gfx.frontend.MatchWindowBase (Screen)
+            gfx.frontend.MatchWindowBase.Scores (GridLayout)
+            gfx.frontend.MatchWindowBase.Scores.ServeBalls (GridLayout)
+            gfx.frontend.MatchWindowBase.Scores.ServeBalls.__init__ (Image, Label, getcwd)
+            gfx.frontend.MatchWindowBase.Scores.__init__ (GridLayout, Label, ButtonImage, getcwd)
+            gfx.frontend.MatchWindowBase.Team (GridLayout)
+            gfx.frontend.MatchWindowBase.Team.__init__ (ButtonLabel, BoxLayout, Label, max_amount_liberos, players_in_team)
+            gfx.frontend.MatchWindowBase.__init__ (GridLayout, TabbedPanel, TabbedPanelHeader, tabs, language_code)
+            gfx.frontend.MatchWindowBase.substitutions_button_pressed (TabbedPanelHeader)
+            gfx.frontend.MatchWindowBase.match_button_pressed (TabbedPanelHeader)
+            gfx.frontend.MatchWindowBase.protest_button_pressed (TabbedPanelHeader)
+
         class Application
 
             Info:
@@ -937,7 +953,7 @@ CODE REFERENCES
 
             Used by: 
                 DVA.pyw (class itself)
-                __init__ (class itself)
+                def __init__ (class itself)
 
             def __init__:
 
@@ -1086,6 +1102,8 @@ CODE REFERENCES
                 def on_load (the class itself)
                 def radio_button_changed (the class itself)
                 def save_button (the class itself)
+
+                gfx.frontend.MatchWindowBase.__init__
 
             def __init__:
 
@@ -1549,6 +1567,8 @@ CODE REFERENCES
                 gfx.frontend.TeamSetUpReferee.__init__ (the class itself)
                 gfx.frontend.TeamSetUpReferee.header_button
 
+                gfx.frontend.MatchWindowBase.__init__
+
             def __init__
 
                 Info:
@@ -1836,6 +1856,8 @@ CODE REFERENCES
             Used by:
                 gfx.frontend.LineUpSetUpReferee.__init__
                 gfx.frontend.LineUpSetUpReferee.header_button
+
+                gfx.frontend.MatchWindowBase.__init__
 
             def __init__
 
@@ -2524,7 +2546,10 @@ CODE REFERENCES
                 def cancel_button
 
                 requests_counter: int
-                        
+
+                    Used by:
+                        gfx.frontend.MatchWindowBase.substitutions_button_pressed
+
                 player_out_A: py.match.objects.Player object
                 player_in_A: py.match.objects.Player object
                 player_out_B: py.match.objects.Player object
@@ -2577,6 +2602,8 @@ CODE REFERENCES
                     gfx.frontend.SubstitutionsWindowBase.cancel_button
 
                     gfx.frontend.SubstitutionsWindowReferee.__init__ (TabbedPanel, TabbedPanelHeader)
+
+                    gfx.frontend.MatchWindowBase.substitutions_button_pressed
 
                 def __init__
 
@@ -2865,6 +2892,8 @@ CODE REFERENCES
                     gfx.frontend.SubstitutionsWindowBase.calculate_pop_ups
                     gfx.frontend.SubstitutionsWindowReferee.header_button
 
+                    gfx.frontend.MatchWindowBase.substitutions_button_pressed
+
             def on_court_player_button_pressed
 
                 Info:
@@ -2963,6 +2992,8 @@ CODE REFERENCES
                 gfx.frontend.SubstitutionsWindowReferee.__init__
                 gfx.frontend.SubstitutionsWindowReferee.header_button
 
+                gfx.frontend.MatchWindowBase.__init__
+
             def __init__
 
                 Info:
@@ -3034,6 +3065,8 @@ CODE REFERENCES
                 gfx.frontend.ProtestWindowBase.save_button_pressed
                 
                 gfx.frontend.ProtestWindowReferee
+                
+                gfx.frontend.MatchWindowBase.protest_button_pressed
 
             class SharedArea
 
@@ -3147,6 +3180,8 @@ CODE REFERENCES
                     Used by:
                         gfx.frontend.ProtestWindowReferee.header_button
 
+                        gfx.frontend.MatchWindowBase.protest_button_pressed
+
             def on_text_input_click
 
                     Info:
@@ -3226,6 +3261,8 @@ CODE REFERENCES
                 gfx.frontend.ProtestWindowReferee.__init__
                 gfx.frontend.ProtestWindowReferee.header_button
 
+                gfx.frontend.MatchWindowBase.protest_button_pressed
+
             def __init__
 
                 Info:
@@ -3262,14 +3299,236 @@ CODE REFERENCES
                 Used by:
                     gfx.frontend.ProtestWindowReferee.__init__
 
+        class MatchWindowBase
+
+            Info:
+                This is a basic class that represents MatchWindow - one of the windows added into screenmanager.
+                It hosts a TabbedPanel to represent diffetent tabs related to matchflow.
+                Inside of it, there're some graphic classes as well as button-processing functions.
+                It is used as inheiritance base for user-status specific classes.
+
+            Structure:
+                class Scores
+                class Team
+                def __init__
+                def substitutions_button_pressed
+                def match_button_pressed
+                def protest_button_pressed
+
+            Uses:
+                gfx.frontend.Screen (inheiritance)
+
+            Used by:
+                gfx.frontend.MatchWindowBase.__init__
+                gfx.frontend.MatchWindowBase.substitutions_button_pressed
+                gfx.frontend.MatchWindowBase.match_button_pressed
+                gfx.frontend.MatchWindowBase.protest_button_pressed
+
+            class Scores
+
+                Info:
+                    This is a visual sub-class representing scores-related part of the window. It also hosts another sub-class for
+                    serve balls indicators because in the current version of the screen they're sort of... related?
+
+                Structure:
+                    class ServeBalls
+                    def __init__
+                    
+                Uses:
+                    gfx.frontend.GridLayout (inheiritance)
+
+                Used by:
+                    gfx.frontend.MatchWindowBase.Scores.__init__
+
+                class ServeBalls
+                
+                    Info:
+                        This is a graphical sub-class representing serve balls indicators. 
+                        It's currently hosted inside of Scores sub-class.
+
+                    Structure:
+                        def __init__
+
+                    Uses:
+                        GridLayout from gfx.frontend (inheiritance)
+
+                    Used by:
+                        gfx.frontend.MatchWindowBase.Scores.ServeBalls.__init__
+                        gfx.frontend.MatchWindowBase.Scores.__init__
+
+                    def __init__
+
+                        Info:
+                            Initialization function for the class.
+
+                        Parameters:
+                            self: gfx.frontend.MatchWindowBase.Scores.ServeBalls
+
+                        Return:
+                            None
+
+                        Uses:
+                            Image, Label, getcwd from gfx.frontend
+
+                def __init__
+
+                    Info:
+                        Initialization function for the class.
+
+                    Parameters:
+                        self: gfx.frontend.MatchWindowBase.Scores
+
+                    Return:
+                        None
+
+                    Uses:
+                        GridLayout, Label, ButtonImage, getcwd from gfx.frontend
+                        gfx.frontend.MatchWindowBase.Scores.ServeBalls
+                        gfx.frontend.MatchWindowReferee.MatchWindowReferee.forward_button_pressed
+                        gfx.frontend.MatchWindowReferee.MatchWindowReferee.back_button_pressed
+
+            class Team
+                
+                Info:
+                    This is a graphical class representing team line up.
+
+                Structure:
+                    def __init__
+
+                Uses:
+                    GridLayout from gfx.frontend (inheiritance)
+
+                Used by:
+                    gfx.frontend.MatchWindowBase.Team.__init__
+
+                def __init__
+
+                    Info:
+                        Initialization function for the class.
+
+                    Parameters:
+                        self: gfx.frontend.MatchWindowBase.Team
+
+                    Return:
+                        None
+
+                    Uses:
+                        gfx.frontend.TeamWidget
+                        ButtonLabel, BoxLayout, Label, max_amount_liberos, players_in_team from gfx.frontend
+                        gfx.frontend.MatchWindowReferee.MatchWindowReferee.player_button_pressed
+
+            def __init__
+
+                Info:
+                    This is a main initializating function of the main class. It creates design, tab header, as well as
+                    creating and loading content for each tab.
+
+                Parameters:
+                    self: gfx.frontend.MatchWindowBase
+
+                Return:
+                    None
+
+                Uses:
+                    GridLayout, TabbedPanel, TabbedPanelHeader, tabs, language_code from gfx.frontend
+                    gfx.frontend.CoinTossWindow
+                    gfx.frontend.TeamSetUpWindowReferee
+                    gfx.frontend.LineUpSetUpReferee
+                    gfx.frontend.MatchWindowReferee.MatchWindowReferee
+                    gfx.frontend.SubstitutionsWindowReferee
+                    gfx.frontend.MatchWindowBase.substitutions_button_pressed
+                    gfx.frontend.MatchWindowBase.match_button_pressed
+
+            def substitutions_button_pressed
+
+                Info:
+                    This is function that processes Substitutions tab header press by increasing its requests counter and 
+                    loading its logic.
+
+                Parameters:
+                    self: gfx.frontend.MatchWindowBase
+                    tab_header: gfx.frontend.TabbedPanelHeader
+
+                Return:
+                    None
+
+                Uses:
+                    frontend_references as gui from DVA.pyw
+                    gfx.frontend.SubstitutionsWindowBase.SharedArea
+                    gfx.frontend.SubstitutionsWindowBase.requests_counter
+                    gfx.frontend.SubstitutionsWindowBase.on_load
+                    gfx.frontend.scroll_get_indexes
+
+                Used by:
+                    gfx.frontend.MatchWindowBase.__init__
+
+            def match_button_pressed
+
+                Info:
+                    This is function that processes Substitutions tab header press by loading its logic.
+
+                Parameters:
+                    self: gfx.frontend.MatchWindowBase
+                    tab_header: gfx.frontend.TabbedPanelHeader
+
+                Return:
+                    None
+
+                Uses:
+                    frontend_references as gui from DVA.pyw
+                    gfx.frontend.MatchWindowReferee.MatchWindowReferee, gfx.frontend.MatchWindowReferee.MatchWindowReferee.on_load
+
+                Used by:
+                    gfx.frontend.MatchWindowBase.__init__
+
+            def protest_button_pressed
+
+                Info:
+                    This is function that processes Protest tab header press by loading its logic for both sub-tabs at the same time.
+
+                Parameters:
+                    self: gfx.frontend.MatchWindowBase
+                    tab_header: gfx.frontend.TabbedPanelHeader
+
+                Return:
+                    None
+
+                Uses:
+                    frontend_references as gui from DVA.pyw
+                    gfx.frontend.ProtestWindowBase, gfx.frontend.ProtestWindowBase.on_load
+
         class MatchWindowReferee
 
             class MatchWindowReferee
 
                 Used by:
                     gfx.frontend.SubstitutionsWindowBase.forced_disable_enable
+                    
+                    gfx.frontend.MatchWindowBase.__init__
+                    gfx.frontend.MatchWindowBase.match_button_pressed
 
-        class EndWindowBase:
+                def player_button_pressed
+
+                    Used by:
+                        gfx.frontend.MatchWindowBase.Team.__init__
+
+                def on_load
+
+                    Used by:
+                        gfx.frontend.MatchWindowBase.match_button_pressed
+
+
+                def forward_button_pressed
+
+                    Used by:
+                        gfx.frontend.MatchWindowBase.Scores.__init__
+
+                def back_button_pressed
+
+                    Used by:
+                        gfx.frontend.MatchWindowBase.Scores.__init__
+
+        class EndWindowBase
 
             Used by:
                 gfx.frontend.ProtestWindowBase.save_button_pressed
@@ -3297,12 +3556,15 @@ CODE REFERENCES
 
             Used by:
                 gfx.frontend.LineUpSetUpBase.SharedArea.__init__
+                gfx.frontend.MatchWindowBase.Team.__init__
 
         def scroll_get_indexes
 
             Used by:
                 gfx.frontend.SanctionWindowReferee.header_button
                 gfx.frontend.SubstitutionsWindowReferee.header_button
+
+                gfx.frontend.MatchWindowBase.substitutions_button_pressed
 
     gfx.visual_elements
         

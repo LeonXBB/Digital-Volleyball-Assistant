@@ -3137,20 +3137,57 @@ class ProtestWindowReferee(ProtestWindowBase):
 
 class MatchWindowBase(Screen):
 
+    '''
+    This is a basic class that represents MatchWindow - one of the windows added into screenmanager.
+    It hosts a TabbedPanel to represent diffetent tabs related to matchflow.
+    Inside of it, there're some graphic classes as well as button-processing functions.
+    It is used as inheiritance base for user-status specific classes.
+    '''
+
     class Scores(GridLayout):
+
+        '''
+        This is a visual sub-class representing scores-related part of the window. It also hosts another sub-class for
+        serve balls indicators because in the current version of the screen they're sort of... related?
+        '''
 
         class ServeBalls(GridLayout):
 
+            '''
+            This is a graphical sub-class representing serve balls indicators. 
+            It's currently hosted inside of Scores sub-class.
+            '''
+
             def __init__(self):
                 
+                '''
+                Initialization function for the class.
+
+                Parameters:
+                    self: gfx.frontend.MatchWindowBase.Scores.ServeBalls
+
+                Return:
+                    None
+                '''
+
                 super().__init__(cols=3)
 
                 self.add_widget(Image(source=getcwd() + '/gfx/match/serve_ball.png', opacity=1))
                 self.add_widget(Label())
                 self.add_widget(Image(source=getcwd() + '/gfx/match/serve_ball.png', opacity=0))
 
-        def __init__(self, **kwargs):
+        def __init__(self):
             
+            '''
+            Initialization function for the class.
+
+            Parameters:
+                self: gfx.frontend.MatchWindowBase.Scores
+
+            Return:
+                None
+            '''
+
             super().__init__()
             
             self.rows = 2
@@ -3186,7 +3223,21 @@ class MatchWindowBase(Screen):
 
     class Team(GridLayout):
 
+        '''
+        This is a graphical class representing team line up.
+        '''
+
         def __init__(self, **kwargs):
+
+            '''
+            Initialization function for the class.
+
+            Parameters:
+                self: gfx.frontend.MatchWindowBase.Team
+
+            Return:
+                None
+            '''
 
             super().__init__()
 
@@ -3217,6 +3268,17 @@ class MatchWindowBase(Screen):
 
     def __init__(self):
 
+        '''
+        This is a main initializating function of the main class. It creates design, tab header, as well as
+        creating and loading content for each tab.
+
+        Parameters:
+            self: gfx.frontend.MatchWindowBase
+
+        Return:
+            None
+        '''
+
         super().__init__()
 
         self.design = GridLayout(cols=1)
@@ -3245,19 +3307,42 @@ class MatchWindowBase(Screen):
         self.design.main_widget.tabs_m.substitutions.bind(on_release=self.substitutions_button_pressed)
         self.design.main_widget.tabs_m.match.bind(on_release=self.match_button_pressed)
 
-    def substitutions_button_pressed(self, *args):
+    def substitutions_button_pressed(self, tab_header):
+
+        '''
+        This is function that processes Substitutions tab header press by increasing its requests counter and 
+        loading its logic.
+
+        Parameters:
+            self: gfx.frontend.MatchWindowBase
+            tab_header: gfx.frontend.TabbedPanelHeader
+
+        Return:
+            None
+        '''
 
         from DVA import frontend_references as gui
         gui.get('MatchWindowRefereeSubstitutionsTabContent').requests_counter += 1
         gui.get('MatchWindowRefereeSubstitutionsTabContent').on_load('A', scroll_get_indexes('Substitutions', 'A')[0], scroll_get_indexes('Substitutions', 'A')[1], False)
 
-    def match_button_pressed(self, *args):
+    def match_button_pressed(self, tab_header):
+
+        '''
+        This is function that processes Substitutions tab header press by loading its logic.
+
+        Parameters:
+            self: gfx.frontend.MatchWindowBase
+            tab_header: gfx.frontend.TabbedPanelHeader
+
+        Return:
+            None
+        '''
 
         from DVA import frontend_references as gui
 
         gui.get('MatchWindowRefereeMatchTabContent').on_load()
 
-    def protest_button_pressed(self, *args):
+    def protest_button_pressed(self, tab_header):
 
         from DVA import frontend_references as gui
 
