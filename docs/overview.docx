@@ -598,7 +598,8 @@ CODE REFERENCES
             id: int
             user_status: list 
             match: py.match.objects.Match
-       
+            match_events_dispatch: py.match.events.EventsDispatcher
+
         Step by step:
             First, we're setting window's  graphical parameters, including its resizableness and icon, according 
             to app config.
@@ -696,6 +697,22 @@ CODE REFERENCES
             gfx.frontend.MatchWindowBase.substitutions_button_pressed (frontend_references)
             gfx.frontend.MatchWindowBase.match_button_pressed (frontend_references)
             gfx.frontend.MatchWindowBase.protest_button_pressed (frontend_references)
+
+            gfx.frontend.MatchWindowReferee.MatchWindowReferee.calculate_pop_ups (match_events_dispatch.run, match.sets, match.status, 
+            match.data, match.start_time. match.sets[-1].status)
+            gfx.frontend.MatchWindowReferee.MatchWindowReferee.init_visual_elements (match.left_team.Name, match.left_team.Name.load, 
+            match.left_team.long_name, match.left_team.LineUp, match.left_team.LineUp.load, match.left_team.LineUp._switch_,
+            match.right_team.Name, match.right_team.Name.load, match.right_team.long_name, match.right_team.LineUp, 
+            match.right_team.LineUp.load, match.right_team.LineUp._switch_, frontend_references)
+            gfx.frontend.MatchWindowReferee.MatchWindowReferee.load_time_outs_buttons (match.sets)
+            gfx.frontend.MatchWindowReferee.MatchWindowReferee.time_out_button_pressed (match.left_team, match.left_team.head_coach, 
+            match.left_team.head_coach.time_out, match.right_team, match.right_team.head_coach, match.right_team.head_coach.time_out,
+            frontend_references)
+            gfx.frontend.MatchWindowReferee.MatchWindowReferee.player_button_pressed (match.left_team.LineUp.elements[0], 
+            match.left_team.LineUp.elements[1], match.left_team, match.right_team, frontend_references)
+            gfx.frontend.MatchWindowReferee.MatchWindowReferee.forward_button_pressed (match_events_dispatch.forward)
+            gfx.frontend.MatchWindowReferee.MatchWindowReferee.back_button_pressed (match_events_dispatch.back)
+            gfx.frontend.MatchWindowReferee.sanctions_button_pressed (frontend_references)
 
         Uses:
             Config from Kivy.config 
@@ -894,6 +911,14 @@ CODE REFERENCES
             gfx.frontend.MatchWindowBase.match_button_pressed (TabbedPanelHeader)
             gfx.frontend.MatchWindowBase.protest_button_pressed (TabbedPanelHeader)
 
+            gfx.frontend.MatchWindowReferee.__init__ (TabbedPanelHeader, tabs, language_code)
+            gfx.frontend.MatchWindowReferee.MatchWindowReferee (GridLayout)
+            gfx.frontend.MatchWindowReferee.MatchWindowReferee.__init__ (GridLayout, BoxLayout, ToggleButton, Label, match_widnow, language_code)
+            gfx.frontend.MatchWindowReferee.MatchWindowReferee.load_time_outs_buttons (Button, Label, match_widnow, language_code, sets_to_win, 
+            time_outs_regular_set, time_outs_final_set)
+            gfx.frontend.MatchWindowReferee.MatchWindowReferee.time_out_button_pressed (Button)
+            gfx.frontend.MatchWindowReferee.MatchWindowReferee.player_button_pressed (Button)
+
         class Application
 
             Info:
@@ -939,6 +964,8 @@ CODE REFERENCES
                     app_title, app_version, kivy.Clock from gfx.frontend
                     gfx.frontend.AuthorizationWindow
                     gfx.frontend.AuthorizationWindow.on_load
+                    gfx.frontend.MatchWindowReferee
+                    gfx.frontend.EndWindowReferee
 
         class ScreenManager
 
@@ -1670,6 +1697,8 @@ CODE REFERENCES
                     gfx.frontend.LineUpSetUpBase.init_visual_elements
                     gfx.frontend.LineUpSetUpReferee.__init__
 
+                    gfx.frontend.MatchWindowReferee.MatchWindowReferee.enable_everything
+
                 def __init__
                     
                     Info:
@@ -1950,6 +1979,8 @@ CODE REFERENCES
                 gfx.frontend.SanctionWindowReferee.cancel_button_pressed
                 gfx.frontend.SanctionWindowReferee.save_button_pressed
 
+                gfx.frontend.MatchWindowReferee.__init__
+
             class SharedArea
 
                 Info:
@@ -1973,6 +2004,9 @@ CODE REFERENCES
                     gfx.frontend.SanctionWindowReferee.apply_person_limitations
                     gfx.frontend.SanctionWindowReferee.cancel_button_pressed
 
+                    gfx.frontend.MatchWindowReferee.sanctions_button_pressed
+                    gfx.frontend.MatchWindowReferee.MatchWindowReferee.enable_everything
+
                 def __init__
 
                     Info:
@@ -1991,8 +2025,6 @@ CODE REFERENCES
                     
                     Uses:
                         GridLayout, Slider, ToggleButton, scroll_init from gfx.frontend
-
-                    Used by:
 
             def header_button
 
@@ -2402,9 +2434,10 @@ CODE REFERENCES
                     gfx.frontend.SanctionWindowReferee.calculate_popup
                     gfx.frontend.SanctionWindowReferee.init_visual_elements
 
-
                 Used by:
                     gfx.frontend.SanctionWindowReferee.header_button
+
+                    gfx.frontend.MatchWindowReferee.sanctions_button_pressed
 
             def sanction_button_pressed
             
@@ -2604,6 +2637,7 @@ CODE REFERENCES
                     gfx.frontend.SubstitutionsWindowReferee.__init__ (TabbedPanel, TabbedPanelHeader)
 
                     gfx.frontend.MatchWindowBase.substitutions_button_pressed
+                    gfx.frontend.MatchWindowReferee.MatchWindowReferee.enable_everything
 
                 def __init__
 
@@ -3067,6 +3101,7 @@ CODE REFERENCES
                 gfx.frontend.ProtestWindowReferee
                 
                 gfx.frontend.MatchWindowBase.protest_button_pressed
+                gfx.frontend.MatchWindowReferee.MatchWindowReferee.enable_everything
 
             class SharedArea
 
@@ -3263,6 +3298,8 @@ CODE REFERENCES
 
                 gfx.frontend.MatchWindowBase.protest_button_pressed
 
+                gfx.frontend.MatchWindowReferee.__init__
+
             def __init__
 
                 Info:
@@ -3324,6 +3361,8 @@ CODE REFERENCES
                 gfx.frontend.MatchWindowBase.match_button_pressed
                 gfx.frontend.MatchWindowBase.protest_button_pressed
 
+                gfx.frontend.MatchWindowReferee
+
             class Scores
 
                 Info:
@@ -3339,6 +3378,8 @@ CODE REFERENCES
 
                 Used by:
                     gfx.frontend.MatchWindowBase.Scores.__init__
+
+                    gfx.frontend.MatchWindowReferee.MatchWindowReferee.__init__
 
                 class ServeBalls
                 
@@ -3400,6 +3441,8 @@ CODE REFERENCES
 
                 Used by:
                     gfx.frontend.MatchWindowBase.Team.__init__
+                    
+                    gfx.frontend.MatchWindowReferee.MatchWindowReferee.__init__
 
                 def __init__
 
@@ -3497,9 +3540,51 @@ CODE REFERENCES
                     frontend_references as gui from DVA.pyw
                     gfx.frontend.ProtestWindowBase, gfx.frontend.ProtestWindowBase.on_load
 
+                Used by:
+                    gfx.frontend.MatchWindowReferee.__init__
+
         class MatchWindowReferee
 
+            Info:
+                This is a class that represents Match Window. Match Window is one of the screens in the screenmanager.
+                It represents the (currently) main window of the app which is used in between authorization and match end.
+                It also hosts the sub-class with the same name. It represents the content of a main match tab inside of tab header 
+                in this screen. The names are, unfortunately, the same because of very similar naming conventions.
+
+            Structure:
+                class MatchWindowReferee
+                def __init__
+                def sanctions_button_pressed
+
+            Uses:
+                gfx.frontend.MatchWindowBase (inheiritance)
+
+            Used by:
+                gfx.frontend.Application.build
+
+                gfx.frontend.MatchWindowReferee.__init__
+                gfx.frontend.MatchWindowReferee.sanctions_button_pressed
+
             class MatchWindowReferee
+
+                Info:
+                    This is a class for the Match tab - main tab of the tab header with the information
+                    about matchflow.
+
+                Structure:
+                    def __init__
+                    def calculate_pop_ups
+                    def init_visual_elements
+                    def on_load
+                    def enable_everything
+                    def load_time_outs_buttons
+                    def time_out_button_pressed
+                    def player_button_pressed
+                    def forward_button_pressed
+                    def back_button_pressed
+
+                Uses:
+                    GridLayout from gfx.frontend (inheiritance)
 
                 Used by:
                     gfx.frontend.SubstitutionsWindowBase.forced_disable_enable
@@ -3507,26 +3592,282 @@ CODE REFERENCES
                     gfx.frontend.MatchWindowBase.__init__
                     gfx.frontend.MatchWindowBase.match_button_pressed
 
-                def player_button_pressed
+                    gfx.frontend.MatchWindowReferee.__init__
+                    gfx.frontend.MatchWindowReferee.calculate_pop_ups
+                    gfx.frontend.MatchWindowReferee.init_visual_elements
+                    gfx.frontend.MatchWindowReferee.on_load
+                    gfx.frontend.MatchWindowReferee.enable_everything
+                    gfx.frontend.MatchWindowReferee.load_time_outs_buttons
+                    gfx.frontend.MatchWindowReferee.time_out_button_pressed
+
+                def __init__
+
+                    Info:
+                        This is a function that contains design code for the Match tab - main tab of the tab header with the information
+                        about matchflow.
+
+                    Parameters:
+                        self: gfx.frontend.MatchWindowReferee.MatchWindowReferee
+
+                    Return:
+                        None
+
+                    Uses:
+                        GridLayout, BoxLayout, ToggleButton, Label, match_widnow, language_code from gfx.frontend
+                        gfx.frontend.MatchWindowBase.Scores
+                        gfx.frontend.MatchWindowBase.Team
+
+                def calculate_pop_ups
+
+                    Info:
+                        This is a button calculating if we need to show different pop ups (in case of this screen - interval windows)
+                        to the user or run some code related to this interval window instead.
+                        In this screen, we have got the following interval windows to possibly show:
+                            - time before match start.
+                            - time before set start
+
+                    Parameters:
+                        self: gfx.frontend.MatchWindowReferee.MatchWindowReferee
+                        mode: str - 'NEW' or 'RESTORED'
+
+                    Step by step:   
+                        1)If the match hasn't started yet:
+                            2)Calculate if it should:
+                                    3-1)Show interval window if not.
+                                    3-2)Run respective code if yes.
+                        4)Else if the lates set hasn't started yet:
+                            5)Calculate if it should:
+                                    6-1)Show interval window if not.
+                                    6-2)Run respective code if yes.
+                    
+                    Return:
+                        None
+
+                    Uses:
+                        match_events_dispatch.run, match.sets, match.status, match.data, match.start_time. match.sets[-1].status from DVA.pyw
+                        get_time_instructions from py.match.core
+                        PopUpWindow.show_interval_window
+                        time.localtime
 
                     Used by:
-                        gfx.frontend.MatchWindowBase.Team.__init__
+                        gfx.frontend.MatchWindowReferee.MatchWindowReferee.on_load
+
+                def init_visual_elements
+
+                    Info:
+                        This is a function responsible for loading screen's visual elements.
+                        In this screen there are two types of visual elements to load: TeamName and TeamLineUp.
+                        Sometimes we need not to change teams' line ups but just swith them (after Tie Break Mid Set Rotation).
+                        This is counted for.
+
+                    Parameters:
+                        self: gfx.frontend.MatchWindowReferee.MatchWindowReferee
+
+                    Return:
+                        None
+
+                    Uses:
+                        match.left_team.Name, match.left_team.Name.load, match.left_team.long_name,
+                        match.left_team.LineUp, match.left_team.LineUp.load, match.left_team.LineUp._switch_,
+                        match.right_team.Name, match.right_team.Name.load, match.right_team.long_name,
+                        match.right_team.LineUp, match.right_team.LineUp.load, match.right_team.LineUp._switch_, 
+                        frontend_references as gui from DVA.pyw
+                        gfx.visual_elements.TeamName, gfx.visual_elements.TeamName.load,
+                        gfx.visual_elements.TeamLineUp, gfx.visual_elements.TeamLineUp.load, gfx.visual_elements.VisualElement._switch_
+
+                    Used by:
+                        gfx.frontend.MatchWindowReferee.MatchWindowReferee.on_load
 
                 def on_load
+
+                    Info:
+                        This is function that loads screne's logic.
+
+                    Parameters:
+                        self: gfx.frontend.MatchWindowReferee.MatchWindowReferee
+                        mode: str - 'NEW' or 'RESTORED'
+
+                    Return:
+                        None
+
+                    Uses:
+                        gfx.frontend.MatchWindowReferee.MatchWindowReferee.enable_everything
+                        gfx.frontend.MatchWindowReferee.MatchWindowReferee.calculate_pop_ups
+                        gfx.frontend.MatchWindowReferee.MatchWindowReferee.init_visual_elements
 
                     Used by:
                         gfx.frontend.MatchWindowBase.match_button_pressed
 
+                def enable_everything
+
+                    Info:
+                        This is a function that disables Line Up Set Up window and enables others when necessary (when starting a new set)
+
+                    Parameters:
+                        self: gfx.frontend.MatchWindowReferee.MatchWindowReferee
+
+                    Return:
+                        None
+
+                    Uses:
+                        gfx.frontend.LineUpSetUpBase.SharedArea
+                        gfx.frontend.MatchWindowReferee.MatchWindowReferee
+                        gfx.frontend.SubstitutionsWindowBase.SharedArea
+                        gfx.frontend.ProtestWindowBase.SharedArea
+                        gfx.frontend.SanctionsWindowReferee.SharedArea
+
+                    Used by:
+                        gfx.frontend.MatchWindowReferee.MatchWindowReferee.on_load
+
+                def load_time_outs_buttons
+
+                    Info:
+                        This is a functon that re-loads time out buttons according to match data every new set.
+
+                    Parameters:
+                        self: gfx.frontend.MatchWindowReferee.MatchWindowReferee
+
+                    Step by step:
+                        1)Clear all widget.
+                        2)Get current set rules.
+                        3)Create, add and bind the new widgets.
+
+                    Return:
+                        None
+
+                    Uses:
+                        match.sets from DVA.pyw
+                        Button, Label, match_widnow, language_code, sets_to_win, time_outs_regular_set, 
+                        time_outs_final_set from gfx.frontend
+                        gfx.frontend.MatchWindowReferee.MatchWindowReferee.time_out_button_pressed
+
+                    Used by:
+
+                def time_out_button_pressed
+
+                    Info:
+                        This is a function that processes touches on the time outs buttons by calling respertive function of
+                        team's head coach or HeadCoach object.
+
+                    Parameters:
+                        self: gfx.frontend.MatchWindowReferee.MatchWindowReferee
+                        button: gfx.frontend.Button
+
+                    Return:
+                        None
+
+                    Uses:
+                        match.left_team, match.left_team.head_coach, match.left_team.head_coach.time_out,
+                        match.right_team, match.right_team.head_coach, match.right_team.head_coach.time_out,
+                        frontend_references as gui from DVA.pyw
+                        py.match.objects.HeadCoach.time_out
+
+                    Used by:
+                        gfx.frontend.MatchWindowReferee.MatchWindowReferee.load_time_outs_buttons
+
+                def player_button_pressed
+
+                    Info:
+                        This is a function that processes touches of the player buttons.
+
+                    Step by step:
+                        1)Get event's type.
+                        2)Get event's team.
+                        3)Get event's player.
+                        4)Call corresponding to the event type function of a playar
+
+                    Parameters:
+                        button: gfx.frontend.Button
+
+                    Return:
+                        None
+
+                    Uses:
+                        match.left_team.LineUp.elements[0], match.left_team.LineUp.elements[1], match.left_team,
+                        match.right_team, frontend_references as gui from DVA.pyw
+                        number, mistake, point from py.match.objects.Player 
+                        players from py.match.objects.Team
+
+                    Used by:
+                        gfx.frontend.MatchWindowBase.Team.__init__
 
                 def forward_button_pressed
+
+                    Info:
+                        This is a function that processes clicks on forward arrow - cancel last active event in match events dispatch.
+
+                    Parameters:
+                        arrow: gfx.frontend.ButtonImage
+
+                    Return:
+                        None
+
+                    Uses:
+                        match_events_dispatch.forward from DVA.pyw
 
                     Used by:
                         gfx.frontend.MatchWindowBase.Scores.__init__
 
                 def back_button_pressed
 
+                    Info:
+                        This is a function that processes clicks on back arrow - cancel last active event in match events dispatch.
+
+                    Parameters:
+                        arrow: gfx.frontend.ButtonImage
+
+                    Return:
+                        None
+
+                    Uses:
+                        match_events_dispatch.back from DVA.pyw
+
                     Used by:
                         gfx.frontend.MatchWindowBase.Scores.__init__
+
+            def __init__
+
+                Info:
+                    This is an initialisation function for the window. 
+                    Basically, all the design is being done in Base class, so here we only deal with one thing:
+                        creating, adding content of, adding, and binding some tabs on our sub-class tab header.
+                    Why here? Well, Sanctions tab only exists in Referee's version but placing Protest tab before it seems...
+                    unnatural.
+
+                Parameters:
+                    self: gfx.frontend.MatchWindowReferee
+
+                Return:
+                    None
+
+                Uses:
+                    TabbedPanelHeader, tabs, language_code from gfx.frontend
+                    gfx.frontend.SanctionsWindowReferee
+                    gfx.frontend.ProtestWindowReferee
+                    gfx.frontend.MatchWindowReferee.sanctions_button_pressed
+                    gfx.frontend.MatchWindowBase.protest_button_pressed
+
+            def sanctions_button_pressed
+
+                Info:
+                    This is a button that processes clicks on the Sanction tab header.
+                    It does so by loading its logic with correct scroll indexes.
+
+                Parameters:
+                    self: gfx.frontend.MatchWindowReferee
+                    tab_header: gfx.frontend.TabbedPanelHeader
+
+                Return:
+                    None
+
+                Uses:
+                    frontend_references as gui from DVA.pyw
+                    gfx.frontend.SanctionsWindowBase.SharedArea
+                    gfx.frontend.SanctionsWindowBase.on_load
+                    gfx.frontend.scroll_get_indexes
+
+                Used by:
+                    gfx.frontend.MatchWindowReferee.__init__
 
         class EndWindowBase
 
@@ -3540,12 +3881,23 @@ CODE REFERENCES
                     gfx.frontend.ProtestWindowBase.save_button_pressed
                     gfx.frontend.ProtestWindowBase.cancel_button_pressed
 
+        class EndWindowReferee
+
+            Used by:
+
+                gfx.frontend.Application.build
+
         class PopUpWindow
 
             def show_popup:
 
                 Used by:
                     gfx.frontend.SubstitutionsWindowBase.calculate_pop_ups
+
+            def show_interval_window:
+
+                Used by:
+                    gfx.frontend.MatchWindowReferee.MatchWindowReferee.calculate_pop_ups
 
             def show_protest_creation_window:
 
@@ -3558,6 +3910,12 @@ CODE REFERENCES
                 gfx.frontend.LineUpSetUpBase.SharedArea.__init__
                 gfx.frontend.MatchWindowBase.Team.__init__
 
+        class ButtonImage:
+
+            Used by:
+                gfx.frontend.MatchWindowReferee.MatchWindowReferee.forward_button_pressed
+                gfx.frontend.MatchWindowReferee.MatchWindowReferee.back_button_pressed
+
         def scroll_get_indexes
 
             Used by:
@@ -3566,8 +3924,17 @@ CODE REFERENCES
 
                 gfx.frontend.MatchWindowBase.substitutions_button_pressed
 
+                gfx.frontend.MatchWindowReferee.sanctions_button_pressed
+
     gfx.visual_elements
         
+        VisualElement:
+
+            def _switch_:
+
+                Used by:
+                    gfx.frontend.MatchWindowReferee.MatchWindowReferee.init_visual_elements
+
         TeamName:
 
             Used by:
@@ -3577,6 +3944,7 @@ CODE REFERENCES
                 gfx.frontend.SanctionWindowReferee.init_visual_elements
                 gfx.frontend.SubstitutionsWindowBase.init_visual_elements
                 gfx.frontend.ProtestWindowBase.init_visual_elements
+                gfx.frontend.MatchWindowReferee.MatchWindowReferee.init_visual_elements
 
             def load:
 
@@ -3587,6 +3955,7 @@ CODE REFERENCES
                     gfx.frontend.SanctionWindowReferee.init_visual_elements
                     gfx.frontend.SubstitutionsWindowBase.init_visual_elements
                     gfx.frontend.ProtestWindowBase.init_visual_elements
+                    gfx.frontend.MatchWindowReferee.MatchWindowReferee.init_visual_elements
 
         TeamPeopleList:
 
@@ -3644,6 +4013,16 @@ CODE REFERENCES
                 Used by:
                     gfx.frontend.LineUpSetUpBase.cancel_button
 
+        TeamLineUp:
+
+            Used by:
+                gfx.frontend.MatchWindowReferee.MatchWindowReferee.init_visual_elements
+
+            def load:
+                
+                Used by:
+                    gfx.frontend.MatchWindowReferee.MatchWindowReferee.init_visual_elements
+
     py.core 
 
         def load_log
@@ -3678,6 +4057,22 @@ CODE REFERENCES
                 gfx.frontend.AuthorizationWindow.on_load
                 gfx.frontend.AuthorizationWindow.send_button
 
+    py.match.core
+
+        def get_time_instructions:
+
+            Used by:
+                gfx.frontend.MatchWindowReferee.MatchWindowReferee.calculate_pop_ups
+
+    py.match.events:
+
+        class EventsDispatcher:
+
+            Used by:
+                DVA.pyw
+
+            def run
+
     py.match.objects:
 
         class Match
@@ -3689,9 +4084,14 @@ CODE REFERENCES
                 sets: list of py.match.objects.Set 
                 officials: list of py.match.objects.Official
                 status: str - 'Scheduled', 'Awaiting', 'Ongoing', 'Finished'
+                data: list
+                start_time: str
 
             Uses:
                 *all of its structure and all of structure's elements' structure.
+
+            Used py:
+                DVA.pyw
 
         class Team
 
@@ -3700,7 +4100,12 @@ CODE REFERENCES
                 SetUp: gfx.visual_elements.TeamSetUp
                 long_name: str
                 head_coach: py.match.objects.HeadCoach 
+                
                 players: list of py.match.objects.Player 
+
+                    Used by:
+                        gfx.frontend.MatchWindowReferee.MatchWindowReferee.player_button_pressed
+
                 expulsed_players: list of py.match.objects.Player 
                 disqualified_players: list of py.match.objects.Player 
                 
@@ -3755,6 +4160,7 @@ CODE REFERENCES
                 extra_sub_warned_A: bool
                 extra_sub_warned_B: bool 
                 sanctions: list of py.match.Sanction
+                status: str - 'Scheduled', 'Awaiting', 'Ongoing', 'Finished'
 
         class Person
 
@@ -3790,6 +4196,11 @@ CODE REFERENCES
                 Used by:
                     gfx.frontend.SubstitutionsWindowBase.next_button
 
+            def time_out
+
+                Used by:
+                    gfx.frontend.MatchWindowReferee.MatchWindowReferee.time_out_button_pressed
+
             def write_protest:
 
                 Used by:
@@ -3807,8 +4218,25 @@ CODE REFERENCES
 
         class Player:
 
+            Structure:
+
+                number: int 
+
+                    Used by:
+                        gfx.frontend.MatchWindowReferee.MatchWindowReferee.player_button_pressed
+
             Used by:
                 gfx.frontend.SubstitutionsWindowBase
+
+            def point 
+
+                Used by:
+                    gfx.frontend.MatchWindowReferee.MatchWindowReferee.player_button_pressed
+
+            def mistake
+
+                Used by:
+                    gfx.frontend.MatchWindowReferee.MatchWindowReferee.player_button_pressed
 
         class Substitution
 

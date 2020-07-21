@@ -3352,9 +3352,32 @@ class MatchWindowBase(Screen):
 
 class MatchWindowReferee(MatchWindowBase):
 
+    '''
+    This is a class that represents Match Window. Match Window is one of the screens in the screenmanager.
+    It represents the (currently) main window of the app which is used in between authorization and match end.
+    It also hosts the sub-class with the same name. It represents the content of a main match tab inside of tab header 
+    in this screen. The names are, unfortunately, the same because of very similar naming conventions.
+    '''
+
     class MatchWindowReferee(GridLayout):
 
+        '''
+        This is a class for the Match tab - main tab of the tab header with the information
+        about matchflow.
+        '''
+
         def __init__(self):
+
+            '''
+            This is a function that contains design code for the Match tab - main tab of the tab header with the information
+            about matchflow.
+
+            Parameters:
+                self: gfx.frontend.MatchWindowReferee.MatchWindowReferee
+
+            Return:
+                None
+            '''
 
             super().__init__(cols=1)
 
@@ -3394,6 +3417,31 @@ class MatchWindowReferee(MatchWindowBase):
 
         def calculate_pop_ups(self, mode):
             
+            '''
+            This is a button calculating if we need to show different pop ups (in case of this screen - interval windows)
+            to the user or run some code related to this interval window instead.
+            In this screen, we have got the following interval windows to possibly show:
+                - time before match start.
+                - time before set start
+
+            Parameters:
+                self: gfx.frontend.MatchWindowReferee.MatchWindowReferee
+                mode: str - 'NEW' or 'RESTORED'
+
+            Step by step:   
+                1)If the match hasn't started yet:
+                    2)Calculate if it should:
+                            3-1)Show interval window if not.
+                            3-2)Run respective code if yes.
+                4)Else if the lates set hasn't started yet:
+                    5)Calculate if it should:
+                            6-1)Show interval window if not.
+                            6-2)Run respective code if yes.
+            
+            Return:
+                None
+            '''
+
             from py.match.events import SetStart
             from DVA import match_events_dispatch, match
             import time
@@ -3413,6 +3461,19 @@ class MatchWindowReferee(MatchWindowBase):
 
         def init_visual_elements(self):
 
+            '''
+            This is a function responsible for loading screen's visual elements.
+            In this screen there are two types of visual elements to load: TeamName and TeamLineUp.
+            Sometimes we need not to change teams' line ups but just swith them (after Tie Break Mid Set Rotation).
+            This is counted for.
+
+            Parameters:
+                self: gfx.frontend.MatchWindowReferee.MatchWindowReferee
+
+            Return:
+                None
+            '''
+
             from DVA import match, frontend_references as gui
             from gfx.visual_elements import TeamName, TeamLineUp
 
@@ -3430,13 +3491,34 @@ class MatchWindowReferee(MatchWindowBase):
             match.left_team.LineUp.load()
             match.right_team.LineUp.load()
 
-        def on_load(self, mode='NEW', *args):
+        def on_load(self, mode='NEW'):
+            
+            '''
+            This is function that loads screne's logic.
+
+            Parameters:
+                self: gfx.frontend.MatchWindowReferee.MatchWindowReferee
+                mode: str - 'NEW' or 'RESTORED'
+
+            Return:
+                None
+            '''
 
             self.enable_everything()
             self.calculate_pop_ups(mode)
             self.init_visual_elements()
 
         def enable_everything(self):
+
+            '''
+            This is a function that disables Line Up Set Up window and enables others when necessary (when starting a new set)
+
+            Parameters:
+                self: gfx.frontend.MatchWindowReferee.MatchWindowReferee
+
+            Return:
+                None
+            '''
 
             from DVA import frontend_references as gui
 
@@ -3450,7 +3532,22 @@ class MatchWindowReferee(MatchWindowBase):
             gui.get('MatchWindowRefereeTabPanelSanctions').disabled = False
             gui.get('MatchWindowRefereeTabPanel').switch_to(gui.get('MatchWindowRefereeTabPanelMatch'))
 
-        def load_time_out_buttons(self):
+        def load_time_out_buttons(self): # TODO see if can use the self.design usage to frontend_references
+
+            '''
+            This is a functon that re-loads time out buttons according to match data every new set.
+
+            Parameters:
+                self: gfx.frontend.MatchWindowReferee.MatchWindowReferee
+
+            Step by step:
+                1)Clear all widget.
+                2)Get current set rules.
+                3)Create, add and bind the new widgets.
+
+            Return:
+                None
+            '''
 
             from DVA import match
 
@@ -3489,26 +3586,54 @@ class MatchWindowReferee(MatchWindowBase):
 
             self.design.main_widget.time_outs.add_widget(self.design.main_widget.time_outs.team_B)
 
-        def time_out_button_pressed(self, *args):
+        def time_out_button_pressed(self, button):
+
+            '''
+            This is a function that processes touches on the time outs buttons by calling respertive function of
+            team's head coach or HeadCoach object.
+
+            Parameters:
+                self: gfx.frontend.MatchWindowReferee.MatchWindowReferee
+                button: gfx.frontend.Button
+
+            Return:
+                None
+            '''
 
             from DVA import match, frontend_references as gui
             from py.match.objects import HeadCoach
 
-            if args[0] in gui.get('MatchWindowRefereeMatchTabTeamATimeOuts'):
+            if button in gui.get('MatchWindowRefereeMatchTabTeamATimeOuts'):
 
                 if match.left_team.head_coach != '':
-                    match.left_team.head_coach.time_out(args[0], match.left_team)
+                    match.left_team.head_coach.time_out(button, match.left_team)
                 else:
-                    HeadCoach.time_out('', args[0], match.left_team)
+                    HeadCoach.time_out('', button, match.left_team)
 
             else:
 
                 if match.right_team.head_coach != '':
-                    match.right_team.head_coach.time_out(args[0], match.right_team)
+                    match.right_team.head_coach.time_out(button, match.right_team)
                 else:
-                    HeadCoach.time_out('', args[0], match.right_team)
+                    HeadCoach.time_out('', button, match.right_team)
 
-        def player_button_pressed(*args):
+        def player_button_pressed(button):
+
+            '''
+            This is a function that processes touches of the player buttons.
+
+            Step by step:
+                1)Get event's type.
+                2)Get event's team.
+                3)Get event's player.
+                4)Call corresponding to the event type function of a playar
+
+            Parameters:
+                button: gfx.frontend.Button
+
+            Return:
+                None
+            '''
 
             from DVA import match, frontend_references as gui
 
@@ -3518,13 +3643,13 @@ class MatchWindowReferee(MatchWindowBase):
             else:
                 event = 'point'
 
-            if args[0] in match.left_team.LineUp.elements[0] or args[0] in match.left_team.LineUp.elements[1]:
+            if button in match.left_team.LineUp.elements[0] or button in match.left_team.LineUp.elements[1]:
                 team = match.left_team
             else:
                 team = match.right_team
 
             for player in team.players:
-                if player.number == args[0].text:
+                if player.number == button.text:
                     if event == 'point':
                         player.point()
                         break
@@ -3532,19 +3657,53 @@ class MatchWindowReferee(MatchWindowBase):
                         player.mistake()
                         break
 
-        def back_button_pressed(*args):
+        def back_button_pressed(arrow):
             
+            '''
+            This is a function that processes clicks on back arrow - cancel last active event in match events dispatch.
+
+            Parameters:
+                arrow: gfx.frontend.ButtonImage
+
+            Return:
+                None
+            '''
+
             from DVA import match_events_dispatch
 
             match_events_dispatch.back()
 
-        def forward_button_pressed(*args):
+        def forward_button_pressed(arrow):
             
+            '''
+            This is a function that processes clicks on forward arrow - cancel last active event in match events dispatch.
+
+            Parameters:
+                arrow: gfx.frontend.ButtonImage
+
+            Return:
+                None
+            '''
+
             from DVA import match_events_dispatch
 
             match_events_dispatch.forward()
 
     def __init__(self):
+
+        '''
+        This is an initialisation function for the window. 
+        Basically, all the design is being done in Base class, so here we only deal with one thing:
+            creating, adding content of, adding, and binding some tabs on our sub-class tab header.
+        Why here? Well, Sanctions tab only exists in Referee's version but placing Protest tab before it seems...
+        unnatural.
+
+        Parameters:
+            self: gfx.frontend.MatchWindowReferee
+
+        Return:
+            None
+        '''
 
         super().__init__()
 
@@ -3565,7 +3724,19 @@ class MatchWindowReferee(MatchWindowBase):
         self.design.main_widget.tabs_m.sanctions.bind(on_release=self.sanctions_button_pressed)
         self.design.main_widget.tabs_m.protests.bind(on_release=self.protest_button_pressed)
 
-    def sanctions_button_pressed(self, *args):
+    def sanctions_button_pressed(self, tab_header):
+
+        '''
+        This is a button that processes clicks on the Sanction tab header.
+        It does so by loading its logic with correct scroll indexes.
+
+        Parameters:
+            self: gfx.frontend.MatchWindowReferee
+            tab_header: gfx.frontend.TabbedPanelHeader
+
+        Return:
+            None
+        '''
 
         from DVA import frontend_references as gui
 
