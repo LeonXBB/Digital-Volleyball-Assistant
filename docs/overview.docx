@@ -339,8 +339,13 @@ SCREENS
     level as well as widget bonding (in the end), if any.
 
     It also has on_load function which basically loads screen's logic. (see /gfx.frontend.py in directory 
-    structure for more information), as well as digets manipulation processing functions, both related to 
-    backend and frontend.
+    structure for more information).
+    
+    One other function is init_visual_elements which deals with creating and running visual elements with relation to the screen'sanction
+    widgets.
+    
+    It also has widgets manipulation processing functions, both related to 
+    backend and frontend, as well as some 'sub' functions for the three above.
 
     Instead of using variables names directly, every function except __init__ uses and should do so elements' 
     names in frontend references dictionary list stored in App class. It is this way so that if we change

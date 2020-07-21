@@ -3752,7 +3752,6 @@ class EndWindowBase(Screen):
         #match.loading_gif = PopUpWindow()
         #match.loading_gif.show_loading_gif()
 
-
     def __init__(self):
 
         super().__init__()
