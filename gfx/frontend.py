@@ -5078,7 +5078,9 @@ def scroll__init(slider, movement):
             gui.get('MatchWindowRefereeSanctionsTabContent').on_load('B', indexes[index], len(team.players) - len(team.disqualified_players) + len(team.staff) + (1 if team.head_coach != '' else 0), is_scrolling=True)
 
 
-def scroll_get_indexes(window, team):
+def scroll_get_indexes(window, team): # This function exists for when we call on_load functions outside of sliders and scroll_init 
+    #functions. We should call it to get slider indexes when we don't change the slider. Otherwise, there will be errors related to
+    #indexes being different than slider's position actually is.
 
    
     from DVA import match
