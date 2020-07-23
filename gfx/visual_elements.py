@@ -246,7 +246,7 @@ class TeamName(VisualElement):
 
 class TeamPeopleList(VisualElement):
 
-    def get_labels_list(self, widget_type, specific_child_index):
+    def get_labels_list(self, widget_type, specific_child_index): #TODO rename to get_widgets_list?
         
         labels_list = []
 
@@ -373,7 +373,7 @@ class TeamSetUp(VisualElement):
                 self.map_values.append(False)
                 self.map_values.append(False)
 
-    def load(self):
+    def load(self): #TODO fix so it's not specific to our current window design (4th index)
 
         self.elements.reverse()
 
