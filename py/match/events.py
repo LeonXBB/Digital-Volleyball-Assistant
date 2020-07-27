@@ -460,9 +460,9 @@ class SetEnd(Event):
                         if player.name_string == sanction.person:
                             match.left_team.expulsed_players.append(player)
                 else:
-                    for player in match.team_B.players:
+                    for player in match.right_team.players:
                         if player.name_string == sanction.person:
-                            match.team_B.expulsed_players.append(player)
+                            match.right_team.expulsed_players.append(player)
 
         match.set_score.reverse()
  
@@ -470,6 +470,9 @@ class SetEnd(Event):
             match.set_score[0] -= 1
         else:
             match.set_score[1] -= 1
+
+        match.sets[-1].PointScoreA.elements[0].text = str(match.sets[-1].score[0])
+        match.sets[-1].PointScoreB.elements[0].text = str(match.sets[-1].score[1])
 
         match.left_team, match.right_team = match.right_team, match.left_team    
         match.serving_team, match.receiving_team = match.receiving_team, match.serving_team
@@ -484,9 +487,6 @@ class SetEnd(Event):
             match.right_team.Serve.params[0] = 1
             match.left_team.Serve.elements[0].opacity = 0
             match.right_team.Serve.elements[0].opacity = 1
-
-        match.sets[-1].PointScoreA.elements[0].text = str(match.sets[-1].score[0])
-        match.sets[-1].PointScoreB.elements[0].text = str(match.sets[-1].score[1])
 
 
 class CoinTossResultsConfirmed(Event):
@@ -722,7 +722,9 @@ class LineUpConfirmed(Event):
             
             team.players[:players_in_team] = original_line_up[:players_in_team]
             for i in range(players_in_team):
-                team[i].players.position = i
+                team[i].players.position = i #TODO if this is not the first set, does it include changes
+                #from other sets, or does it restore everyone's position into default order by SetUpConfirmed
+                #event?
 
         for tab in gui.get('MatchWindowRefereeTabPanel').tab_list:
             tab.disabled = True
@@ -964,7 +966,7 @@ class TieBreakRotation(Event):
             match.set_score.reverse()
             match.sets[-1].score.reverse()
 
-            match.left_team.Name._switch_(match.right_team, deep_load=True, deep_load_data=(mathc.left_team.long_name, match.right_team.long_name))
+            match.left_team.Name._switch_(match.right_team, deep_load=True, deep_load_data=(match.left_team.long_name, match.right_team.long_name))
 
             '''match.left_team.Name.elements, match.right_team.Name.elements = match.right_team.Name.elements, match.left_team.Name.elements
                         
@@ -1165,7 +1167,6 @@ class SubstitutionMade(Event):
         self.create_data = [self.create_data[0].long_name, self.create_data[1].name_string, self.create_data[2].name_string, self.create_data[3], self.create_data[4], player_in_index, player_out_index, was_libero]
 
         Substitution(self.create_data)
-
 
     def delete(self):
         
