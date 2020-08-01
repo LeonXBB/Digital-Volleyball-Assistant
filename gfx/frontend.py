@@ -1365,7 +1365,7 @@ class SanctionsWindowReferee(Screen):
                                                        size_hint=(0.2, 1))
             self.sanctions_list_right.penalty = ToggleButton(group='sanction'+team,
                                                        background_normal=getcwd() + '/gfx/match/sanctions/penalty.png',
-                                                       background_down=.getcwd() + '/gfx/match/sanctions/penalty_down.png',
+                                                       background_down=getcwd() + '/gfx/match/sanctions/penalty_down.png',
                                                        border=[0, 0, 0, 0],
                                                        size_hint=(0.2, 1))
             self.sanctions_list_right.expulsion = ToggleButton(group='sanction'+team,
