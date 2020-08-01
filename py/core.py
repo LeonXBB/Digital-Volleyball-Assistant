@@ -16,7 +16,7 @@ def is_empty(log_address):
 def load_log(log_name, save_to_file):
 
     from DVA import logs
-    from py.objects import *
+    from py.objects import Log, Request
     import py.match.events
 
     LOADING_INSTRUCTIONS = [
