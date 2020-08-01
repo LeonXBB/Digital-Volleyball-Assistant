@@ -4,7 +4,8 @@ from py.match.match_config import *
 def try_loading_closest_match():
 
     import DVA
-    from DVA import Request, logs, user_id, frontend_references as gui
+    from DVA import logs, user_id, frontend_references as gui
+    from py.objects import Request
 
     if not logs[1].get(2, 'MatchData', True).get('exists'):
         Request(['MatchData', None, [user_id]])

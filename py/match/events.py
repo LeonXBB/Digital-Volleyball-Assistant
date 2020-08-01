@@ -164,7 +164,8 @@ class Event():
     
     def __init__(self, create_data, mode='NEW', is_quite=False, *args):
 
-        from DVA import Request, logs, match_events_dispatch
+        from DVA import logs, match_events_dispatch
+        from py.objects import Request
 
         self.id = len(logs[0].deep_log)
 

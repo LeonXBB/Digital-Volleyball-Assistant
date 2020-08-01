@@ -4966,6 +4966,8 @@ class TeamWidget(GridLayout):
         self.rows, self.cols = self.get_line_up_parameters()
         self.indexes = [[] for _ in range(self.rows * self.cols)]
         self.real_indexes = []
+        current_positioning_cords = position_starting_point
+        positioning_rotation_direction = position_direction
 
         for i in range(players_in_team):
             current_index = self.get_index(current_positioning_cords, positioning_rotation_direction)
