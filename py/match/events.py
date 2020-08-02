@@ -660,7 +660,7 @@ class LineUpConfirmed(Event):
         from kivy.clock import Clock
 
         players_list = []
-
+            
         if self.create_data[1] == 'A':
 
             for player_name in self.create_data[0]:

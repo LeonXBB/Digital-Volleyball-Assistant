@@ -139,7 +139,6 @@ class Request:
             if self.no_internet is False:
                 self.process()
             else:
-                print('here')
                 if no_internet_method == 'popup':
                     i = gfx.frontend.PopUpWindow()
                     i.show_pop_up(internet_requests[language_code][0], False)

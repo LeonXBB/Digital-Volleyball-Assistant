@@ -8,3 +8,17 @@
 7#1596408210.1788044#VersionControl#get##0.1.0#None
 8#1596408531.9527037#VersionControl#get##0.1.0#None
 9#1596408692.892118#VersionControl#get##0.1.0#None
+10#1596408887.444271#VersionControl#get##0.1.0#None
+11#1596408926.1359892#MatchPoolSend#get#('SetUpConfirmed', [['Сківка Дмитро', '1', False, True, True, 'Андрущенко Святослав', '14', True, False, True, 'Цимох Руслан', '13', True, False, True, 'Іванчич Олексій', '2', False, False, True, 'Ільков Ярослав', '3', False, False, True, 'Дейнека Андрій', '4', False, False, True, 'Денеж Захар', '5', False, False, True, 'Долмат Юрій', '6', False, False, True, 'Кушнір Іван', '7', False, False, True, 'Лебідь Данило', '8', False, False, True, 'Пищик Євген', '9', False, False, True, 'Терещук Максим', '10', False, False, True, 'Федоренко Данило', '11', False, False, True, 'Цекоростенський Володимир', '12', False, False, True], 'ДЮСШ-10'], True)#<Response [200]>#2
+12#1596408954.2540488#VersionControl#get##0.1.0#None13#1596409450.0423605#VersionControl#get##0.1.0#None
+14#1596409484.3046675#MatchPoolSend#get#('SetUpConfirmed', [['Другов Грігорій', '1', False, True, True, 'Кулініч Максим', '14', True, False, True, 'Кіляров Микита', '2', False, False, True, 'Оліфер Олег', '3', False, False, True, 'Поволяшко Євген', '4', False, False, True, 'Піскунов Костянтин', '5', False, False, True, 'Руденко Олександр', '6', False, False, True, 'Федоренко Дмитро', '7', False, False, True, 'Хижняк Іван', '8', False, False, True, 'Чілібі Антон', '9', False, False, True, 'Шляхов Максим', '10', False, False, True], 'Олімп'], True)#<Response [200]>#3
+14#1596410479.5554216#VersionControl#get##0.1.0#None
+15#1596410534.858385#VersionControl#get##0.1.0#None
+16#1596410548.4505746#MatchPoolSend#get#('LineUpConfirmed', [['Іванчич Олексій', 'Сківка Дмитро', 'Ільков Ярослав', 'Дейнека Андрій', 'Денеж Захар', 'Долмат Юрій'], 'A'], True)#<Response [200]>#4
+17#1596410695.0254822#MatchPoolSend#get#('LineUpConfirmed', [['Чілібі Антон', 'Хижняк Іван', 'Федоренко Дмитро', 'Шляхов Максим', 'Оліфер Олег', 'Поволяшко Євген'], 'B'], True)#<Response [200]>#5
+18#1596410840.7163577#VersionControl#get##0.1.0#None
+19#1596410855.0542452#MatchPoolSend#get#('SetStart', [1, '2:27'], True)#<Response [200]>#6
+20#1596410865.7869387#MatchPoolSend#get#('CaptainNotPresent', ['Олімп', 'Оліфер Олег', ''], True)#<Response [200]>#7
+21#1596410916.139166#VersionControl#get##0.1.0#None
+22#1596410958.6674762#VersionControl#get##0.1.0#None
+23#1596411217.0636802#VersionControl#get##0.1.0#None

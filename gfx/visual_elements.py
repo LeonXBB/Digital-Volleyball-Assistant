@@ -550,7 +550,6 @@ class TeamLineUp(VisualElement):
                         self.elements[i][j].text = ''
     
             for i in range(players_in_team):
-                print(any((match.right_team.players[i].captain, match.right_team.players[i].temp_captain)))
                 match.right_team.players[i].Number = PlayerNumber(self.elements[0][i])
                 match.right_team.players[i].Number.load(match.right_team.players[i].number, match.right_team.players[i].name_string, any((match.right_team.players[i].captain, match.right_team.players[i].temp_captain)))
 

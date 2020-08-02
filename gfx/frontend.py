@@ -1062,7 +1062,7 @@ class LineUpSetUpBase(Screen):
             for spinner in self.team.real_indexes:
                 spinner.bind(text=self.spinner_pressed)
 
-        def spinner_pressed(self, button):
+        def spinner_pressed(self, button, *args):
 
             '''
             This is a function that processes presses on the spinner button representing players in positions, and changes in current values 
@@ -1075,7 +1075,6 @@ class LineUpSetUpBase(Screen):
             Return:
                 None
             '''
-
             from DVA import frontend_references as gui
 
             screen = gui.get('MatchWindowRefereeLineUpSetUpTabContent')
@@ -1184,7 +1183,7 @@ class LineUpSetUpBase(Screen):
                 opposite_team.Name = TeamName(gui.get('MatchWindowRefereeLineUpSetUpTabTeam' + ('B' if team == match.left_team else 'A') + 'Tab'))
                 opposite_team.Name.load(opposite_team.long_name)
 
-    def on_load(self, team, spinner=None):
+    def on_load(self, team, spinner=None, *args):
 
         '''
         The function that loads screen's logic. 
@@ -1980,7 +1979,7 @@ class SanctionsWindowReferee(Screen):
                 self.calculate_popup(match.right_team)            
             self.init_visual_elements(match.right_team, start_index, end_index, is_scrolling)  
 
-    def sanction_button_pressed(self, button):
+    def sanction_button_pressed(self, button, *args):
 
         '''
         This is a functions that processes press on a sanction button, both graphically and codely. 
@@ -2031,7 +2030,7 @@ class SanctionsWindowReferee(Screen):
 
             self.set_save_button_state(match.right_team)
 
-    def person_button_pressed(self, button):
+    def person_button_pressed(self, button, *args):
 
         '''
         This is a functions that processes press on a player button, both graphically and codely. 
@@ -4536,6 +4535,8 @@ class IntervalWindowBase(GridLayout):
         self.design.main_widget.timer.text = ':'.join(time)
 
     def action(self, button):
+
+        import time
 
         import DVA
         from DVA import match, match_events_dispatch, logs, frontend_references as gui
