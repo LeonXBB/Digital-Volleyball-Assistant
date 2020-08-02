@@ -385,6 +385,8 @@ class AuthorizationWindow(Screen):
 
         Request(['Authorization', None, [gui.get('AuthorizationWindowLoginTextInput').text, gui.get('AuthorizationWindowPasswordTextInput').text]])
 
+        # TODO count for unsuccessful authorization!!!
+        
         if logs[1].get(2, 'Authorization', True).get('exists'): # TODO when internet is enabled, wait for execution of request?
             authorization_successful()
             if gui.get('AuthorizationWindowRememberMeCheckBox').active:
@@ -653,7 +655,7 @@ class TeamSetUpBase(Screen):
 
             self.is_present.bind(state=self.present_checkbox)
 
-        def present_checkbox(self, checkbox):
+        def present_checkbox(self, checkbox, *args):
 
             '''
             This is function for disabling other parameters if the person is not active. 
@@ -4785,8 +4787,8 @@ class SaveProtocolFileChooser(GridLayout):
 
 class PopUpWindow(Popup):
 
-    def show_pop_up(self, popup_text):
-        popupWindow = PopUpWindow(title='', content=Label(text=str(popup_text), text_size=(200, None)), size_hint=(0.5, 0.5))
+    def show_pop_up(self, popup_text, _auto_dismiss_=True):
+        popupWindow = PopUpWindow(title='', content=Label(text=str(popup_text), text_size=(200, None)), size_hint=(0.5, 0.5), auto_dismiss=_auto_dismiss_)
         popupWindow.open()
 
     def show_interval_window(self, args):

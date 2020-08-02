@@ -139,9 +139,10 @@ class Request:
             if self.no_internet is False:
                 self.process()
             else:
+                print('here')
                 if no_internet_method == 'popup':
                     i = gfx.frontend.PopUpWindow()
-                    i.show_pop_up(internet_requests[language_code][0])
+                    i.show_pop_up(internet_requests[language_code][0], False)
                 elif no_internet_method == 'loop': #TODO actually you need to change requests' code for this
                     #to work (they currently won't proceed if there's no Internet)
                     while self.no_internet != True:
