@@ -461,7 +461,7 @@ class TeamSetUp(VisualElement):
             errors.append(team_set_up_errors[language_code][0])
         if players_captains != 1:
             errors.append(team_set_up_errors[language_code][1])
-        if players_liberos > max_amount_liberos:
+        if (players_in_team + players_liberos) > players_present or players_liberos > max_amount_liberos:
             errors.append(team_set_up_errors[language_code][2])
         if players_present >= players_more_or_equal_to_x_liberos_at_least_y[0] and players_liberos < players_more_or_equal_to_x_liberos_at_least_y[1]:
             errors.append(team_set_up_errors[language_code][3])
