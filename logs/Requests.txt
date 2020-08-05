@@ -16,22 +16,54 @@
 15#1596410534.858385#VersionControl#get##0.1.0#None
 16#1596410548.4505746#MatchPoolSend#get#('LineUpConfirmed', [['Іванчич Олексій', 'Сківка Дмитро', 'Ільков Ярослав', 'Дейнека Андрій', 'Денеж Захар', 'Долмат Юрій'], 'A'], True)#<Response [200]>#4
 17#1596410695.0254822#MatchPoolSend#get#('LineUpConfirmed', [['Чілібі Антон', 'Хижняк Іван', 'Федоренко Дмитро', 'Шляхов Максим', 'Оліфер Олег', 'Поволяшко Євген'], 'B'], True)#<Response [200]>#5
-18#1596583839.2453854#VersionControl#get##0.1.0#None
-19#1596583934.3028402#VersionControl#get##0.1.0#None
-20#1596584039.5997615#VersionControl#get##0.1.0#None
-21#1596584160.9382532#VersionControl#get##0.1.0#None
-22#1596584266.9665978#VersionControl#get##0.1.0#None
-23#1596584392.7844603#VersionControl#get##0.1.0#None
-24#1596584428.4376357#VersionControl#get##0.1.0#None
-25#1596584485.537653#VersionControl#get##0.1.0#None
-26#1596584635.471654#VersionControl#get##0.1.0#None
-27#1596584637.962322#MatchPoolSend#get#('SetStart', [1, '2:43'], True)#<Response [200]>#6
-28#1596584639.0400105#MatchPoolSend#get#('SetStart', [1, '2:43'], False)#<Response [200]>#6
-29#1596584649.0169454#VersionControl#get##0.1.0#None
-30#1596584651.2794454#MatchPoolSend#get#('SetStart', [1, '2:44'], True)#<Response [200]>#7
-31#1596584652.114381#MatchPoolSend#get#('SetStart', [1, '2:44'], False)#<Response [200]>#7
-32#1596584757.704976#VersionControl#get##0.1.0#None
-33#1596584760.338948#MatchPoolSend#get#('SetStart', [1, '2:46'], True)#<Response [200]>#8
-34#1596584762.2797961#MatchPoolSend#get#('CaptainNotPresent', ['Олімп', 'Чілібі Антон', ''], True)#<Response [200]>#9
-35#1596584766.8281686#MatchPoolSend#get#('SubstitutionMade', ['ДЮСШ-10', 'Пищик Євген', 'Ільков Ярослав', 1, False, 10, 2, False], True)#<Response [200]>#10
-36#1596584777.8739846#MatchPoolSend#get#('SubstitutionMade', ['ДЮСШ-10', 'Ільков Ярослав', 'Пищик Євген', 2, False, 8, 2, False], True)#<Response [200]>#11
+18#1596664972.0563467#VersionControl#get##0.1.0#None
+19#1596665097.0555499#MatchPoolSend#get#('SetStart', [1, '1:4'], True)#<Response [200]>#6
+20#1596669956.1020463#VersionControl#get##0.1.0#None
+21#1596669961.0840795#MatchPoolSend#get#('CaptainNotPresent', ['Олімп', 'Оліфер Олег', ''], True)#<Response [200]>#7
+22#1596670169.366089#VersionControl#get##0.1.0#None
+23#1596670172.2330613#MatchPoolSend#get#('Point_sReceived', ['score', 'ДЮСШ-10', 'Іванчич Олексій', True], True)#<Response [200]>#8
+24#1596670173.4933412#MatchPoolSend#get#('Point_sReceived', ['score', 'ДЮСШ-10', 'Іванчич Олексій', False], True)#<Response [200]>#9
+25#1596670174.1323543#MatchPoolSend#get#('Point_sReceived', ['score', 'ДЮСШ-10', 'Іванчич Олексій', False], True)#<Response [200]>#10
+26#1596670174.4770606#MatchPoolSend#get#('Point_sReceived', ['score', 'ДЮСШ-10', 'Іванчич Олексій', False], True)#<Response [200]>#11
+27#1596670174.845168#MatchPoolSend#get#('Point_sReceived', ['score', 'ДЮСШ-10', 'Іванчич Олексій', False], True)#<Response [200]>#12
+28#1596670175.275819#MatchPoolSend#get#('Point_sReceived', ['score', 'ДЮСШ-10', 'Іванчич Олексій', False], True)#<Response [200]>#13
+29#1596670175.6740818#MatchPoolSend#get#('Point_sReceived', ['score', 'ДЮСШ-10', 'Іванчич Олексій', False], True)#<Response [200]>#14
+30#1596670176.2010813#MatchPoolSend#get#('Point_sReceived', ['score', 'ДЮСШ-10', 'Іванчич Олексій', False], True)#<Response [200]>#15
+31#1596670176.620076#MatchPoolSend#get#('Point_sReceived', ['score', 'ДЮСШ-10', 'Іванчич Олексій', False], True)#<Response [200]>#16
+32#1596670177.8789847#MatchPoolSend#get#('Point_sReceived', ['score', 'ДЮСШ-10', 'Іванчич Олексій', False], True)#<Response [200]>#17
+33#1596670178.7687907#MatchPoolSend#get#('Point_sReceived', ['score', 'ДЮСШ-10', 'Іванчич Олексій', False], True)#<Response [200]>#18
+34#1596670179.4273043#MatchPoolSend#get#('Point_sReceived', ['score', 'ДЮСШ-10', 'Іванчич Олексій', False], True)#<Response [200]>#19
+35#1596670180.151815#MatchPoolSend#get#('Point_sReceived', ['score', 'ДЮСШ-10', 'Іванчич Олексій', False], True)#<Response [200]>#20
+36#1596670180.7103207#MatchPoolSend#get#('Point_sReceived', ['score', 'ДЮСШ-10', 'Іванчич Олексій', False], True)#<Response [200]>#21
+37#1596670181.2739248#MatchPoolSend#get#('Point_sReceived', ['score', 'ДЮСШ-10', 'Іванчич Олексій', False], True)#<Response [200]>#22
+38#1596670181.8387687#MatchPoolSend#get#('Point_sReceived', ['score', 'ДЮСШ-10', 'Іванчич Олексій', False], True)#<Response [200]>#23
+39#1596670182.9322867#MatchPoolSend#get#('Point_sReceived', ['score', 'ДЮСШ-10', 'Іванчич Олексій', False], True)#<Response [200]>#24
+40#1596670183.8612268#MatchPoolSend#get#('Point_sReceived', ['score', 'ДЮСШ-10', 'Іванчич Олексій', False], True)#<Response [200]>#25
+41#1596670184.9239972#MatchPoolSend#get#('Point_sReceived', ['score', 'ДЮСШ-10', 'Іванчич Олексій', False], True)#<Response [200]>#26
+42#1596670185.8531494#MatchPoolSend#get#('Point_sReceived', ['score', 'ДЮСШ-10', 'Іванчич Олексій', False], True)#<Response [200]>#27
+43#1596670186.6373055#MatchPoolSend#get#('Point_sReceived', ['score', 'ДЮСШ-10', 'Іванчич Олексій', False], True)#<Response [200]>#28
+44#1596670187.5910378#MatchPoolSend#get#('Point_sReceived', ['score', 'ДЮСШ-10', 'Іванчич Олексій', False], True)#<Response [200]>#29
+45#1596670197.2522385#MatchPoolSend#get#('Point_sReceived', ['score', 'ДЮСШ-10', 'Іванчич Олексій', False], True)#<Response [200]>#30
+46#1596670198.028159#MatchPoolSend#get#('Point_sReceived', ['score', 'ДЮСШ-10', 'Іванчич Олексій', False], True)#<Response [200]>#31
+47#1596670203.081642#MatchPoolSend#get#('Point_sReceived', ['score', 'ДЮСШ-10', 'Іванчич Олексій', False], True)#<Response [200]>#32
+48#1596670203.5304453#MatchPoolSend#get#('SetEnd', [1, '2:30', 1596670203.3522973, 'ДЮСШ-10'], True)#<Response [200]>#33
+49#1596670211.0087621#MatchPoolSend#get#('LineUpConfirmed', [['Поволяшко Євген', 'Федоренко Дмитро', 'Хижняк Іван', 'Чілібі Антон', 'Шляхов Максим', 'Оліфер Олег'], 'A'], True)#<Response [200]>#34
+50#1596670219.2273536#MatchPoolSend#get#('LineUpConfirmed', [['Кушнір Іван', 'Дейнека Андрій', 'Сківка Дмитро', 'Ільков Ярослав', 'Долмат Юрій', 'Іванчич Олексій'], 'B'], True)#<Response [200]>#35
+51#1596670220.605546#MatchPoolSend#get#('SetStart', [2, '2:33'], True)#<Response [200]>#36
+52#1596670222.4054403#MatchPoolSend#get#('CaptainNotPresent', ['Олімп', 'Поволяшко Євген', ''], True)#<Response [200]>#37
+53#1596670282.3467462#VersionControl#get##0.1.0#None
+54#1596670356.6662955#VersionControl#get##0.1.0#None
+55#1596670378.944388#VersionControl#get##0.1.0#None
+56#1596670395.8554556#VersionControl#get##0.1.0#None
+57#1596670420.2446861#VersionControl#get##0.1.0#None
+58#1596670466.6217296#VersionControl#get##0.1.0#None
+59#1596670568.3182168#VersionControl#get##0.1.0#None
+60#1596670579.5204194#MatchPoolSend#get#('Point_sReceived', ['score', 'Олімп', 'Поволяшко Євген', True], True)#<Response [200]>#38
+61#1596670580.4033136#MatchPoolSend#get#('Point_sReceived', ['score', 'Олімп', 'Федоренко Дмитро', False], True)#<Response [200]>#39
+62#1596670581.1991239#MatchPoolSend#get#('Point_sReceived', ['score', 'Олімп', 'Федоренко Дмитро', False], True)#<Response [200]>#40
+63#1596670581.9382687#MatchPoolSend#get#('Point_sReceived', ['score', 'Олімп', 'Федоренко Дмитро', False], True)#<Response [200]>#41
+64#1596670582.5811956#MatchPoolSend#get#('Point_sReceived', ['score', 'Олімп', 'Федоренко Дмитро', False], True)#<Response [200]>#42
+65#1596670583.113281#MatchPoolSend#get#('Point_sReceived', ['score', 'Олімп', 'Федоренко Дмитро', False], True)#<Response [200]>#43
+66#1596670772.2169623#MatchPoolSend#get#('SanctionIssued', ['warning', 'Шляхов Максим', 'Олімп'], True)#<Response [200]>#44
+67#1596670804.2477481#MatchPoolSend#get#('SanctionIssued', ['penalty', 'Шляхов Максим', 'Олімп'], True)#<Response [200]>#45
+68#1596670804.6040962#MatchPoolSend#get#('Point_sReceived', ['penalty', 'Олімп', 'Шляхов Максим', True], True)#<Response [200]>#46

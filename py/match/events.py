@@ -317,38 +317,35 @@ class SetStart(Event):
                 
                 gui.get("MatchWindowRefereeMatchTabContent").on_load('RESTORED')
 
-        if match.left_team.Serve == '':
-            match.left_team.Serve = TeamServe([gui.get('MatchWindowRefereeMatchTabTeamAServeBall')])
-            match.right_team.Serve = TeamServe([gui.get('MatchWindowRefereeMatchTabTeamBServeBall')])
+        '''if match.left_team.Serve == '':'''
+        match.left_team.Serve = TeamServe([gui.get('MatchWindowRefereeMatchTabTeamAServeBall')])
+        match.right_team.Serve = TeamServe([gui.get('MatchWindowRefereeMatchTabTeamBServeBall')])
 
-            if match.serving_team == match.left_team:
-                match.left_team.Serve.params[0] = 1
-                match.right_team.Serve.params[0] = 0
-                match.left_team.Serve.elements[0].opacity = 1
-                match.right_team.Serve.elements[0].opacity = 0
-            else:
-                match.left_team.Serve.params[0] = 0
-                match.right_team.Serve.params[0] = 1
-                match.left_team.Serve.elements[0].opacity = 0
-                match.right_team.Serve.elements[0].opacity = 1
-        
+        if match.serving_team == match.left_team:
+            match.left_team.Serve.params[0] = 1
+            match.right_team.Serve.params[0] = 0
+            match.left_team.Serve.elements[0].opacity = 1
+            match.right_team.Serve.elements[0].opacity = 0
         else:
-            match.left_team.Serve._switch_(match.right_team.Serve)
+            match.left_team.Serve.params[0] = 0
+            match.right_team.Serve.params[0] = 1
+            match.left_team.Serve.elements[0].opacity = 0
+            match.right_team.Serve.elements[0].opacity = 1
+        
+        '''else:
+            match.left_team.Serve._switch_(match.right_team.Serve, switch_params=False)'''
 
         match.sets[-1].PointScoreA = SetPointScore([gui.get('MatchWindowRefereeMatchTabTeamAPointScore')])
         match.sets[-1].PointScoreB = SetPointScore([gui.get('MatchWindowRefereeMatchTabTeamBPointScore')])
         match.sets[-1].PointScoreA.zero()
         match.sets[-1].PointScoreB.zero()
 
-        if match.SetScoreA == '':
-            match.SetScoreA = MatchSetScore(gui.get('MatchWindowRefereeMatchTabTeamBSetScore'))
-            match.SetScoreB = MatchSetScore(gui.get('MatchWindowRefereeMatchTabTeamASetScore'))
-            match.SetScoreA.params[2] = str(match.set_score[0])
-            match.SetScoreB.params[2] = str(match.set_score[1])
-            match.SetScoreA.__load__()
-            match.SetScoreB.__load__()
-        else:
-            match.SetScoreA._switch_(match.SetScoreB)
+        match.SetScoreA = MatchSetScore(gui.get('MatchWindowRefereeMatchTabTeamBSetScore'))
+        match.SetScoreB = MatchSetScore(gui.get('MatchWindowRefereeMatchTabTeamASetScore'))
+        match.SetScoreA.params[2] = str(match.set_score[0])
+        match.SetScoreB.params[2] = str(match.set_score[1])
+        match.SetScoreA.__load__()
+        match.SetScoreB.__load__()
 
         for team in (match.left_team, match.right_team):
             if team.captain not in team.players[:players_in_team]:
@@ -879,14 +876,21 @@ class Point_sReceived(Event):
             scores[i].increase(points[i])
 
             if points[i] == 0 and teams[i].Serve.params[0] == 1:
+
+                change_serve = True
+
                 teams[(0 if i == 1 else 1)].rotate()
-                teams[i].Serve._switch_(teams[(0 if i == 1 else 1)].LineUp, switch_elements=False)
+                teams[i].Serve._switch_(teams[(0 if i == 1 else 1)].Serve, switch_elements=False)
                 '''teams[i].Serve.switch()
                 teams[(0 if i == 1 else 1)].Serve.switch()'''
                 break
 
+            else:
+
+                change_serve = False
+
         if self.mode == 'NEW':
-            self.create_data = [self.create_data[0], teams[0].long_name, self.create_data[1].name_string]
+            self.create_data = [self.create_data[0], teams[0].long_name, self.create_data[1].name_string, change_serve]
 
         for i in range(2):
             for _ in range(points[i]):
@@ -905,14 +909,15 @@ class Point_sReceived(Event):
             if not match.sets[-1].is_tie_break:
                 
                 for i in range(len(score_for_technical_time_outs_regular_set)):
-                    if max(match.sets[-1].score) + 1 == score_for_technical_time_outs_regular_set[i] and not match.sets[-1].technical_time_outs_used[i]:
+                    print(max(match.sets[-1].score))
+                    if max(match.sets[-1].score) == score_for_technical_time_outs_regular_set[i] and not match.sets[-1].technical_time_outs_used[i]:
                         match.sets[-1].technical_time_outs_used[i] = True
                         match_events_dispatch.return_command = 'self.run(TimeOutTaken, [None, len(match.sets), match.sets[-1].score, None, True], "' + self.mode + '")'
 
             else:
 
                 for i in range(len(score_for_technical_time_outs_final_set)):
-                    if max(match.sets[-1].score) + 1 == score_for_technical_time_outs_final_set[i] and not match.sets[-1].technical_time_outs_used[i]:
+                    if max(match.sets[-1].score) == score_for_technical_time_outs_final_set[i] and not match.sets[-1].technical_time_outs_used[i]:
                         match.sets[-1].technical_time_outs_used[i] = True
                         match_events_dispatch.return_command = 'self.run(TimeOutTaken, [None, len(match.sets), match.sets[-1].score, None, True], "' + self.mode + '")'
 
@@ -930,26 +935,37 @@ class Point_sReceived(Event):
                 player = _player_
                 break
 
+        points = [getattr(py.match.match_config, 'points_for_' + self.create_data[0]+'_same_team'), getattr(py.match.match_config, 'points_for_' + self.create_data[0]+'_another_team')]
+
         if player in match.left_team.players:               
 
-            points = [getattr(py.match.match_config, 'points_for_' + self.create_data[0]+'_same_team'), getattr(py.match.match_config, 'points_for_' + self.create_data[0]+'_another_team')]
             teams = (match.left_team, match.right_team)
+            scores = (match.sets[-1].PointScoreA, match.sets[-1].PointScoreB)
 
         elif player in match.right_team.players:
 
-            points = [getattr(py.match.match_config, 'points_for_' + self.create_data[0]+'_another_team'), getattr(py.match.match_config, 'points_for_' + self.create_data[0]+'_same_team')]
             teams = (match.right_team, match.left_team)
-
-        match.sets[-1].PointScoreA.decrease(points[0])
-        match.sets[-1].PointScoreB.decrease(points[1])
+            scores = (match.sets[-1].PointScoreB, match.sets[-1].PointScoreA)
         
         match.sets[-1].score[0] -= points[teams.index(match.left_team)]
         match.sets[-1].score[1] -= points[teams.index(match.right_team)]
 
+        print(match.sets[-1].score)
+
         for i in range(2):
-            if points[i] != 0 and teams[i].Serve.params[0] == 0:
-                teams[i].Serve._switch_(teams[(0 if i == 1 else 1)], switch_elements=False)
+            
+            scores[i].decrease(points[i])
+
+            '''if points[i] != 0 and teams[i].Serve.params[0] == 0:
+                teams[i].Serve._switch_(teams[(0 if i == 1 else 1)].Serve, switch_elements=False)
                 teams[(0 if i == 1 else 1)].rotate_backwards()
+                teams[i].Serve.switch()
+                teams[(0 if i == 1 else 1)].Serve.switch()
+                break'''
+
+            if self.create_data[3]:
+                teams[i].rotate_backwards()
+                teams[i].Serve._switch_(teams[(0 if i == 1 else 1)].Serve, switch_elements=False)
                 '''teams[i].Serve.switch()
                 teams[(0 if i == 1 else 1)].Serve.switch()'''
                 break
@@ -1168,7 +1184,7 @@ class SubstitutionMade(Event):
         '''if self.create_data[4]:
             gui.get('MatchWindowRefereeTabPanelMatch').content.enable_everything()'''
 
-        if self.create_data[2].captain:
+        if self.create_data[2].captain or self.create_data[2].temp_captain:
             match_events_dispatch.return_command = f'PopUpWindow().show_captain_chooser("{self.create_data[0].long_name}")'
 
         self.create_data = [self.create_data[0].long_name, self.create_data[1].name_string, self.create_data[2].name_string, self.create_data[3], self.create_data[4], player_in_index, player_out_index, was_libero]
