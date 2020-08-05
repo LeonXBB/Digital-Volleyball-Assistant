@@ -197,7 +197,8 @@ class Event():
 
     def __delete__(self):
 
-        from DVA import Request, logs, match_events_dispatch
+        from DVA import logs, match_events_dispatch
+        from py.objects import Request
 
         match_events_dispatch.cancelled_events_ids.append(self.id)
         match_events_dispatch.created_events_ids = match_events_dispatch.created_events_ids[:-1]
@@ -710,6 +711,7 @@ class LineUpConfirmed(Event):
     def delete(self):
 
         from DVA import match, frontend_references as gui
+        from gfx.frontend import scroll_get_indexes
 
         if len(match.sets) > 0:
 
@@ -732,17 +734,18 @@ class LineUpConfirmed(Event):
         
         if self.create_data[1] == 'A':
              
-            gui.get('MatchWindowRefereeLineUpSetUpTabTeamATab').enabled = True
+            gui.get('MatchWindowRefereeLineUpSetUpTabTeamATab').disabled = False
 
-            if gui.get('MatchWindowRefereeLineUpSetUpTabTeamBTab').enabled:
+            if gui.get('MatchWindowRefereeLineUpSetUpTabTeamBTab').disabled:
                 
                 if len(match.sets) == 0:
-                    gui.get('MatchWindowRefereeTabPanelTeamSetUp').disabled = False
-                    gui.get('MatchWindowRefereeTabPanel').switch_to(gui.get('MatchWindowRefereeTabPanelTeamSetUp'))
-                    gui.get('MatchWindowRefereeTabPanelTeamSetUp').on_load('A')
+                    gui.get('MatchWindowRefereeLineUpSetUpTabContent').disabled = False
+                    gui.get('MatchWindowRefereeTabPanel').switch_to(gui.get('MatchWindowRefereeLineUpSetUpTabContent'))
+                    gui.get('MatchWindowRefereeLineUpSetUpTabContent').on_load('A')
                 elif 0 < len(match.sets) < sets_to_win * 2 - 2:
                     gui.get('MatchWindowRefereeTabPanelMatch').disabled = False
                     gui.get('MatchWindowRefereeTabPanel').switch_to(gui.get('MatchWindowRefereeTabPanelMatch'))
+                    gui.get('MatchWindowRefereeTabPanelMatch').on_load()
                 elif len(match.sets) == sets_to_win * 2 - 2:
                     gui.get('MatchWindowRefereeTabPanelCoinToss').disabled = False
                     gui.get('MatchWindowRefereeTabPanel').switch_to(gui.get('MatchWindowRefereeTabPanelCoinToss'))
@@ -754,15 +757,18 @@ class LineUpConfirmed(Event):
 
         else:
              
-            if gui.get('MatchWindowRefereeLineUpSetUpTabTeamATab').enabled:
+            gui.get('MatchWindowRefereeLineUpSetUpTabTeamBTab').disabled = False
+
+            if gui.get('MatchWindowRefereeLineUpSetUpTabTeamATab').disabled:
                 
                 if len(match.sets) == 0:
-                    gui.get('MatchWindowRefereeTabPanelTeamSetUp').disabled = False
-                    gui.get('MatchWindowRefereeTabPanel').switch_to(gui.get('MatchWindowRefereeTabPanelTeamSetUp'))
-                    gui.get('MatchWindowRefereeTabPanelTeamSetUp').on_load('A')
+                    gui.get('MatchWindowRefereeLineUpSetUpTabContent').disabled = False
+                    gui.get('MatchWindowRefereeTabPanel').switch_to(gui.get('MatchWindowRefereeLineUpSetUpTabContent'))
+                    gui.get('MatchWindowRefereeLineUpSetUpTabContent').on_load('B')
                 elif 0 < len(match.sets) < sets_to_win * 2 - 2:
                     gui.get('MatchWindowRefereeTabPanelMatch').disabled = False
                     gui.get('MatchWindowRefereeTabPanel').switch_to(gui.get('MatchWindowRefereeTabPanelMatch'))
+                    gui.get('MatchWindowRefereeTabPanelMatch').on_load()
                 elif len(match.sets) == sets_to_win * 2 - 2:
                     gui.get('MatchWindowRefereeTabPanelCoinToss').disabled = False
                     gui.get('MatchWindowRefereeTabPanel').switch_to(gui.get('MatchWindowRefereeTabPanelCoinToss'))
@@ -874,7 +880,7 @@ class Point_sReceived(Event):
 
             if points[i] == 0 and teams[i].Serve.params[0] == 1:
                 teams[(0 if i == 1 else 1)].rotate()
-                teams[i].Serve._switch_(teams[(0 if i == 1 else 1)], switch_elements=False)
+                teams[i].Serve._switch_(teams[(0 if i == 1 else 1)].LineUp, switch_elements=False)
                 '''teams[i].Serve.switch()
                 teams[(0 if i == 1 else 1)].Serve.switch()'''
                 break

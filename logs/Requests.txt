@@ -16,9 +16,22 @@
 15#1596410534.858385#VersionControl#get##0.1.0#None
 16#1596410548.4505746#MatchPoolSend#get#('LineUpConfirmed', [['Іванчич Олексій', 'Сківка Дмитро', 'Ільков Ярослав', 'Дейнека Андрій', 'Денеж Захар', 'Долмат Юрій'], 'A'], True)#<Response [200]>#4
 17#1596410695.0254822#MatchPoolSend#get#('LineUpConfirmed', [['Чілібі Антон', 'Хижняк Іван', 'Федоренко Дмитро', 'Шляхов Максим', 'Оліфер Олег', 'Поволяшко Євген'], 'B'], True)#<Response [200]>#5
-18#1596410840.7163577#VersionControl#get##0.1.0#None
-19#1596410855.0542452#MatchPoolSend#get#('SetStart', [1, '2:27'], True)#<Response [200]>#6
-20#1596410865.7869387#MatchPoolSend#get#('CaptainNotPresent', ['Олімп', 'Оліфер Олег', ''], True)#<Response [200]>#7
-21#1596410916.139166#VersionControl#get##0.1.0#None
-22#1596410958.6674762#VersionControl#get##0.1.0#None
-23#1596411217.0636802#VersionControl#get##0.1.0#None
+18#1596583839.2453854#VersionControl#get##0.1.0#None
+19#1596583934.3028402#VersionControl#get##0.1.0#None
+20#1596584039.5997615#VersionControl#get##0.1.0#None
+21#1596584160.9382532#VersionControl#get##0.1.0#None
+22#1596584266.9665978#VersionControl#get##0.1.0#None
+23#1596584392.7844603#VersionControl#get##0.1.0#None
+24#1596584428.4376357#VersionControl#get##0.1.0#None
+25#1596584485.537653#VersionControl#get##0.1.0#None
+26#1596584635.471654#VersionControl#get##0.1.0#None
+27#1596584637.962322#MatchPoolSend#get#('SetStart', [1, '2:43'], True)#<Response [200]>#6
+28#1596584639.0400105#MatchPoolSend#get#('SetStart', [1, '2:43'], False)#<Response [200]>#6
+29#1596584649.0169454#VersionControl#get##0.1.0#None
+30#1596584651.2794454#MatchPoolSend#get#('SetStart', [1, '2:44'], True)#<Response [200]>#7
+31#1596584652.114381#MatchPoolSend#get#('SetStart', [1, '2:44'], False)#<Response [200]>#7
+32#1596584757.704976#VersionControl#get##0.1.0#None
+33#1596584760.338948#MatchPoolSend#get#('SetStart', [1, '2:46'], True)#<Response [200]>#8
+34#1596584762.2797961#MatchPoolSend#get#('CaptainNotPresent', ['Олімп', 'Чілібі Антон', ''], True)#<Response [200]>#9
+35#1596584766.8281686#MatchPoolSend#get#('SubstitutionMade', ['ДЮСШ-10', 'Пищик Євген', 'Ільков Ярослав', 1, False, 10, 2, False], True)#<Response [200]>#10
+36#1596584777.8739846#MatchPoolSend#get#('SubstitutionMade', ['ДЮСШ-10', 'Ільков Ярослав', 'Пищик Євген', 2, False, 8, 2, False], True)#<Response [200]>#11

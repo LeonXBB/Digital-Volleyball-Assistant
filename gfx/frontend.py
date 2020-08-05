@@ -3483,11 +3483,12 @@ class MatchWindowReferee(MatchWindowBase):
             match.right_team.Name = TeamName(gui.get('MatchWindowRefereeMatchTabTeamBName'))
             match.right_team.Name.load(match.right_team.long_name)
 
-            if match.left_team.LineUp == '':
-                match.left_team.LineUp = TeamLineUp([gui.get('MatchWindowRefereeMatchTabTeamACourtPlayers'), gui.get('MatchWindowRefereeMatchTabTeamALiberos')])
-                match.right_team.LineUp = TeamLineUp([gui.get('MatchWindowRefereeMatchTabTeamBCourtPlayers'), gui.get('MatchWindowRefereeMatchTabTeamBLiberos')])
-            else:
-                match.left_team.LineUp._switch_(match.right_team.LineUp)
+            '''if match.left_team.LineUp == '':'''
+            match.left_team.LineUp = TeamLineUp([gui.get('MatchWindowRefereeMatchTabTeamACourtPlayers'), gui.get('MatchWindowRefereeMatchTabTeamALiberos')])
+            match.right_team.LineUp = TeamLineUp([gui.get('MatchWindowRefereeMatchTabTeamBCourtPlayers'), gui.get('MatchWindowRefereeMatchTabTeamBLiberos')])
+            '''else:
+                print(2)
+                match.left_team.LineUp._switch_(match.right_team.LineUp)'''
         
             match.left_team.LineUp.load()
             match.right_team.LineUp.load()
