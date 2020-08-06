@@ -728,52 +728,32 @@ class LineUpConfirmed(Event):
 
         for tab in gui.get('MatchWindowRefereeTabPanel').tab_list:
             tab.disabled = True
+                    
+        if gui.get('MatchWindowRefereeLineUpSetUpTabTeam' + ('A' if self.create_data[1] == 'B' else 'B') + 'Tab').disabled:
+            
+            if len(match.sets) == 0:
+                
+                gui.get('MatchWindowRefereeLineUpSetUpTabTeam' + self.create_data[1] + 'Tab').disabled = False
+                gui.get('MatchWindowRefereeLineUpSetUpTabContent').disabled = False
+                gui.get('MatchWindowRefereeLineUpSetUpTabHeader').disabled = False
+                for element in gui.get('MatchWindowRefereeLineUpSetUpTabTeam' + self.create_data[1] + 'Content'): element.disabled = True
+                
+                gui.get('MatchWindowRefereeTabPanel').switch_to(gui.get('MatchWindowRefereeTabPanelLineUpSetUp'))
+                gui.get('MatchWindowRefereeLineUpSetUpTabContent').on_load(self.create_data[1])
+            
+            elif 0 < len(match.sets) < sets_to_win * 2 - 2:
+                gui.get('MatchWindowRefereeTabPanelMatch').disabled = False
+                gui.get('MatchWindowRefereeTabPanel').switch_to(gui.get('MatchWindowRefereeTabPanelMatch'))
+                gui.get('MatchWindowRefereeTabPanelMatch').on_load()
+            
+            elif len(match.sets) == sets_to_win * 2 - 2:
+                gui.get('MatchWindowRefereeTabPanelCoinToss').disabled = False
+                gui.get('MatchWindowRefereeTabPanel').switch_to(gui.get('MatchWindowRefereeTabPanelCoinToss'))
         
-        if self.create_data[1] == 'A':
-             
-            gui.get('MatchWindowRefereeLineUpSetUpTabTeamATab').disabled = False
-
-            if gui.get('MatchWindowRefereeLineUpSetUpTabTeamBTab').disabled:
-                
-                if len(match.sets) == 0:
-                    gui.get('MatchWindowRefereeLineUpSetUpTabContent').disabled = False
-                    gui.get('MatchWindowRefereeTabPanel').switch_to(gui.get('MatchWindowRefereeLineUpSetUpTabContent'))
-                    gui.get('MatchWindowRefereeLineUpSetUpTabContent').on_load('A')
-                elif 0 < len(match.sets) < sets_to_win * 2 - 2:
-                    gui.get('MatchWindowRefereeTabPanelMatch').disabled = False
-                    gui.get('MatchWindowRefereeTabPanel').switch_to(gui.get('MatchWindowRefereeTabPanelMatch'))
-                    gui.get('MatchWindowRefereeTabPanelMatch').on_load()
-                elif len(match.sets) == sets_to_win * 2 - 2:
-                    gui.get('MatchWindowRefereeTabPanelCoinToss').disabled = False
-                    gui.get('MatchWindowRefereeTabPanel').switch_to(gui.get('MatchWindowRefereeTabPanelCoinToss'))
-            
-            else:
-                gui.get('MatchWindowRefereeTabPanelLineUpSetUp').disabled = False
-                gui.get('MatchWindowRefereeLineUpSetUpTabHeader').switch_to(gui.get('MatchWindowRefereeLineUpSetUpTabTeamBTab'))
-                gui.get('MatchWindowRefereeLineUpSetUpTabTeamBTab').trigger_action()
-
         else:
-             
-            gui.get('MatchWindowRefereeLineUpSetUpTabTeamBTab').disabled = False
-
-            if gui.get('MatchWindowRefereeLineUpSetUpTabTeamATab').disabled:
-                
-                if len(match.sets) == 0:
-                    gui.get('MatchWindowRefereeLineUpSetUpTabContent').disabled = False
-                    gui.get('MatchWindowRefereeTabPanel').switch_to(gui.get('MatchWindowRefereeLineUpSetUpTabContent'))
-                    gui.get('MatchWindowRefereeLineUpSetUpTabContent').on_load('B')
-                elif 0 < len(match.sets) < sets_to_win * 2 - 2:
-                    gui.get('MatchWindowRefereeTabPanelMatch').disabled = False
-                    gui.get('MatchWindowRefereeTabPanel').switch_to(gui.get('MatchWindowRefereeTabPanelMatch'))
-                    gui.get('MatchWindowRefereeTabPanelMatch').on_load()
-                elif len(match.sets) == sets_to_win * 2 - 2:
-                    gui.get('MatchWindowRefereeTabPanelCoinToss').disabled = False
-                    gui.get('MatchWindowRefereeTabPanel').switch_to(gui.get('MatchWindowRefereeTabPanelCoinToss'))
-            
-            else:
-                gui.get('MatchWindowRefereeTabPanelLineUpSetUp').disabled = False
-                gui.get('MatchWindowRefereeLineUpSetUpTabHeader').switch_to(gui.get('MatchWindowRefereeLineUpSetUpTabTeamATab'))
-                gui.get('MatchWindowRefereeLineUpSetUpTabTeamATab').trigger_action()
+            gui.get('MatchWindowRefereeTabPanelLineUpSetUp').disabled = False
+            gui.get('MatchWindowRefereeLineUpSetUpTabHeader').switch_to(gui.get('MatchWindowRefereeLineUpSetUpTabTeam' + ('A' if self.create_data[1] == 'B' else 'B') + 'Tab'))
+            gui.get('MatchWindowRefereeLineUpSetUpTabTeam' + ('A' if self.create_data[1] == 'B' else 'B') + 'Tab').trigger_action()
 
 
 class TimeOutTaken(Event):

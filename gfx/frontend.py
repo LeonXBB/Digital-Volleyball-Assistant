@@ -1198,7 +1198,7 @@ class LineUpSetUpBase(Screen):
             None
         '''
 
-        from DVA import match
+        from DVA import match, frontend_references as gui
 
         if team == 'A':
 
@@ -1206,7 +1206,7 @@ class LineUpSetUpBase(Screen):
             self.init_visual_elements(match.left_team, spinner)
 
         elif team == 'B':
-
+            
             self.set_save_button_state('B')
             self.init_visual_elements(match.right_team, spinner)       
 
@@ -1802,6 +1802,8 @@ class SanctionsWindowReferee(Screen):
                         if button.background_normal.split('/')[-1].split('.')[0] == SANCTIONS_LEVELS[i + 1]:
                             button.disabled = True
 
+        print(sanctions_requests, sanctions_allowed)
+
         if sanctions_requests[0] < sanctions_allowed[0]:
             gui.get('MatchWindowRefereeSanctionsTabTeam' + ('A' if team == match.left_team else 'B') +'SanctionsDelayPenalty').disabled = True
         else:
@@ -1849,7 +1851,7 @@ class SanctionsWindowReferee(Screen):
                     if i < 3:
                         sanction_button.disabled = True
                         continue
-
+                    
                     if sanction_button.background_normal.split('/')[-1].split('.')[0] == SANCTIONS_LEVELS[i]:
                         
                         if i < SANCTIONS_LEVELS.index(self.get_person_sanction_level(team, person_name_string)[0]):
@@ -2056,6 +2058,7 @@ class SanctionsWindowReferee(Screen):
             if button.state == 'down':
                 self.person_chosen_A = button.text
                 self.apply_person_limitations(match.left_team, button.text)
+                self.apply_team_limitations(match.left_team)
             else:
                 self.person_chosen_A = ''
                 self.enable_every_sanction(match.left_team)
@@ -2068,6 +2071,7 @@ class SanctionsWindowReferee(Screen):
             if button.state == 'down':
                 self.person_chosen_B = button.text
                 self.apply_person_limitations(match.right_team, button.text)
+                self.apply_team_limitations(match.right_team)
             else:
                 self.person_chosen_B = ''
                 self.enable_every_sanction(match.right_team)
