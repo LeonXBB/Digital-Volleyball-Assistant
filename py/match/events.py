@@ -356,9 +356,6 @@ class SetStart(Event):
         from DVA import match, frontend_references as gui
         from gfx.visual_elements import TeamServe, TeamLineUp, SetPointScore
 
-        if len(match.sets) == 1:
-            match.status == 'Awaiting'
-
         gui.get('MatchWindowRefereeMatchTabContent').load_time_out_buttons()        
         for i in range(len(match.sets[-1].time_outs)):
             if match.sets[-1].time_outs[i].team == match.left_team.long_name:
@@ -391,9 +388,10 @@ class SetStart(Event):
         match.sets[-1].PointScoreA.elements[0].text = str(match.sets[-1].score[0])
         match.sets[-1].PointScoreB.elements[0].text = str(match.sets[-1].score[1])
 
-        gui.get('MatchWindowRefereeTabPanel').switch_to(gui.get('MatchWindowRefereeTabPanelLineUpSetUp'))
+        del match.sets[-1]
 
-        match.sets = match.sets[:-1]
+        if len(match.sets) == 0:
+            match.status = 'Awaiting'
 
 
 class SetEnd(Event):
@@ -538,8 +536,7 @@ class CoinTossResultsConfirmed(Event):
             gui.get('MatchWindowRefereeTabPanelLineUpSetUp').disabled = False
             gui.get('MatchWindowRefereeTabPanel').switch_to(gui.get('MatchWindowRefereeTabPanelLineUpSetUp'))
             gui.get('MatchWindowRefereeLineUpSetUpTabContent').on_load('A')
-
-       
+  
     def delete(self):
 
         from DVA import logs, match, frontend_references as gui
@@ -728,11 +725,29 @@ class LineUpConfirmed(Event):
 
         for tab in gui.get('MatchWindowRefereeTabPanel').tab_list:
             tab.disabled = True
-                    
+
+        # we're going backwards when cancelling. If the other tab is NOT disabled, means this is the first one and we need to switch to another window. Else, to the opposite tab.
+
+        #TODO in here, there are some logical mistakes and since we do not allow for going back everywhere in this version, this part was skipped.
+ 
         if gui.get('MatchWindowRefereeLineUpSetUpTabTeam' + ('A' if self.create_data[1] == 'B' else 'B') + 'Tab').disabled:
             
+            gui.get('MatchWindowRefereeTabPanelLineUpSetUp').disabled = False
+            gui.get('MatchWindowRefereeLineUpSetUpTabContent').disabled = False
+            gui.get('MatchWindowRefereeLineUpSetUpTabHeader').disabled = False
+            gui.get('MatchWindowRefereeLineUpSetUpTabTeam' + self.create_data[1] + 'Tab').disabled = False
+            for widget in gui.get('MatchWindowRefereeLineUpSetUpTabTeam' + self.create_data[1] + 'Content'): widget.disabled = False
+            gui.get('MatchWindowRefereeLineUpSetUpTabHeader').switch_to(gui.get('MatchWindowRefereeLineUpSetUpTabTeam' + self.create_data[1] + 'Tab'))
+            gui.get('MatchWindowRefereeTabPanel').switch_to(gui.get('MatchWindowRefereeTabPanelLineUpSetUp'))
+
+            gui.get('MatchWindowRefereeLineUpSetUpTabContent').on_load(self.create_data[1])
+
+        '''if not gui.get('MatchWindowRefereeLineUpSetUpTabTeam' + ('A' if self.create_data[1] == 'B' else 'B') + 'Tab').disabled:
+
+             gui.get('MatchWindowRefereeTabPanelLineUpSetUp').disabled = False 
+
             if len(match.sets) == 0:
-                
+   
                 gui.get('MatchWindowRefereeLineUpSetUpTabTeam' + self.create_data[1] + 'Tab').disabled = False
                 gui.get('MatchWindowRefereeLineUpSetUpTabContent').disabled = False
                 gui.get('MatchWindowRefereeLineUpSetUpTabHeader').disabled = False
@@ -751,10 +766,17 @@ class LineUpConfirmed(Event):
                 gui.get('MatchWindowRefereeTabPanel').switch_to(gui.get('MatchWindowRefereeTabPanelCoinToss'))
         
         else:
-            gui.get('MatchWindowRefereeTabPanelLineUpSetUp').disabled = False
+            
+            for tab in gui.get('MatchWindowRefereeLineUpSetUpTabHeader').tab_list:
+                tab.disabled = False
+                #tab.content.disabled = False
+                for spinner in 
+
+
             gui.get('MatchWindowRefereeLineUpSetUpTabHeader').switch_to(gui.get('MatchWindowRefereeLineUpSetUpTabTeam' + ('A' if self.create_data[1] == 'B' else 'B') + 'Tab'))
             gui.get('MatchWindowRefereeLineUpSetUpTabTeam' + ('A' if self.create_data[1] == 'B' else 'B') + 'Tab').trigger_action()
-
+            gui.get('MatchWindowRefereeLineUpSetUpTabContent').on_load(self.create_data[1])'''
+            
 
 class TimeOutTaken(Event):
 
@@ -889,7 +911,6 @@ class Point_sReceived(Event):
             if not match.sets[-1].is_tie_break:
                 
                 for i in range(len(score_for_technical_time_outs_regular_set)):
-                    print(max(match.sets[-1].score))
                     if max(match.sets[-1].score) == score_for_technical_time_outs_regular_set[i] and not match.sets[-1].technical_time_outs_used[i]:
                         match.sets[-1].technical_time_outs_used[i] = True
                         match_events_dispatch.return_command = 'self.run(TimeOutTaken, [None, len(match.sets), match.sets[-1].score, None, True], "' + self.mode + '")'
@@ -929,8 +950,6 @@ class Point_sReceived(Event):
         
         match.sets[-1].score[0] -= points[teams.index(match.left_team)]
         match.sets[-1].score[1] -= points[teams.index(match.right_team)]
-
-        print(match.sets[-1].score)
 
         for i in range(2):
             

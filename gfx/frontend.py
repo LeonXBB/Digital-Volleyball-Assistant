@@ -1199,7 +1199,7 @@ class LineUpSetUpBase(Screen):
         '''
 
         from DVA import match, frontend_references as gui
-
+               
         if team == 'A':
 
             self.set_save_button_state('A')
@@ -1801,8 +1801,6 @@ class SanctionsWindowReferee(Screen):
                     for button in gui.get('MatchWindowRefereeSanctionsTabTeam' + ('A' if team == match.left_team else 'B') + 'Sanctions' + direction).children:
                         if button.background_normal.split('/')[-1].split('.')[0] == SANCTIONS_LEVELS[i + 1]:
                             button.disabled = True
-
-        print(sanctions_requests, sanctions_allowed)
 
         if sanctions_requests[0] < sanctions_allowed[0]:
             gui.get('MatchWindowRefereeSanctionsTabTeam' + ('A' if team == match.left_team else 'B') +'SanctionsDelayPenalty').disabled = True
@@ -3451,7 +3449,7 @@ class MatchWindowReferee(MatchWindowBase):
             from DVA import match_events_dispatch, match
             import time
             from py.match.core import get_time_instructions
-            
+
             if len(match.sets) == 0 and match.status == 'Awaiting' and get_time_instructions(match.data, 'match_start')[0] == 'match_interval':
                 PopUpWindow().show_interval_window([2, 3, get_time_instructions(match.data, 'match_start')[1], [mode]])  # TODO change according to status
             elif len(match.sets) == 0 and match.status == 'Awaiting' and get_time_instructions(match.data, 'match_start') == 'match_window':
@@ -3491,7 +3489,6 @@ class MatchWindowReferee(MatchWindowBase):
             match.left_team.LineUp = TeamLineUp([gui.get('MatchWindowRefereeMatchTabTeamACourtPlayers'), gui.get('MatchWindowRefereeMatchTabTeamALiberos')])
             match.right_team.LineUp = TeamLineUp([gui.get('MatchWindowRefereeMatchTabTeamBCourtPlayers'), gui.get('MatchWindowRefereeMatchTabTeamBLiberos')])
             '''else:
-                print(2)
                 match.left_team.LineUp._switch_(match.right_team.LineUp)'''
         
             match.left_team.LineUp.load()
