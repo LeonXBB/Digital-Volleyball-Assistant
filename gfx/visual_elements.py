@@ -45,8 +45,12 @@ class VisualElement:
 
     def _switch_(self, switch_with, switch_elements=True, switch_params=True, deep_load=False, deep_load_func_name='load', deep_load_data=None):
         
+        print(self.elements, switch_with.elements, self.params, swithc_with.params)
+
         if switch_elements: self.elements, switch_with.elements = switch_with.elements, self.elements
         if switch_params: self.params, switch_with.params = switch_with.params, self.params
+
+        print(self.elements, switch_with.elements, self.params, swithc_with.params)
 
         if hasattr(self, deep_load_func_name) and deep_load:
             if deep_load_data is not None:

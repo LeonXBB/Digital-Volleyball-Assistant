@@ -165,4 +165,3 @@
 164#1596843465.3713863#VersionControl#get##0.1.0#None
 165#1596843468.2722037#MatchPoolSend#get#('Point_sReceived', ['score', 'ДЮСШ-10', 'Долмат Юрій', True], True)#<Response [200]>#137
 166#1596843469.5898805#MatchPoolSend#get#('Point_sReceived', ['score', 'Олімп', 'Кіляров Микита', True], True)#<Response [200]>#138
-167#1596843470.774344#MatchPoolSend#get#('Point_sReceived', ['score', 'ДЮСШ-10', 'Кушнір Іван', True], True)#<Response [200]>#139
