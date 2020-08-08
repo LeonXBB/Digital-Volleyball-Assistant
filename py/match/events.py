@@ -340,8 +340,8 @@ class SetStart(Event):
         match.sets[-1].PointScoreA.zero()
         match.sets[-1].PointScoreB.zero()
 
-        match.SetScoreA = MatchSetScore(gui.get('MatchWindowRefereeMatchTabTeamBSetScore'))
-        match.SetScoreB = MatchSetScore(gui.get('MatchWindowRefereeMatchTabTeamASetScore'))
+        match.SetScoreA = MatchSetScore(gui.get('MatchWindowRefereeMatchTabTeamASetScore'))
+        match.SetScoreB = MatchSetScore(gui.get('MatchWindowRefereeMatchTabTeamBSetScore'))
         match.SetScoreA.params[2] = str(match.set_score[0])
         match.SetScoreB.params[2] = str(match.set_score[1])
         match.SetScoreA.__load__()
@@ -350,6 +350,8 @@ class SetStart(Event):
         for team in (match.left_team, match.right_team):
             if team.captain not in team.players[:players_in_team]:
                 match_events_dispatch.return_command = f'PopUpWindow().show_captain_chooser("{team.long_name}")'
+            elif team.captain and any(player.temp_captain == True for player in team.players):
+                for player in team.players: player.temp_captain = False
 
     def delete(self):
 
@@ -988,7 +990,7 @@ class TieBreakRotation(Event):
             match.set_score.reverse()
             match.sets[-1].score.reverse()
 
-            match.left_team.Name._switch_(match.right_team, deep_load=True, deep_load_data=(match.left_team.long_name, match.right_team.long_name))
+            match.left_team.Name._switch_(switch_with=match.right_team.Name)#, deep_load=True, deep_load_data=(match.right_team.long_name, match.right_team.long_name))
 
             '''match.left_team.Name.elements, match.right_team.Name.elements = match.right_team.Name.elements, match.left_team.Name.elements
                         
@@ -1119,7 +1121,7 @@ class SanctionIssued(Event):
                     team.Name.load(team.long_name)
                 else:
                     if team.head_coach != '' and team.head_coach.name_string == self.create_data[1]:
-                        if team.head.coach.Name != '': team.head_coach.Name.load(team.head_coach.name_string)
+                        if team.head_coach.Name != '': team.head_coach.Name.load(team.head_coach.name_string)
                         if self.create_data[0] == 'disqualification' and team.head_coach in team.disqualified_staff:
                             team.disqualified_staff.remove(team.head_coach)                     
                     for _staff_ in team.staff:

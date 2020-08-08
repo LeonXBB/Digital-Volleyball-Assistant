@@ -43,21 +43,21 @@ class VisualElement:
         
         self.elements = []
 
-    def _switch_(self, swith_with, switch_elements=True, switch_params=True, deep_load=False, deep_load_func_name='load', deep_load_data=None):
+    def _switch_(self, switch_with, switch_elements=True, switch_params=True, deep_load=False, deep_load_func_name='load', deep_load_data=None):
         
-        if switch_elements: self.elements, swith_with.elements = swith_with.elements, self.elements
-        if switch_params: self.params, swith_with.params = swith_with.params, self.params
-        
+        if switch_elements: self.elements, switch_with.elements = switch_with.elements, self.elements
+        if switch_params: self.params, switch_with.params = switch_with.params, self.params
+
         if hasattr(self, deep_load_func_name) and deep_load:
             if deep_load_data is not None:
                 getattr(self, deep_load_func_name)(deep_load_data[0])
-                getattr(swith_with, deep_load_func_name)(deep_load_data[1])
+                getattr(switch_with, deep_load_func_name)(deep_load_data[1])
             else:
                 getattr(self, deep_load_func_name)()
-                getattr(swith_with, deep_load_func_name)()
+                getattr(swicth_with, deep_load_func_name)()
 
         self.__load__()
-        swith_with.__load__()
+        switch_with.__load__()
 
 
 class HeadCoachName(VisualElement):

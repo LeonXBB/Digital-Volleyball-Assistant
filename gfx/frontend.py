@@ -2057,6 +2057,7 @@ class SanctionsWindowReferee(Screen):
                 self.person_chosen_A = button.text
                 self.apply_person_limitations(match.left_team, button.text)
                 self.apply_team_limitations(match.left_team)
+
             else:
                 self.person_chosen_A = ''
                 self.enable_every_sanction(match.left_team)
@@ -2425,7 +2426,7 @@ class SubstitutionsWindowBase(Screen):
 
             if self.get_subs_requests(team)[1] >= substitutions_requests_from_a_team_during_one_play:
                 
-                if self.get_subs_requests(team)[3] < substitutions_requests_from_a_team_during_one_play and (not hasattr(match.sets[-1], 'extra_sub_warned_' + ('A' if team == match.left_team else 'B'))):
+                if self.get_subs_requests(team)[3] <= substitutions_requests_from_a_team_during_one_play and (not hasattr(match.sets[-1], 'extra_sub_warned_' + ('A' if team == match.left_team else 'B'))):
                     setattr(match.sets[-1], 'extra_sub_warned_' + ('A' if team == match.left_team else 'B'), True)
                     gui.get('MatchWindowRefereeSubstitutionsTabHeader').switch_to(gui.get('MatchWindowRefereeSubstitutionsTabTeam' + ('B' if team == match.left_team else 'A') + 'Tab'))
                     gui.get('MatchWindowRefereeSubstitutionsTabTeam' + ('B' if team == match.left_team else 'A') + 'Tab').trigger_action()
