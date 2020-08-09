@@ -990,24 +990,26 @@ class TieBreakRotation(Event):
             match.set_score.reverse()
             match.sets[-1].score.reverse()
 
-            match.left_team.Name._switch_(switch_with=match.right_team.Name)#, deep_load=True, deep_load_data=(match.right_team.long_name, match.right_team.long_name))
+            gui.get('MatchWindowRefereeMatchTabContent').init_visual_elements()
+
+            match.left_team.Name._switch_(switch_with=match.right_team.Name, deep_load=True, deep_load_data=(match.right_team.long_name, match.left_team.long_name))
 
             '''match.left_team.Name.elements, match.right_team.Name.elements = match.right_team.Name.elements, match.left_team.Name.elements
                         
             match.left_team.Name.load(match.left_team.long_name)
             match.right_team.Name.load(match.right_team.long_name)'''
 
-            match.SetScoreA._switch_(match.SetScoreB)
+            match.SetScoreA._switch_(switch_with=match.SetScoreB)
 
             '''match.SetScoreA.elements, match.SetScoreB.elements = match.SetScoreB.elements, match.SetScoreA.elements
             match.SetScoreA.elements[0].text, match.SetScoreB.elements[0].text = match.SetScoreB.elements[0].text, match.SetScoreA.elements[0].text'''
 
-            match.sets[-1].PointScoreA._switch_(match.sets[-1].PointScoreB)
+            match.sets[-1].PointScoreA._switch_(switch_with=match.sets[-1].PointScoreB, switch_elements=False)
 
             '''match.sets[-1].PointScoreA, match.sets[-1].PointScoreB = match.sets[-1].PointScoreB, match.sets[-1].PointScoreA
             match.sets[-1].PointScoreA.elements[0].text, match.sets[-1].PointScoreB.elements[0].text = match.sets[-1].PointScoreB.elements[0].text, match.sets[-1].PointScoreA.elements[0].text'''
 
-            match.left_team.Serve._switch_(match.right_team.Serve, deep_load_func_name='switch')
+            match.left_team.Serve._switch_(match.right_team.Serve, deep_load=True, deep_load_func_name='switch')
 
             '''match.left_team.Serve, match.right_team.Serve = match.right_team.Serve, match.left_team.Serve
             match.left_team.Serve.elements, match.right_team.Serve.elements = match.right_team.Serve.elements, match.left_team.Serve.elements 
@@ -1026,16 +1028,19 @@ class TieBreakRotation(Event):
     
     def delete(self):
                   
-            from DVA import match 
+            import DVA
+            from DVA import match, frontend_references as gui
 
             match.left_team, match.right_team = match.right_team, match.left_team
 
-            setattr(DVA, 'tie_break_mid_set_rotation_happened', False)
+            delattr(DVA, 'tie_break_mid_set_rotation_happened')
 
             match.set_score.reverse()
             match.sets[-1].score.reverse()
 
-            match.left_team.Name._switch_(match.right_team, deep_load=True, deep_load_data=(mathc.left_team.long_name, match.right_team.long_name))
+            gui.get('MatchWindowRefereeMatchTabContent').init_visual_elements()
+
+            match.left_team.Name._switch_(match.right_team.Name, deep_load=True, deep_load_data=(match.right_team.long_name, match.left_team.long_name))
 
             '''match.left_team.Name.elements, match.right_team.Name.elements = match.right_team.Name.elements, match.left_team.Name.elements
             
@@ -1047,12 +1052,12 @@ class TieBreakRotation(Event):
             '''match.SetScoreA.elements, match.SetScoreB.elements = match.SetScoreB.elements, match.SetScoreA.elements
             match.SetScoreA.elements[0].text, match.SetScoreB.elements[0].text = match.SetScoreB.elements[0].text, match.SetScoreA.elements[0].text'''
 
-            match.sets[-1].PointScoreA._switch_(match.sets[-1].PointScoreB)
+            match.sets[-1].PointScoreA._switch_(switch_with=match.sets[-1].PointScoreB, switch_elements=False)
 
             '''match.sets[-1].PointScoreA, match.sets[-1].PointScoreB = match.sets[-1].PointScoreB, match.sets[-1].PointScoreA
             match.sets[-1].PointScoreA.elements[0].text, match.sets[-1].PointScoreB.elements[0].text = match.sets[-1].PointScoreB.elements[0].text, match.sets[-1].PointScoreA.elements[0].text'''
 
-            match.left_team.Serve._switch_(match.right_team.Serve, deep_load_func_name='switch')
+            match.left_team.Serve._switch_(match.right_team.Serve, deep_load=True, deep_load_func_name='switch')
 
             '''match.left_team.Serve, match.right_team.Serve = match.right_team.Serve, match.left_team.Serve
             match.left_team.Serve.elements, match.right_team.Serve.elements = match.right_team.Serve.elements, match.left_team.Serve.elements 

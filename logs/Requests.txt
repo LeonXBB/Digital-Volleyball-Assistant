@@ -162,6 +162,27 @@
 161#1596843314.6992064#MatchPoolSend#get#('Point_sReceived', ['score', 'Олімп', 'Кіляров Микита', False], True)#<Response [200]>#134
 162#1596843315.1683428#MatchPoolSend#get#('Point_sReceived', ['score', 'Олімп', 'Кіляров Микита', False], True)#<Response [200]>#135
 163#1596843315.7442214#MatchPoolSend#get#('Point_sReceived', ['score', 'Олімп', 'Кіляров Микита', False], True)#<Response [200]>#136
-164#1596843465.3713863#VersionControl#get##0.1.0#None
-165#1596843468.2722037#MatchPoolSend#get#('Point_sReceived', ['score', 'ДЮСШ-10', 'Долмат Юрій', True], True)#<Response [200]>#137
-166#1596843469.5898805#MatchPoolSend#get#('Point_sReceived', ['score', 'Олімп', 'Кіляров Микита', True], True)#<Response [200]>#138
+164#1596925974.0519772#VersionControl#get##0.1.0#None
+165#1596929317.0968838#VersionControl#get##0.1.0#None
+166#1596929321.161419#MatchPoolSend#get#('Point_sReceived', ['score', 'ДЮСШ-10', 'Долмат Юрій', True], True)#<Response [200]>#137
+167#1596929323.01918#MatchPoolSend#get#('Point_sReceived', ['score', 'ДЮСШ-10', 'Кушнір Іван', False], True)#<Response [200]>#138
+168#1596929324.179609#MatchPoolSend#get#('Point_sReceived', ['score', 'Олімп', 'Оліфер Олег', True], True)#<Response [200]>#139
+169#1596929761.5086741#VersionControl#get##0.1.0#None
+170#1596929764.3847327#MatchPoolSend#get#('Point_sReceived', ['score', 'Олімп', 'Другов Грігорій', False], True)#<Response [200]>#140
+171#1596929764.677862#MatchPoolSend#get#('TieBreakRotation', None, True)#<Response [200]>#141
+172#1596929768.530102#MatchPoolSend#get#('Point_sReceived', ['score', 'Олімп', 'Шляхов Максим', False], True)#<Response [200]>#142
+173#1596929769.3116753#MatchPoolSend#get#('Point_sReceived', ['score', 'Олімп', 'Федоренко Дмитро', False], True)#<Response [200]>#143
+174#1596929770.4959657#MatchPoolSend#get#('Point_sReceived', ['score', 'ДЮСШ-10', 'Сківка Дмитро', True], True)#<Response [200]>#144
+175#1596929771.3505075#MatchPoolSend#get#('Point_sReceived', ['score', 'ДЮСШ-10', 'Ільков Ярослав', False], True)#<Response [200]>#145
+176#1596929772.349078#MatchPoolSend#get#('Point_sReceived', ['score', 'Олімп', 'Шляхов Максим', True], True)#<Response [200]>#146
+177#1596929773.3535235#MatchPoolSend#get#('Point_sReceived', ['score', 'Олімп', 'Федоренко Дмитро', False], True)#<Response [200]>#147
+178#1596929774.573325#MatchPoolSend#get#('Point_sReceived', ['score', 'Олімп', 'Федоренко Дмитро', False], True)#<Response [200]>#148
+179#1596929790.3525474#MatchPoolSend#get#('SanctionIssued', ['expulsion', 'Долмат Юрій', 'ДЮСШ-10'], True)#<Response [200]>#149
+180#1596929817.940186#MatchPoolSend#get#('SubstitutionMade', ['ДЮСШ-10', 'Федоренко Данило', 'Долмат Юрій', 0, True, 12, 2, False], True)#<Response [200]>#150
+181#1596929900.6317768#MatchPoolSend#get#('SubstitutionMade', ['Олімп', 'Хижняк Іван', 'Другов Грігорій', 1, False, 7, 0, False], True)#<Response [200]>#151
+182#1596929903.9131796#MatchPoolSend#get#('CaptainNotPresent', ['Олімп', 'Кіляров Микита', ''], True)#<Response [200]>#152
+183#1596930013.0600622#MatchPoolSend#get#('SubstitutionMade', ['Олімп', 'Піскунов Костянтин', 'Шляхов Максим', 2, False, 9, 2, False], True)#<Response [200]>#153
+184#1596930156.6842885#MatchPoolSend#get#('Point_sReceived', ['score', 'Олімп', 'Федоренко Дмитро', False], True)#<Response [200]>#154
+185#1596930326.3449204#MatchPoolSend#get#('SubstitutionMade', ['Олімп', 'Поволяшко Євген', 'Піскунов Костянтин', 6, False, 7, 2, False], True)#<Response [200]>#155
+186#1596930464.371747#MatchPoolSend#get#('SanctionIssued', ['delay_warning', '', 'ДЮСШ-10'], True)#<Response [200]>#156
+187#1596930481.04171#MatchPoolSend#get#('SanctionIssued', ['warning', 'Іванчич Олексій', 'ДЮСШ-10'], True)#<Response [200]>#157
