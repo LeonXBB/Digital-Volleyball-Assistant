@@ -26,7 +26,7 @@ class EventDispatcher:
             if ((mode == 'RESTORED' and is_last) or mode == 'NEW'):
 
                 if mode == 'RESTORED' and is_last and self.return_command == 'gui.get("MatchWindowRefereeMatchTabContent").on_load(mode)':
-                    self.return_command = 'gui.get("MatchWindowRefereeMatchTabContent").on_load("NEW")'
+                    gui.get("MatchWindowRefereeMatchTabContent").on_load("NEW")
                 
                 elif ((mode == 'RESTORED' and is_last) or mode == 'NEW') and self.return_command.startswith('self.run(SetEnd,'):
                     
@@ -88,7 +88,11 @@ class EventDispatcher:
                 else:
                     self.return_command = 'pass'
             
-            exec(self.return_command)
+            try: 
+                exec(self.return_command)
+            except:
+                pass
+            
             self.return_command = ''
 
     def back(self):
@@ -120,6 +124,11 @@ class EventDispatcher:
                             logs[0].deep_log[j].__delete__()
                         elif logs[0].deep_log[i].type == 'Point_sReceived' and logs[0].deep_log[j].type == 'SanctionIssued' and logs[0].deep_log[i].create_data[0] == logs[0].deep_log[j].create_data[0]:
                             logs[0].deep_log[j].__delete__()
+                        #elif logs[0].deep_log[i].type == 'CaptainNotPresent' and logs[0].deep_log[j].type == 'SetStart':
+                        #    logs[0].deep_log[j].__delete__()
+                        #    logs[0].deep_log[j - 1].__delete__()
+                        #elif logs[0].deep_log[i].type == 'CaptainNotPresent' and logs[0].deep_log[j].type == 'SubstitutionMade':
+                        #    logs[0].deep_log[j].__delete__()
 
                         break
                 break
@@ -144,6 +153,8 @@ class EventDispatcher:
                                 logs[0].deep_log[j + 1].restore()
                         elif logs[0].deep_log[i].type == 'LineUpConfirmed' and logs[0].deep_log[j].type == 'SetStart':
                             logs[0].deep_log[j].restore()
+                            '''if logs[0].deep_log[j + 1].type == 'CaptainNotPresent':
+                                logs[0].deep_log[j + 1].restore()'''
                         elif logs[0].deep_log[i].type == 'Point_sReceived' and logs[0].deep_log[j].type == 'TieBreakRotation':
                             logs[0].deep_log[j].restore()
                         elif logs[0].deep_log[i].type == 'Point_sReceived'and logs[0].deep_log[j].type == 'TimeOutTaken' and logs[0].deep_log[j].create_data[4] :
@@ -1024,7 +1035,7 @@ class TieBreakRotation(Event):
             for i in range(len(gui.get('MatchWindowRefereeMatchTabTeamATimeOuts'))):
                 gui.get('MatchWindowRefereeMatchTabTeamATimeOuts')[i].disabled, gui.get('MatchWindowRefereeMatchTabTeamBTimeOuts')[i].disabled = gui.get('MatchWindowRefereeMatchTabTeamBTimeOuts')[i].disabled, gui.get('MatchWindowRefereeMatchTabTeamATimeOuts')[i].disabled
 
-            PopUpWindow().show_pop_up(match_window[language_code][2])
+            if self.mode == 'NEW': PopUpWindow().show_pop_up(match_window[language_code][2])
     
     def delete(self):
                   
