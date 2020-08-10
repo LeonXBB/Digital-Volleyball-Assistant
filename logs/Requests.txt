@@ -184,5 +184,11 @@
 183#1596930013.0600622#MatchPoolSend#get#('SubstitutionMade', ['Олімп', 'Піскунов Костянтин', 'Шляхов Максим', 2, False, 9, 2, False], True)#<Response [200]>#153
 184#1596930156.6842885#MatchPoolSend#get#('Point_sReceived', ['score', 'Олімп', 'Федоренко Дмитро', False], True)#<Response [200]>#154
 185#1596930326.3449204#MatchPoolSend#get#('SubstitutionMade', ['Олімп', 'Поволяшко Євген', 'Піскунов Костянтин', 6, False, 7, 2, False], True)#<Response [200]>#155
-186#1596930464.371747#MatchPoolSend#get#('SanctionIssued', ['delay_warning', '', 'ДЮСШ-10'], True)#<Response [200]>#156
-187#1596930481.04171#MatchPoolSend#get#('SanctionIssued', ['warning', 'Іванчич Олексій', 'ДЮСШ-10'], True)#<Response [200]>#157
+186#1597014419.0329306#VersionControl#get##0.1.0#None
+187#1597014428.3446474#MatchPoolSend#get#('ProtestDeclared', 'ДЮСШ-10', True)#<Response [200]>#156
+188#1597015585.4255986#VersionControl#get##0.1.0#None
+189#1597015589.197835#MatchPoolSend#get#('Point_sReceived', ['score', 'ДЮСШ-10', 'Ільков Ярослав', True], True)#<Response [200]>#157
+190#1597015591.186649#MatchPoolSend#get#('Point_sReceived', ['score', 'Олімп', 'Федоренко Дмитро', True], True)#<Response [200]>#158
+191#1597015591.461871#MatchPoolSend#get#('SetEnd', [5, '2:26', 1597015591.461871, 'Олімп'], True)#<Response [200]>#159
+192#1597015591.7294817#MatchPoolSend#get#('MatchEnd', None, True)#<Response [200]>#160
+193#1597015844.95331#MatchPoolSend#get#('ProtestAfterMatchEnded', ['ДЮСШ-10', 'd'], True)#<Response [200]>#161

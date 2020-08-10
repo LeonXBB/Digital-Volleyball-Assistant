@@ -3000,7 +3000,7 @@ class ProtestWindowBase(Screen):
         if self.mode == 'write':
             self.design.main_widget.buttons.disabled = False
 
-    def on_text_input_click(self, text_input):
+    def on_text_input_click(self, text_input, *args):
         
         '''
         This is a function that processes presses on text inpute field. It is responsible for calculation if need to show the user invitation to 
@@ -3884,7 +3884,11 @@ class EndWindowBase(Screen):
                 image_draw.ellipse([i - j for i, j in zip(size, circle_offset)], outline=circle_outline)
 
         def sort_by_alphabet(list_to_sort):
-            list_to_sort.sort()
+            try:
+                list_to_sort.sort()
+            except TypeError:
+                list_to_sort = list((element.name_string for element in list_to_sort))
+                list_to_sort.sort()
             return list_to_sort
 
         def load_header():
@@ -4229,12 +4233,12 @@ class EndWindowBase(Screen):
                     
                     elif hasattr(borders, 'TeamsLiberosNames' + team_direction + '_0'):
                         border = get_group_size_borders(0, getattr(borders, 'TeamsLiberosNames' + team_direction + '_0'), 2, 5)
-                        for i in range(len(liberos)):
+                        for i in range(len(team_liberos)):
                             insert_text(team_liberos[i].name_string, border[i])
                     
                     elif hasattr(borders, 'TeamsLiberosNames' + team_direction + '_1'):
                         border = get_group_size_borders(1, getattr(borders, 'TeamsLiberosNames' + team_direction + '_1'), 2, 5)
-                        for i in range(len(liberos)):
+                        for i in range(len(team_liberos)):
                             insert_text(team_liberos[i].name_string, border[i])
                 
             def cross_abstent_liberos():
