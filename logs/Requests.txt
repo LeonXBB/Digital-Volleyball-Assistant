@@ -19,3 +19,6 @@
 18#1597100658.443596#VersionControl#get##0.1.0#None
 19#1597100662.9045534#MatchPoolSend#get#('SetStart', [1, '2:4'], True)#<Response [200]>#7
 20#1597100665.5821393#MatchPoolSend#get#('CaptainNotPresent', ['Олімп', 'Чілібі Антон', ''], True)#<Response [200]>#8
+21#1597185166.4683838#VersionControl#get##0.1.0#None
+22#1597185228.4910183#MatchPoolSend#get#('SubstitutionMade', ['ДЮСШ-10', 'Кушнір Іван', 'Іванчич Олексій', 1, False, 8, 0, False], True)#<Response [200]>#8
+23#1597185347.8403335#MatchPoolSend#get#('Point_sReceived', ['score', 'Олімп', 'Шляхов Максим', False], True)#<Response [200]>#9
