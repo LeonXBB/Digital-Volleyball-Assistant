@@ -2414,6 +2414,8 @@ class SubstitutionsWindowBase(Screen):
             
             if not match.sets[-1].is_tie_break:
                 
+                print(self.get_subs_requests(team))
+
                 if self.get_subs_requests(team)[0] >= max_substitutions_regular_set:
 
                     if self.get_subs_requests(team)[2] < max_substitutions_regular_set and (not hasattr(match.sets[-1], 'wrong_sub_warned_' + ('A' if team == match.left_team else 'B'))):
