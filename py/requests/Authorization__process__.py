@@ -1,4 +1,4 @@
-if  self.reply_body == 'Denied':
+if self.reply_body == 'Denied':
     i = gfx.frontend.PopUpWindow()
     i.show_pop_up(internet_requests[language_code][1])
 else:

@@ -22,11 +22,9 @@ self.reply_body = [  # TODO edit the TZ table
     ['3822', 'Федоренко', 'Дмитро'],
     ['1064', 'Шпаченко', 'Віктор', '4203', 'Ільков', 'Сергій']
 ]
-
-# actually # TODO change it when internet is enabled
-'''
-if self.reply_body != 'No Matches!':
+# TODO change it when internet is enabled
+'''if self.reply_body != 'No Matches!':
     self.user_status = self.reply_body
 else:
-    PopUpWindow.show_pop_up(internet_requests[language_code][2])
-'''
+    gfx.frontend.PopUpWindow().show_pop_up(internet_requests[language_code][2])'''
+

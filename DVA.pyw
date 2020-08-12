@@ -18,6 +18,7 @@ Config.set('graphics', 'resizable', app_resizable)
 Config.set('graphics', 'width', app_width)
 Config.set('graphics', 'height', app_height)
 Config.set('kivy', 'window_icon', app_icon_path)
+Config.set('input', 'mouse', 'mouse,multitouch_on_demand')
 
 from gfx.frontend import Application, ScreenManager
 from py.core import load_log
