@@ -14,14 +14,12 @@
 13#1597360613.9673088#MatchPoolSend#get#('LineUpConfirmed', [['Пищик Євген', 'Ільков Ярослав', 'Цимох Руслан', 'Сківка Дмитро', 'Денеж Захар', 'Кушнір Іван'], 'A'], True)#<Response [200]>#4
 14#1597360628.4249053#MatchPoolSend#get#('LineUpConfirmed', [['Піскунов Костянтин', 'Федоренко Дмитро', 'Другов Грігорій', 'Чілібі Антон', 'Кулініч Максим', 'Оліфер Олег'], 'B'], True)#<Response [200]>#5
 15#1597360635.5736406#MatchPoolSend#get#('SetStart', [1, '2:17'], True)#<Response [200]>#6
-16#1597360881.277321#VersionControl#get##0.1.0#None
-17#1597362232.3232763#MatchPoolSend#get#('SanctionIssued', ['delay_warning', '', 'ДЮСШ-10'], True)#<Response [200]>#7
-18#1597444028.51739#VersionControl#get##0.1.0#None
-19#1597444041.1732373#MatchPoolSend#get#('SanctionIssued', ['delay_warning', '', 'ДЮСШ-10'], False)#<Response [200]>#7
-20#1597444044.924771#MatchPoolSend#get#('SetStart', [1, '2:17'], False)#<Response [200]>#6
-21#1597444045.3219626#MatchPoolSend#get#('LineUpConfirmed', [['Піскунов Костянтин', 'Федоренко Дмитро', 'Другов Грігорій', 'Чілібі Антон', 'Кулініч Максим', 'Оліфер Олег'], 'B'], False)#<Response [200]>#5
-22#1597444053.0410533#MatchPoolSend#get#('LineUpConfirmed', [['Кіляров Микита', 'Другов Грігорій', 'Федоренко Дмитро', 'Піскунов Костянтин', 'Чілібі Антон', 'Оліфер Олег'], 'B'], True)#<Response [200]>#8
-23#1597444054.8409276#MatchPoolSend#get#('SetStart', [1, '1:27'], True)#<Response [200]>#9
-24#1597448777.0129669#VersionControl#get##0.1.0#None
-25#1597448781.4628484#MatchPoolSend#get#('SanctionIssued', ['expulsion', 'Ільков Ярослав', 'ДЮСШ-10'], True)#<Response [200]>#10
-26#1597449243.7621777#MatchPoolSend#get#('SubstitutionMade', ['ДЮСШ-10', 'Долмат Юрій', 'Ільков Ярослав', 0, True, 9, 1, False], True)#<Response [200]>#11
+16#1597526414.3403177#VersionControl#get##0.1.0#None
+17#1597526727.3216066#VersionControl#get##0.1.0#None
+18#1597527477.818818#MatchPoolSend#get#('SanctionIssued', ['warning', 'Піскунов Костянтин', 'Олімп'], True)#<Response [200]>#7
+19#1597527480.0536172#MatchPoolSend#get#('SanctionIssued', ['penalty', 'Федоренко Дмитро', 'Олімп'], True)#<Response [200]>#8
+20#1597527480.3330102#MatchPoolSend#get#('Point_sReceived', ['penalty', 'Олімп', 'Федоренко Дмитро', False], True)#<Response [200]>#9
+21#1597527493.8940866#MatchPoolSend#get#('SanctionIssued', ['expulsion', 'Другов Грігорій', 'Олімп'], True)#<Response [200]>#10
+22#1597527496.4828668#MatchPoolSend#get#('SubstitutionMade', ['Олімп', 'Кіляров Микита', 'Другов Грігорій', 0, True, 6, 2, False], True)#<Response [200]>#11
+23#1597527497.8667672#MatchPoolSend#get#('CaptainNotPresent', ['Олімп', 'Піскунов Костянтин', ''], True)#<Response [200]>#12
+24#1597527540.6618931#MatchPoolSend#get#('SanctionIssued', ['delay_warning', '', 'Олімп'], True)#<Response [200]>#13
