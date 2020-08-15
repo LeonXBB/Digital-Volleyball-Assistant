@@ -22,14 +22,6 @@
 21#1597444045.3219626#MatchPoolSend#get#('LineUpConfirmed', [['Піскунов Костянтин', 'Федоренко Дмитро', 'Другов Грігорій', 'Чілібі Антон', 'Кулініч Максим', 'Оліфер Олег'], 'B'], False)#<Response [200]>#5
 22#1597444053.0410533#MatchPoolSend#get#('LineUpConfirmed', [['Кіляров Микита', 'Другов Грігорій', 'Федоренко Дмитро', 'Піскунов Костянтин', 'Чілібі Антон', 'Оліфер Олег'], 'B'], True)#<Response [200]>#8
 23#1597444054.8409276#MatchPoolSend#get#('SetStart', [1, '1:27'], True)#<Response [200]>#9
-24#1597444114.4689608#MatchPoolSend#get#('TimeOutTaken', ['ДЮСШ-10', 1, [0, 0], 0, False], True)#<Response [200]>#10
-25#1597444767.4640226#MatchPoolSend#get#('Point_sReceived', ['mistake', 'ДЮСШ-10', 'Пищик Євген', True], True)#<Response [200]>#11
-26#1597446162.424787#MatchPoolSend#get#('SubstitutionMade', ['ДЮСШ-10', 'Андрущенко Святослав', 'Пищик Євген', 1, False, 6, 0, False], True)#<Response [200]>#12
-27#1597446280.1681979#MatchPoolSend#get#('SubstitutionMade', ['ДЮСШ-10', 'Пищик Євген', 'Андрущенко Святослав', 2, False, 6, 0, False], True)#<Response [200]>#13
-28#1597446378.3659847#MatchPoolSend#get#('SubstitutionMade', ['ДЮСШ-10', 'Андрущенко Святослав', 'Пищик Євген', 3, False, 6, 0, False], True)#<Response [200]>#14
-29#1597446383.152183#MatchPoolSend#get#('SubstitutionMade', ['ДЮСШ-10', 'Пищик Євген', 'Андрущенко Святослав', 4, False, 6, 0, False], True)#<Response [200]>#15
-30#1597446388.3943596#MatchPoolSend#get#('SubstitutionMade', ['ДЮСШ-10', 'Андрущенко Святослав', 'Пищик Євген', 5, False, 6, 0, False], True)#<Response [200]>#16
-31#1597446394.5612996#MatchPoolSend#get#('SubstitutionMade', ['ДЮСШ-10', 'Пищик Євген', 'Андрущенко Святослав', 6, False, 6, 0, False], True)#<Response [200]>#17
-32#1597446450.3339586#MatchPoolSend#get#('Point_sReceived', ['mistake', 'ДЮСШ-10', 'Пищик Євген', False], True)#<Response [200]>#18
-33#1597446452.7193837#MatchPoolSend#get#('Point_sReceived', ['mistake', 'ДЮСШ-10', 'Ільков Ярослав', False], True)#<Response [200]>#19
-34#1597447046.8529854#MatchPoolSend#get#('SanctionIssued', ['expulsion', 'Ільков Ярослав', 'ДЮСШ-10'], True)#<Response [200]>#20
+24#1597448777.0129669#VersionControl#get##0.1.0#None
+25#1597448781.4628484#MatchPoolSend#get#('SanctionIssued', ['expulsion', 'Ільков Ярослав', 'ДЮСШ-10'], True)#<Response [200]>#10
+26#1597449243.7621777#MatchPoolSend#get#('SubstitutionMade', ['ДЮСШ-10', 'Долмат Юрій', 'Ільков Ярослав', 0, True, 9, 1, False], True)#<Response [200]>#11

@@ -2167,7 +2167,7 @@ class SanctionsWindowReferee(Screen):
 
             match.officials[0].sanction(sanction_chosen, person_chosen, match.left_team)
 
-            if self.sanction_chosen_A != 'expulsion' and self.sanction_chosen_A != 'disqualification':
+            if sanction_chosen != 'expulsion' and sanction_chosen != 'disqualification':
                 self.cancel_button_pressed(None)
 
         elif gui.get('MatchWindowRefereeSanctionsTabHeader').current_tab == gui.get('MatchWindowRefereeSanctionsTeamBTab'):
@@ -2180,7 +2180,7 @@ class SanctionsWindowReferee(Screen):
 
             match.officials[0].sanction(sanction_chosen, person_chosen, match.right_team)
 
-            if self.sanction_chosen_B != 'expulsion' and self.sanction_chosen_B != 'disqualification':
+            if sanction_chosen != 'expulsion' and sanction_chosen != 'disqualification':
                 self.cancel_button_pressed(None)
 
 
@@ -2519,7 +2519,7 @@ class SubstitutionsWindowBase(Screen):
 
         from py.core import get_people_list
         
-        return get_people_list(team, start_index=players_in_team, with_liberos=libero_allowed_to_substitute)
+        return get_people_list(team, start_index=players_in_team, with_expulsed_players=False, with_disqualified_players=False, with_liberos=libero_allowed_to_substitute)
 
     def forced_disable_enable(self, team, boolean):
         
