@@ -2017,6 +2017,9 @@ class SanctionsWindowReferee(Screen):
                 self.sanction_chosen_A = button.background_normal.split('/')[-1].split('.')[0]
             else:
                 self.sanction_chosen_A = ''
+                self.enable_every_sanction(match.left_team)
+                self.apply_team_limitations(match.left_team)
+
             self.switch_people_list_opacity(match.left_team, button)
 
             match.left_team.PlayersList.load('Sanctions', self.apply_sanction_limitations(match.left_team), ToggleButton, with_numbers=True)
@@ -2031,6 +2034,9 @@ class SanctionsWindowReferee(Screen):
                 self.sanction_chosen_B = button.background_normal.split('/')[-1].split('.')[0]
             else:
                 self.sanction_chosen_B = ''
+                self.enable_every_sanction(match.right_team)
+                self.apply_team_limitations(match.right_team)
+            
             self.switch_people_list_opacity(match.right_team, button)
 
             match.right_team.PlayersList.load('Sanctions', self.apply_sanction_limitations(match.right_team), ToggleButton, with_numbers=True)
