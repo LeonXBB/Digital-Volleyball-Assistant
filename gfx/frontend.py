@@ -113,10 +113,14 @@ class Application(App):
                                    'MatchWindowRefereeTeamSetUpTabHeader': self.match_window_referee.design.main_widget.tabs_m.team_set_up.content.design.main_widget.referee_spot.content,
                                    'MatchWindowRefereeTeamSetUpTabTeamATab': self.match_window_referee.design.main_widget.tabs_m.team_set_up.content.design.main_widget.referee_spot.content.team_A_button,
                                    'MatchWindowRefereeTeamSetUpTabTeamBTab': self.match_window_referee.design.main_widget.tabs_m.team_set_up.content.design.main_widget.referee_spot.content.team_B_button,
-                                   'MatchWindowRefereeTeamSetUpTabTeamAPLAYERSLIST': self.match_window_referee.design.main_widget.tabs_m.team_set_up.content.design.main_widget.referee_spot.content.team_A_button.content.list_area.list,
-                                   'MatchWindowRefereeTeamSetUpTabTeamBPLAYERSLIST': self.match_window_referee.design.main_widget.tabs_m.team_set_up.content.design.main_widget.referee_spot.content.team_B_button.content.list_area.list,
-                                   'MatchWindowRefereeTeamSetUpTeamASLIDER': self.match_window_referee.design.main_widget.tabs_m.team_set_up.content.design.main_widget.referee_spot.content.team_A_button.content.list_area.scrollbar,
-                                   'MatchWindowRefereeTeamSetUpTeamBSLIDER': self.match_window_referee.design.main_widget.tabs_m.team_set_up.content.design.main_widget.referee_spot.content.team_B_button.content.list_area.scrollbar,
+                                   'MatchWindowRefereeTeamSetUpTabTeamAPLAYERSLIST': self.match_window_referee.design.main_widget.tabs_m.team_set_up.content.design.main_widget.referee_spot.content.team_A_button.content.people_tabs.players.content.list_area.list,
+                                   'MatchWindowRefereeTeamSetUpTabTeamBPLAYERSLIST': self.match_window_referee.design.main_widget.tabs_m.team_set_up.content.design.main_widget.referee_spot.content.team_B_button.content.people_tabs.players.content.list_area.list,
+                                   'MatchWindowRefereeTeamSetUpTabTeamASTAFFLIST': self.match_window_referee.design.main_widget.tabs_m.team_set_up.content.design.main_widget.referee_spot.content.team_B_button.content.people_tabs.staff.content.list_area.list,
+                                   'MatchWindowRefereeTeamSetUpTabTeamBSTAFFLIST': self.match_window_referee.design.main_widget.tabs_m.team_set_up.content.design.main_widget.referee_spot.content.team_B_button.content.people_tabs.staff.content.list_area.list,
+                                   'MatchWindowRefereeTeamSetUpTeamAPLAYERSSLIDER': self.match_window_referee.design.main_widget.tabs_m.team_set_up.content.design.main_widget.referee_spot.content.team_A_button.content.people_tabs.players.content.list_area.scrollbar,
+                                   'MatchWindowRefereeTeamSetUpTeamBPLAYERSSLIDER': self.match_window_referee.design.main_widget.tabs_m.team_set_up.content.design.main_widget.referee_spot.content.team_B_button.content.people_tabs.players.content.list_area.scrollbar,
+                                   'MatchWindowRefereeTeamSetUpTeamASTAFFSLIDER': self.match_window_referee.design.main_widget.tabs_m.team_set_up.content.design.main_widget.referee_spot.content.team_A_button.content.people_tabs.staff.content.list_area.scrollbar,
+                                   'MatchWindowRefereeTeamSetUpTeamBSTAFFSLIDER': self.match_window_referee.design.main_widget.tabs_m.team_set_up.content.design.main_widget.referee_spot.content.team_B_button.content.people_tabs.staff.content.list_area.scrollbar,
                                    'MatchWindowRefereeTeamSetUpCancelButton': self.match_window_referee.design.main_widget.tabs_m.team_set_up.content.design.main_widget.buttons.cancel,
                                    'MatchWindowRefereeTeamSetUpSaveButton': self.match_window_referee.design.main_widget.tabs_m.team_set_up.content.design.main_widget.buttons.save,
 
@@ -582,7 +586,24 @@ class TeamSetUpBase(Screen):
     absent players, shirts numbrers, captains etc.
     '''
 
-    class SharedArea(GridLayout):
+    class PeopleHeader(BoxLayout):
+        
+        def __init__(self):
+            
+            super().__init__()
+
+            self.people_tabs = TabbedPanel(do_default_tab=False, background_color=[1, 1, 1, 0.5])
+            self.people_tabs.players = TabbedPanelHeader(text='players')
+            self.people_tabs.players.content = TeamSetUpBase.SharedAreaPlayers()
+            self.people_tabs.staff = TabbedPanelHeader(text='staff')
+            self.people_tabs.staff.content = TeamSetUpBase.SharedAreaPlayers()
+
+            self.people_tabs.add_widget(self.people_tabs.players)
+            self.people_tabs.add_widget(self.people_tabs.staff)
+
+            self.add_widget(self.people_tabs)
+
+    class SharedAreaPlayers(GridLayout):
 
         '''
         This is a class for the shared area. Two objects of this will be used in referee's children
@@ -622,6 +643,16 @@ class TeamSetUpBase(Screen):
 
             self.add_widget(self.header)
             self.add_widget(self.list_area)
+
+    class SharedAreaStaff:
+        
+        class Foo:
+            
+            def __init__(self):
+                self.list = ''
+                self.scrollbar = ''
+
+        list_area = Foo()
 
     class PlayerWidget(GridLayout):
 
@@ -968,9 +999,9 @@ class TeamSetUpWindowReferee(TeamSetUpBase):  # TODO either save button disabled
 
         self.design.main_widget.referee_spot.content = TabbedPanel(do_default_tab=False, background_color=[1, 1, 1, 0.5])
         self.design.main_widget.referee_spot.content.team_A_button = TabbedPanelHeader(text='Team A')
-        self.design.main_widget.referee_spot.content.team_A_button.content = self.SharedArea()
+        self.design.main_widget.referee_spot.content.team_A_button.content = self.PeopleHeader()
         self.design.main_widget.referee_spot.content.team_B_button = TabbedPanelHeader(text='Team B')
-        self.design.main_widget.referee_spot.content.team_B_button.content = self.SharedArea()
+        self.design.main_widget.referee_spot.content.team_B_button.content = self.PeopleHeader()
 
         self.design.main_widget.referee_spot.content.add_widget(self.design.main_widget.referee_spot.content.team_A_button)
         self.design.main_widget.referee_spot.content.add_widget(self.design.main_widget.referee_spot.content.team_B_button)
