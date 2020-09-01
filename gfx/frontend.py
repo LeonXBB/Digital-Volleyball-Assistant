@@ -764,7 +764,20 @@ class TeamSetUpBase(Screen):
         pass
 
     class StaffHeader(BoxLayout):
-        pass
+        
+        super().__init__()
+
+        self.widget = Label(font_size=24, text=str(team_set_up[language_code][0]
+                                                       + '                         '
+                                                       + statuses[language_code][1]
+                                                       + '                     '
+                                                       + statuses[language_code][2]
+                                                       + '                      '
+                                                       + statuses[language_code][3]
+                                                       + '            '
+                                                       + statuses[language_code][4]))
+            self.add_widget(self.widget)
+            self.size_hint = (1, 0.2)
 
     def __init__(self):
 

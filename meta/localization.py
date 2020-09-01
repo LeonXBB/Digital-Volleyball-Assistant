@@ -80,6 +80,6 @@ tabs = [
 
 statuses = [ # TODO another statutes
     [],
-    ['ГТ', 'ПТ'],
+    ['ГТ', 'ПТ1', 'ПТ2', 'Д', 'М'],
     []
 ]
