@@ -592,12 +592,13 @@ class TeamSetUpBase(Screen):
             
             super().__init__()
 
-            self.people_tabs = TabbedPanel(do_default_tab=False, background_color=[1, 1, 1, 0.5])
-            self.people_tabs.players = TabbedPanelHeader(text='players')
+            self.people_tabs = TabbedPanel(do_default_tab=False, background_color=[1, 1, 1, 0.5], tab_pos='top_right')
+            self.people_tabs.players = TabbedPanelHeader(text=team_set_up[language_code][5])
             self.people_tabs.players.content = TeamSetUpBase.SharedAreaPlayers()
-            self.people_tabs.staff = TabbedPanelHeader(text='staff')
-            self.people_tabs.staff.content = TeamSetUpBase.SharedAreaPlayers()
+            self.people_tabs.staff = TabbedPanelHeader(text=team_set_up[language_code][6])
+            self.people_tabs.staff.content = TeamSetUpBase.SharedAreaStaff()
 
+            #for _ in range(4): self.people_tabs.add_widget(TabbedPanelHeader(opacity=0))
             self.people_tabs.add_widget(self.people_tabs.players)
             self.people_tabs.add_widget(self.people_tabs.staff)
 
@@ -628,7 +629,7 @@ class TeamSetUpBase(Screen):
 
             self.rows = 2
 
-            self.header = TeamSetUpBase.Header()
+            self.header = TeamSetUpBase.PlayerHeader()
             self.list_area = GridLayout(cols=2)
             self.list_area.list = GridLayout(rows=6)
             self.list_area.scrollbar = Slider(orientation='vertical', size_hint=(0.05, 1), opacity=0, value=10, step=1, range=[0, 10])
@@ -644,15 +645,29 @@ class TeamSetUpBase(Screen):
             self.add_widget(self.header)
             self.add_widget(self.list_area)
 
-    class SharedAreaStaff:
+    class SharedAreaStaff(GridLayout):
         
-        class Foo:
-            
-            def __init__(self):
-                self.list = ''
-                self.scrollbar = ''
+        def __init__(self):
 
-        list_area = Foo()
+            super().__init__()
+
+            self.rows = 2
+
+            self.header = TeamSetUpBase.StaffHeader()
+            self.list_area = GridLayout(cols=2)
+            self.list_area.list = GridLayout(rows=6)
+            self.list_area.scrollbar = Slider(orientation='vertical', size_hint=(0.05, 1), opacity=0, value=10, step=1, range=[0, 10])
+
+            for _ in range(0, 6):
+                self.list_area.list.add_widget(TeamSetUpBase.StaffWidget())
+
+            self.list_area.add_widget(self.list_area.list)
+            self.list_area.add_widget(self.list_area.scrollbar)
+
+            self.list_area.scrollbar.bind(on_touch_up=scroll__init)
+
+            self.add_widget(self.header)
+            self.add_widget(self.list_area)
 
     class PlayerWidget(GridLayout):
 
@@ -712,7 +727,7 @@ class TeamSetUpBase(Screen):
                 for i in range(3):
                     checkbox.parent.children[i].disabled = True
 
-    class Header(BoxLayout):
+    class PlayerHeader(BoxLayout):
 
         '''
         This is another design class for providing letters to explain different checkboxes.
@@ -744,6 +759,12 @@ class TeamSetUpBase(Screen):
                                                        + team_set_up[language_code][4]))
             self.add_widget(self.widget)
             self.size_hint = (1, 0.2)
+
+    class StaffWidget(GridLayout):
+        pass
+
+    class StaffHeader(BoxLayout):
+        pass
 
     def __init__(self):
 
@@ -5053,11 +5074,17 @@ def scroll__init(slider, movement):
 
     proceed = False
 
-    if slider == gui.get('MatchWindowRefereeTeamSetUpTeamASLIDER'):
+    if slider == gui.get('MatchWindowRefereeTeamSetUpTeamAPLAYERSSLIDER'):
         index = 0
         team = match.left_team
-    elif slider == gui.get('MatchWindowRefereeTeamSetUpTeamBSLIDER'):
+    elif slider == gui.get('MatchWindowRefereeTeamSetUpTeamBPLAYERSSLIDER'):
         index = 1
+        team = match.right_team
+    if slider == gui.get('MatchWindowRefereeTeamSetUpTeamASTAFFSLIDER'):
+        index = 2
+        team = match.left_team
+    elif slider == gui.get('MatchWindowRefereeTeamSetUpTeamBSTAFFSLIDER'):
+        index = 3
         team = match.right_team
     elif slider == gui.get('MatchWindowRefereeSubstitutionsTabTeamASLIDER'):
         index = 2

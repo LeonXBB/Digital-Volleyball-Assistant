@@ -65,7 +65,6 @@ def set_range_to_sliders():
                     gui.get('MatchWindowRefereeSanctionsTabTeamBSLIDER')]
 
     for i in range(len(SCROLLBARS)):
-        print(SCROLLBARS[i])
         SCROLLBARS[i].range = (0, RANGE[i] - 1)
         SCROLLBARS[i].value_normalized = 1
 
