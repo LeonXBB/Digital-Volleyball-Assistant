@@ -55,12 +55,10 @@ def set_range_to_sliders():
         (len(match.team_B.players) - len(match.team_B.disqualified_players) + len(match.team_B.staff) + (1 if match.team_B.head_coach != '' else 0)),
             ] # according to the order in dictionary
 
-    from kivy.uix.slider import Slider
-
-    SCROLLBARS = [gui.get('MatchWindowRefereeTeamSetUpTeamASLIDER'), 
-                    gui.get('MatchWindowRefereeTeamSetUpTeamBSLIDER'),
-                    Slider(),
-                    Slider(),
+    SCROLLBARS = [gui.get('MatchWindowRefereeTeamSetUpTeamAPLAYERSSLIDER'), 
+                    gui.get('MatchWindowRefereeTeamSetUpTeamBPLAYERSSLIDER'),
+                    gui.get('MatchWindowRefereeTeamSetUpTeamASTAFFSLIDER'),
+                    gui.get('MatchWindowRefereeTeamSetUpTeamBSTAFFSLIDER'),
                     gui.get('MatchWindowRefereeSubstitutionsTabTeamASLIDER'), 
                     gui.get('MatchWindowRefereeSubstitutionsTabTeamBSLIDER'), 
                     gui.get('MatchWindowRefereeSanctionsTabTeamASLIDER'), 
