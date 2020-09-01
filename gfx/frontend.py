@@ -115,7 +115,7 @@ class Application(App):
                                    'MatchWindowRefereeTeamSetUpTabTeamBTab': self.match_window_referee.design.main_widget.tabs_m.team_set_up.content.design.main_widget.referee_spot.content.team_B_button,
                                    'MatchWindowRefereeTeamSetUpTabTeamAPLAYERSLIST': self.match_window_referee.design.main_widget.tabs_m.team_set_up.content.design.main_widget.referee_spot.content.team_A_button.content.people_tabs.players.content.list_area.list,
                                    'MatchWindowRefereeTeamSetUpTabTeamBPLAYERSLIST': self.match_window_referee.design.main_widget.tabs_m.team_set_up.content.design.main_widget.referee_spot.content.team_B_button.content.people_tabs.players.content.list_area.list,
-                                   'MatchWindowRefereeTeamSetUpTabTeamASTAFFLIST': self.match_window_referee.design.main_widget.tabs_m.team_set_up.content.design.main_widget.referee_spot.content.team_B_button.content.people_tabs.staff.content.list_area.list,
+                                   'MatchWindowRefereeTeamSetUpTabTeamASTAFFLIST': self.match_window_referee.design.main_widget.tabs_m.team_set_up.content.design.main_widget.referee_spot.content.team_A_button.content.people_tabs.staff.content.list_area.list,
                                    'MatchWindowRefereeTeamSetUpTabTeamBSTAFFLIST': self.match_window_referee.design.main_widget.tabs_m.team_set_up.content.design.main_widget.referee_spot.content.team_B_button.content.people_tabs.staff.content.list_area.list,
                                    'MatchWindowRefereeTeamSetUpTeamAPLAYERSSLIDER': self.match_window_referee.design.main_widget.tabs_m.team_set_up.content.design.main_widget.referee_spot.content.team_A_button.content.people_tabs.players.content.list_area.scrollbar,
                                    'MatchWindowRefereeTeamSetUpTeamBPLAYERSSLIDER': self.match_window_referee.design.main_widget.tabs_m.team_set_up.content.design.main_widget.referee_spot.content.team_B_button.content.people_tabs.players.content.list_area.scrollbar,
@@ -5042,7 +5042,7 @@ class ButtonLabel(ButtonBehavior, Label):
     pass
 
 
-indexes = [0, 0, 0, 0, 0, 0]
+indexes = [0, 0, 0, 0, 0, 0,  0, 0]
 
 
 def scroll__init(slider, movement):
@@ -5090,7 +5090,7 @@ def scroll__init(slider, movement):
 
     if proceed:
            
-        if index < 4 and indexes[index] + 6 <= len(team.players) - (len(team.disqualified_players) + len(team.expulsed_players)):
+        if index < 6 and indexes[index] + 6 <= len(team.players) - (len(team.disqualified_players) + len(team.expulsed_players)):
     
             if index == 0:
                 gui.get('MatchWindowRefereeTeamSetUpTabContent').on_load('A', indexes[index], indexes[index] + 6)
@@ -5098,13 +5098,17 @@ def scroll__init(slider, movement):
             elif index == 1:
                 gui.get('MatchWindowRefereeTeamSetUpTabContent').on_load('B', indexes[index], indexes[index] + 6)
             
-            elif index == 2:
+            elif index == 2: pass 
+
+            elif index == 3: pass
+            
+            elif index == 4:
                 gui.get('MatchWindowRefereeSubstitutionsTabContent').on_load('A', indexes[index], indexes[index] + 6, gui.get('MatchWindowRefereeSubstitutionsTabContent').forced_A, is_scrolling=True)
 
-            elif index == 3:
+            elif index == 5:
                 gui.get('MatchWindowRefereeSubstitutionsTabContent').on_load('B', indexes[index], indexes[index] + 6, gui.get('MatchWindowRefereeSubstitutionsTabContent').forced_B, is_scrolling=True)
 
-        elif index < 4 and indexes[index] + 6 > len(team.players) - (len(team.disqualified_players) + len(team.expulsed_players)):
+        elif index < 6 and indexes[index] + 6 > len(team.players) - (len(team.disqualified_players) + len(team.expulsed_players)):
 
             if index == 0:
                 gui.get('MatchWindowRefereeTeamSetUpTabContent').on_load('A', indexes[index], (len(match.left_team.players) - (len(match.left_team.disqualified_players) + len(match.left_team.expulsed_players))))
@@ -5118,16 +5122,16 @@ def scroll__init(slider, movement):
             elif index == 3:
                 gui.get('MatchWindowRefereeSubstitutionsTabContent').on_load('B', indexes[index], (len(match.right_team.players) - (len(match.right_team.disqualified_players) + len(match.right_team.expulsed_players))), is_scrolling=True)
 
-        elif index == 4 and indexes[index] + 6 <= len(team.players) + len(team.staff) + (1 if team.head_coach != '' else 0):
+        elif index == 6 and indexes[index] + 6 <= len(team.players) + len(team.staff) + (1 if team.head_coach != '' else 0):
             gui.get('MatchWindowRefereeSanctionsTabContent').on_load('A', indexes[index], indexes[index] + 6, is_scrolling=True)
         
-        elif index == 4 and indexes[index] + 6 > len(team.players) + len(team.staff) + (1 if team.head_coach != '' else 0):
+        elif index == 6 and indexes[index] + 6 > len(team.players) + len(team.staff) + (1 if team.head_coach != '' else 0):
             gui.get('MatchWindowRefereeSanctionsTabContent').on_load('A', indexes[index], len(team.players) - len(team.disqualified_players) + len(team.staff) + (1 if team.head_coach != '' else 0), is_scrolling=True)
         
-        elif index == 5 and indexes[index] + 6 <= len(team.players) + len(team.staff) + (1 if team.head_coach != '' else 0):
+        elif index == 7 and indexes[index] + 6 <= len(team.players) + len(team.staff) + (1 if team.head_coach != '' else 0):
             gui.get('MatchWindowRefereeSanctionsTabContent').on_load('B', indexes[index], indexes[index] + 6, is_scrolling=True)
         
-        elif index == 5 and indexes[index] + 6 > len(team.players) + len(team.staff) + (1 if team.head_coach != '' else 0):
+        elif index == 7 and indexes[index] + 6 > len(team.players) + len(team.staff) + (1 if team.head_coach != '' else 0):
             gui.get('MatchWindowRefereeSanctionsTabContent').on_load('B', indexes[index], len(team.players) - len(team.disqualified_players) + len(team.staff) + (1 if team.head_coach != '' else 0), is_scrolling=True)
 
 

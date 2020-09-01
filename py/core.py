@@ -47,20 +47,27 @@ def set_range_to_sliders():
     RANGE = [
         (len(match.team_A.players) - len(match.team_A.disqualified_players) - len(match.team_A.expulsed_players)),
         (len(match.team_B.players) - len(match.team_B.disqualified_players) - len(match.team_B.expulsed_players)),
+        10,
+        10,
         (len(match.team_A.players) - len(match.team_A.disqualified_players) - len(match.team_A.expulsed_players)) / 2,
         (len(match.team_B.players) - len(match.team_B.disqualified_players) - len(match.team_B.expulsed_players)) / 2,
         (len(match.team_A.players) - len(match.team_A.disqualified_players) + len(match.team_A.staff) + (1 if match.team_A.head_coach != '' else 0)),
         (len(match.team_B.players) - len(match.team_B.disqualified_players) + len(match.team_B.staff) + (1 if match.team_B.head_coach != '' else 0)),
             ] # according to the order in dictionary
 
+    from kivy.uix.slider import Slider
+
     SCROLLBARS = [gui.get('MatchWindowRefereeTeamSetUpTeamASLIDER'), 
-                    gui.get('MatchWindowRefereeTeamSetUpTeamBSLIDER'), 
+                    gui.get('MatchWindowRefereeTeamSetUpTeamBSLIDER'),
+                    Slider(),
+                    Slider(),
                     gui.get('MatchWindowRefereeSubstitutionsTabTeamASLIDER'), 
                     gui.get('MatchWindowRefereeSubstitutionsTabTeamBSLIDER'), 
                     gui.get('MatchWindowRefereeSanctionsTabTeamASLIDER'), 
                     gui.get('MatchWindowRefereeSanctionsTabTeamBSLIDER')]
 
     for i in range(len(SCROLLBARS)):
+        print(SCROLLBARS[i])
         SCROLLBARS[i].range = (0, RANGE[i] - 1)
         SCROLLBARS[i].value_normalized = 1
 
