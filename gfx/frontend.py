@@ -761,21 +761,48 @@ class TeamSetUpBase(Screen):
             self.size_hint = (1, 0.2)
 
     class StaffWidget(GridLayout):
-        pass
+        
+        def __init__(self):
+
+            super().__init__()
+
+            self.cols = 7
+
+            self.name = Label(font_size=18, text='Name of the Staff', size_hint=(1.2, 1))
+            self.is_present = CheckBox()
+            self.is_headcoach = CheckBox(disabled=True)
+            self.is_assistant_one = CheckBox(disabled=True)
+            self.is_assistant_two = CheckBox(disabled=True)
+            self.is_doctor = CheckBox(disabled=True)
+            self.is_massagist = CheckBox(disabled=True)
+
+            self.add_widget(self.name)
+            self.add_widget(self.is_present)
+            self.add_widget(self.is_headcoach)
+            self.add_widget(self.is_assistant_one)
+            self.add_widget(self.is_assistant_two)
+            self.add_widget(self.is_doctor)
+            self.add_widget(self.is_massagist)
 
     class StaffHeader(BoxLayout):
         
-        super().__init__()
+        def __init__(self):
+        
+            super().__init__()
 
-        self.widget = Label(font_size=24, text=str(team_set_up[language_code][0]
-                                                       + '                         '
-                                                       + statuses[language_code][1]
-                                                       + '                     '
-                                                       + statuses[language_code][2]
-                                                       + '                      '
-                                                       + statuses[language_code][3]
-                                                       + '            '
-                                                       + statuses[language_code][4]))
+            self.widget = Label(font_size=24, text=str(team_set_up[language_code][0]
+                                                        + '              '
+                                                        + team_set_up[language_code][1]
+                                                        + '            '
+                                                        + statuses[language_code][0]
+                                                        + '           '
+                                                        + statuses[language_code][1]
+                                                        + '       '
+                                                        + statuses[language_code][2]
+                                                        + '            '
+                                                        + statuses[language_code][3]
+                                                        + '            '
+                                                        + statuses[language_code][4]))
             self.add_widget(self.widget)
             self.size_hint = (1, 0.2)
 
