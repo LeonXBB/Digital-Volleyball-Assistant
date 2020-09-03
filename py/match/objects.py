@@ -316,6 +316,7 @@ class Staff(Person):
 
     # sanctions = [] Moved to self.__init__
     Name = ''
+    Status = ''
 
     def __init__(self, data):
         data.append('Staff')

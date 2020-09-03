@@ -604,6 +604,27 @@ class TeamSetUpBase(Screen):
 
             self.add_widget(self.people_tabs)
 
+            self.people_tabs.staff.bind(on_release=self.staff_button)
+        
+        def staff_button(self, button):
+            
+            from DVA import match, frontend_references as gui
+
+            teams = [match.left_team, match.right_team]
+            letters = ['A', 'B']
+
+            if gui.get('MatchWindowRefereeTeamSetUpTabHeader').current_tab == gui.get('MatchWindowRefereeTeamSetUpTabTeamATab'):
+            #if button.text == match.left_team.long_name:
+                index = 0
+            else:
+                index = 1
+
+            if indexes[index] + 6 <= teams[index].staff - teams[index].disqualified_staff:
+                gui.get('MatchWindowRefereeTeamSetUpTabContent').on_load_staff(letters[index], indexes[index], indexes[index] + 6)
+
+            else:
+                gui.get('MatchWindowRefereeTeamSetUpTabContent').on_load_staff(letters[index], indexes[index], len(teams[index].staff) - len(teams[index].disqualified_staff))
+
     class SharedAreaPlayers(GridLayout):
 
         '''
@@ -857,6 +878,12 @@ class TeamSetUpBase(Screen):
 
         return get_people_list(team, with_absent_players=True)
 
+    def get_staff_list(self, team):
+        pass
+
+    def load_staff_list(self, team, start_index, end_index):
+        pass
+
     def load_players_list(self, team, start_index, end_index):
 
         '''
@@ -881,7 +908,7 @@ class TeamSetUpBase(Screen):
         team.PlayersList.load('TeamSetUp', self.get_players_list(team), TeamSetUpBase.PlayerWidget, 4)
         team.PlayersList.scroll(start_index, end_index, TeamSetUpBase.PlayerWidget, 4)
 
-    def get_team_set_up_children(self, index):
+    def get_team_set_up_children(self, index, mode='players'):
         
         '''
         This is a function that selects and returns widgets for visual widgets used in another functions of the screen
@@ -905,15 +932,20 @@ class TeamSetUpBase(Screen):
 
         team_set_up_children = []
         
-        for i in range(len(gui.get('MatchWindowRefereeTeamSetUpTabTeam' + ('A' if index == 0 else 'B') + 'PLAYERSLIST').children)):
-            team_set_up_children.append([])
-            for j in range(len(gui.get('MatchWindowRefereeTeamSetUpTabTeam' + ('A' if index == 0 else 'B') + 'PLAYERSLIST').children[i].children)):
-                if j != 4:
-                    team_set_up_children[i].append(gui.get('MatchWindowRefereeTeamSetUpTabTeam' + ('A' if index == 0 else 'B') + 'PLAYERSLIST').children[i].children[j])
+        if mode == 'players':
         
+            for i in range(len(gui.get('MatchWindowRefereeTeamSetUpTabTeam' + ('A' if index == 0 else 'B') + 'PLAYERSLIST').children)):
+                team_set_up_children.append([])
+                for j in range(len(gui.get('MatchWindowRefereeTeamSetUpTabTeam' + ('A' if index == 0 else 'B') + 'PLAYERSLIST').children[i].children)):
+                    if j != 4:
+                        team_set_up_children[i].append(gui.get('MatchWindowRefereeTeamSetUpTabTeam' + ('A' if index == 0 else 'B') + 'PLAYERSLIST').children[i].children[j])
+        
+        elif mode == 'staff':
+            pass
+
         return team_set_up_children
 
-    def init_visual_elements(self, team, team_index, start_index, end_index):
+    def init_visual_elements(self, team, team_index, start_index, end_index, mode='players'):
 
         '''
         This is a function that works with visual elements: creates, connects to respective screen's digets, loads, and processes them.
@@ -948,14 +980,27 @@ class TeamSetUpBase(Screen):
         from DVA import match, frontend_references as gui
         from gfx.visual_elements import TeamSetUp, TeamName
        
-        if not hasattr(team.SetUp, 'map_values') or len(team.SetUp.map_values) == 0:
-            team.SetUp = TeamSetUp(self.get_team_set_up_children(team_index))
-            team.SetUp.create_map(team)
-            self.load_players_list(team, start_index, end_index)
+        if mode == 'players':
+        
+            if not hasattr(team.SetUp, 'map_values') or len(team.SetUp.map_values) == 0:
+                team.SetUp = TeamSetUp(self.get_team_set_up_children(team_index))
+                team.SetUp.create_map(team)
+                self.load_players_list(team, start_index, end_index)
 
-        team.SetUp.update()
-        self.load_players_list(team, start_index, end_index)
-        team.SetUp.load()
+            team.SetUp.update()
+            self.load_players_list(team, start_index, end_index)
+            team.SetUp.load()
+
+        elif mode == 'staff':
+
+            if not hasattr(team.SetUpStaff, 'map_values') or len(team.SetUpStaff.map_values) == 0:
+                team.SetUpStaff = TeamSetUpStaff(self.get_team_set_up_children(team_index, 'staff'))
+                team.SetUpStaff.create_map(team)
+                self.load_staff_list(team, start_index, end_index)
+
+            team.SetUpStaff.update()
+            self.load_staff_list(team, start_index, end_index)
+            team.SetUpStaff.load()
 
         team.Name = TeamName(gui.get('MatchWindowRefereeTeamSetUpTabTeam' + ('A' if team == match.left_team else 'B') + 'Tab'))
         team.Name.load(team.long_name)
@@ -987,7 +1032,15 @@ class TeamSetUpBase(Screen):
         else:
             self.init_visual_elements(match.right_team, 1, start_index, end_index)
 
-    def on_load_staff(self): pass
+    def on_load_staff(self, team, start_index, end_index):
+
+        from DVA import match
+
+        if team == 'A':
+            self.init_visual_elements(match.left_team, 0, start_index, end_index, 'staff')
+        
+        else:
+            self.init_visual_elements(match.right_team, 1, start_index, end_index, 'staff')
 
     def cancel_button(self, button):  # TODO change for non-referee
 
