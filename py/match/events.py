@@ -544,7 +544,7 @@ class CoinTossResultsConfirmed(Event):
         if len(match.sets) < sets_to_win * 2 - 2:
             gui.get('MatchWindowRefereeTabPanelTeamSetUp').disabled = False
             gui.get('MatchWindowRefereeTabPanel').switch_to(gui.get('MatchWindowRefereeTabPanelTeamSetUp'))
-            gui.get('MatchWindowRefereeTeamSetUpTabContent').on_load('A', 0, 6)
+            gui.get('MatchWindowRefereeTeamSetUpTabContent').on_load_players('A', 0, 6)
         else:
             gui.get('MatchWindowRefereeTabPanelLineUpSetUp').disabled = False
             gui.get('MatchWindowRefereeTabPanel').switch_to(gui.get('MatchWindowRefereeTabPanelLineUpSetUp'))

@@ -791,17 +791,17 @@ class TeamSetUpBase(Screen):
             super().__init__()
 
             self.widget = Label(font_size=24, text=str(team_set_up[language_code][0]
-                                                        + '              '
+                                                        + '     '
                                                         + team_set_up[language_code][1]
                                                         + '            '
                                                         + statuses[language_code][0]
-                                                        + '           '
+                                                        + '          '
                                                         + statuses[language_code][1]
                                                         + '       '
                                                         + statuses[language_code][2]
-                                                        + '            '
+                                                        + '         '
                                                         + statuses[language_code][3]
-                                                        + '            '
+                                                        + '           '
                                                         + statuses[language_code][4]))
             self.add_widget(self.widget)
             self.size_hint = (1, 0.2)
@@ -964,7 +964,7 @@ class TeamSetUpBase(Screen):
                 opposite_team.Name = TeamName(gui.get('MatchWindowRefereeTeamSetUpTabTeam' + ('B' if team == match.left_team else 'A') + 'Tab'))
                 opposite_team.Name.load(opposite_team.long_name)
 
-    def on_load(self, team, start_index, end_index):
+    def on_load_players(self, team, start_index, end_index):
 
         '''
         The function that loads screen's logic. In this screen, we only load visual elements, and only for the team of a current tab.
@@ -986,6 +986,8 @@ class TeamSetUpBase(Screen):
 
         else:
             self.init_visual_elements(match.right_team, 1, start_index, end_index)
+
+    def on_load_staff(self): pass
 
     def cancel_button(self, button):  # TODO change for non-referee
 
@@ -1109,9 +1111,9 @@ class TeamSetUpWindowReferee(TeamSetUpBase):  # TODO either save button disabled
             index = 1
 
         if indexes[index] + 6 <= len(teams[index].players) - (len(teams[index].disqualified_players) + len(teams[index].expulsed_players)):
-            gui.get('MatchWindowRefereeTeamSetUpTabContent').on_load(letters[index], indexes[index], indexes[index] + 6)
+            gui.get('MatchWindowRefereeTeamSetUpTabContent').on_load_players(letters[index], indexes[index], indexes[index] + 6)
         else:
-            gui.get('MatchWindowRefereeTeamSetUpTabContent').on_load(letters[index], indexes[index], (len(teams[index].players) - (len(teams[index].disqualified_players) + len(teams[index].expulsed_players))))
+            gui.get('MatchWindowRefereeTeamSetUpTabContent').on_load_players(letters[index], indexes[index], (len(teams[index].players) - (len(teams[index].disqualified_players) + len(teams[index].expulsed_players))))
 
 
 class LineUpSetUpBase(Screen):
@@ -5160,10 +5162,10 @@ def scroll__init(slider, movement):
         if index < 6 and indexes[index] + 6 <= len(team.players) - (len(team.disqualified_players) + len(team.expulsed_players)):
     
             if index == 0:
-                gui.get('MatchWindowRefereeTeamSetUpTabContent').on_load('A', indexes[index], indexes[index] + 6)
+                gui.get('MatchWindowRefereeTeamSetUpTabContent').on_load_players('A', indexes[index], indexes[index] + 6)
 
             elif index == 1:
-                gui.get('MatchWindowRefereeTeamSetUpTabContent').on_load('B', indexes[index], indexes[index] + 6)
+                gui.get('MatchWindowRefereeTeamSetUpTabContent').on_load_players('B', indexes[index], indexes[index] + 6)
             
             elif index == 2: pass 
 
@@ -5178,10 +5180,10 @@ def scroll__init(slider, movement):
         elif index < 6 and indexes[index] + 6 > len(team.players) - (len(team.disqualified_players) + len(team.expulsed_players)):
 
             if index == 0:
-                gui.get('MatchWindowRefereeTeamSetUpTabContent').on_load('A', indexes[index], (len(match.left_team.players) - (len(match.left_team.disqualified_players) + len(match.left_team.expulsed_players))))
+                gui.get('MatchWindowRefereeTeamSetUpTabContent').on_load_players('A', indexes[index], (len(match.left_team.players) - (len(match.left_team.disqualified_players) + len(match.left_team.expulsed_players))))
 
             elif index == 1:
-                gui.get('MatchWindowRefereeTeamSetUpTabContent').on_load('B', indexes[index], (len(match.right_team.players) - (len(match.right_team.disqualified_players) + len(match.right_team.expulsed_players))))
+                gui.get('MatchWindowRefereeTeamSetUpTabContent').on_load_players('B', indexes[index], (len(match.right_team.players) - (len(match.right_team.disqualified_players) + len(match.right_team.expulsed_players))))
         
             elif index == 2:
                 gui.get('MatchWindowRefereeSubstitutionsTabContent').on_load('A', indexes[index], (len(match.left_team.players) - (len(match.left_team.disqualified_players) + len(match.left_team.expulsed_players))), is_scrolling=True)
@@ -5212,7 +5214,7 @@ def scroll_get_indexes(window, team): # This function exists for when we call on
 
     set_range_to_sliders()
 
-    if window == 'TeamSetUp':
+    if window == 'TeamSetUp': # TODO fix for staff
         
         if team == 'A':
             index = 0
