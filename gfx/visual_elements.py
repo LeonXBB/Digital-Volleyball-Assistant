@@ -525,7 +525,62 @@ class TeamSetUpStaff(VisualElement):
         self.load()
 
     def save(self, team, button):
-        pass
+        
+        from py.match.events import StaffSetUpConfirmed
+        from DVA import match_events_dispatch
+        from gfx.frontend import PopUpWindow
+
+        self.update()
+
+        head_coach_present = 0
+        assistant_one_present = 0
+        assistant_two_present = 0
+        doctor_present = 0
+        massagist_present = 0
+
+        errors = []
+
+        for i in range(0, len(self.map_values), 7):
+            
+            if not self.map_values[i + 6]:
+                pass
+
+            else:
+                
+                if self.map_values[i + 5]:
+                    head_coach_present += 1
+                
+                if self.map_values[i + 4]:
+                    assistant_one_present += 1
+
+                if self.map_values[i + 3]:
+                    assistant_two_present += 1
+                
+                if self.map_values[i + 2]:
+                    doctor_present += 1
+
+                if self.map_values[i + 1]:
+                    massagist_present += 1
+        
+        if head_coach_present > max_amount_head_coach:
+            errors.append(team_set_up_errors[language_code][7])
+
+        if assistant_one_present > max_amount_assistant_one:
+            errors.append(team_set_up_errors[language_code][8])
+
+        if assistant_two_present > max_amount_assistant_two:
+            errors.append(team_set_up_errors[language_code][8])
+
+        if assistant_one_present > max_amount_doctor:
+            errors.append(team_set_up_errors[language_code][9])
+
+        if massagist_present > max_amount_massagist:
+            errors.append(team_set_up_errors[language_code][10])
+
+        if len(errors) == 0:
+            match_events_dispatch.run(SetUpConfirmed, [self.map_values, team], 'NEW')
+        else:
+            PopUpWindow().show_pop_up('\n'.join(errors))
 
 
 class TeamLineUpSetUp(VisualElement): # TODO try doing Players' names VE in values

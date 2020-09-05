@@ -3,14 +3,22 @@ time_between_court_entry_and_coin_tossing = 15  # in minutes
 time_between_coin_tossing_and_set_start = 15
 time_between_sets = 3
 
-# People
+# Players
 players_in_team = 6
 max_amount_players = 14
-max_amount_staff = 4  # excluding head coach
 max_amount_liberos = 2
 players_more_or_equal_to_x_liberos_at_least_y = [13, 2]  # if there is list[0] players, there should be at least list[1] liberos
 max_shirt_number = 20
 libero_can_be_captain = False
+
+# Staff
+
+max_amount_head_coach = 1
+max_amount_assistant_one = 1
+max_amount_assistant_two = 1
+max_amount_doctor = 1
+max_amount_massagist = 1
+multiple_positions_allowed = False
 
 # Sets
 sets_to_win = 3

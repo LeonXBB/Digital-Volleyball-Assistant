@@ -113,6 +113,12 @@ class Application(App):
                                    'MatchWindowRefereeTeamSetUpTabHeader': self.match_window_referee.design.main_widget.tabs_m.team_set_up.content.design.main_widget.referee_spot.content,
                                    'MatchWindowRefereeTeamSetUpTabTeamATab': self.match_window_referee.design.main_widget.tabs_m.team_set_up.content.design.main_widget.referee_spot.content.team_A_button,
                                    'MatchWindowRefereeTeamSetUpTabTeamBTab': self.match_window_referee.design.main_widget.tabs_m.team_set_up.content.design.main_widget.referee_spot.content.team_B_button,
+                                   'MatchWindowRefereeTeamSetUpTabTeamATabHeader': self.match_window_referee.design.main_widget.tabs_m.team_set_up.content.design.main_widget.referee_spot.content.team_A_button.content.people_tabs,
+                                   'MatchWindowRefereeTeamSetUpTabTeamBTabHeader': self.match_window_referee.design.main_widget.tabs_m.team_set_up.content.design.main_widget.referee_spot.content.team_B_button.content.people_tabs,
+                                   'MatchWindowRefereeTeamSetUpTabTeamAPlayersTab': self.match_window_referee.design.main_widget.tabs_m.team_set_up.content.design.main_widget.referee_spot.content.team_A_button.content.people_tabs.players,
+                                   'MatchWindowRefereeTeamSetUpTabTeamBPlayersTab': self.match_window_referee.design.main_widget.tabs_m.team_set_up.content.design.main_widget.referee_spot.content.team_B_button.content.people_tabs.players,
+                                   'MatchWindowRefereeTeamSetUpTabTeamAStaffTab': self.match_window_referee.design.main_widget.tabs_m.team_set_up.content.design.main_widget.referee_spot.content.team_A_button.content.people_tabs.staff,
+                                   'MatchWindowRefereeTeamSetUpTabTeamBStaffTab': self.match_window_referee.design.main_widget.tabs_m.team_set_up.content.design.main_widget.referee_spot.content.team_B_button.content.people_tabs.staff,
                                    'MatchWindowRefereeTeamSetUpTabTeamAPLAYERSLIST': self.match_window_referee.design.main_widget.tabs_m.team_set_up.content.design.main_widget.referee_spot.content.team_A_button.content.people_tabs.players.content.list_area.list,
                                    'MatchWindowRefereeTeamSetUpTabTeamBPLAYERSLIST': self.match_window_referee.design.main_widget.tabs_m.team_set_up.content.design.main_widget.referee_spot.content.team_B_button.content.people_tabs.players.content.list_area.list,
                                    'MatchWindowRefereeTeamSetUpTabTeamASTAFFLIST': self.match_window_referee.design.main_widget.tabs_m.team_set_up.content.design.main_widget.referee_spot.content.team_A_button.content.people_tabs.staff.content.list_area.list,
@@ -1081,16 +1087,36 @@ class TeamSetUpBase(Screen):
         from py.match.objects import HeadCoach
 
         if gui.get('MatchWindowRefereeTeamSetUpTabHeader').current_tab == gui.get('MatchWindowRefereeTeamSetUpTabTeamATab'):
-            if match.left_team.head_coach != '':
-                match.left_team.head_coach.team_set_up(match.left_team, button)
-            else:
-                HeadCoach.team_set_up('', match.left_team, button)
-        else:
-            if match.right_team.head_coach != '':
-                match.right_team.head_coach.team_set_up(match.right_team, button)
-            else:
-                HeadCoach.team_set_up('', match.right_team, button)
+        
+            if gui.get('MatchWindowRefereeTeamSetUpTabTeamATabHeader').current_tab == gui.get('MatchWindowRefereeTeamSetUpTabTeamAPlayersTab'):
 
+                if match.left_team.head_coach != '':
+                    match.left_team.head_coach.team_set_up(match.left_team, button)
+                else:
+                    HeadCoach.team_set_up('', match.left_team, button)
+        
+            elif  gui.get('MatchWindowRefereeTeamSetUpTabTeamATabHeader').current_tab == gui.get('MatchWindowRefereeTeamSetUpTabTeamAStaffTab'):
+        
+                if match.left_team.head_coach != '':
+                    match.left_team.head_coach.staff_team_set_up(match.left_team, button)
+                else:
+                    HeadCoach.staff_team_set_up('', match.left_team, button)
+
+        else:
+
+            if gui.get('MatchWindowRefereeTeamSetUpTabTeamBTabHeader').current_tab == gui.get('MatchWindowRefereeTeamSetUpTabTeamBPlayersTab'):
+
+                if match.right_team.head_coach != '':
+                    match.right_team.head_coach.team_set_up(match.right_team, button)
+                else:
+                    HeadCoach.team_set_up('', match.right_team, button)
+        
+            elif  gui.get('MatchWindowRefereeTeamSetUpTabTeamBTabHeader').current_tab == gui.get('MatchWindowRefereeTeamSetUpTabTeamBStaffTab'):
+        
+                if match.right_team.head_coach != '':
+                    match.right_team.head_coach.staff_team_set_up(match.right_team, button)
+                else:
+                    HeadCoach.staff_team_set_up('', match.right_team, button)
 
 class TeamSetUpWindowReferee(TeamSetUpBase):  # TODO either save button disabled or popup when not all conditions are met for ALL THE TABS
 
