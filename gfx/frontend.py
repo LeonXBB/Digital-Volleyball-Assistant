@@ -625,7 +625,7 @@ class TeamSetUpBase(Screen):
             else:
                 index = 1
 
-            if indexes[index] + 6 <= teams[index].staff - teams[index].disqualified_staff:
+            if indexes[index] + 6 <= len(teams[index].staff) - len(teams[index].disqualified_staff):
                 gui.get('MatchWindowRefereeTeamSetUpTabContent').on_load_staff(letters[index], indexes[index], indexes[index] + 6)
 
             else:
@@ -811,6 +811,15 @@ class TeamSetUpBase(Screen):
             self.add_widget(self.is_doctor)
             self.add_widget(self.is_massagist)
 
+        def present_checkbox(self, checkbox, *args):
+            
+            if checkbox.active:
+                for i in range(6):
+                    checkbox.parent.children[i].disabled = False
+            else:
+                for i in range(6):
+                    checkbox.parent.children[i].disabled = True
+
     class StaffHeader(BoxLayout):
         
         def __init__(self):
@@ -885,10 +894,20 @@ class TeamSetUpBase(Screen):
         return get_people_list(team, with_absent_players=True)
 
     def get_staff_list(self, team):
-        pass
+        
+        from py.core import get_people_list
+
+        return get_people_list(team, with_players=False, with_staff=True, with_disqualified_staff=True)
 
     def load_staff_list(self, team, start_index, end_index):
-        pass
+        
+        from DVA import match, frontend_references as gui
+        from gfx.visual_elements import TeamPeopleList
+
+        #if not hasattr(team.SetUp, 'window') or team.SetUp.window != 'TeamSetUp':
+        team.PlayersList = TeamPeopleList(gui.get('MatchWindowRefereeTeamSetUpTabTeam' + ('A' if team == match.left_team else 'B') + 'STAFFLIST'))
+        team.PlayersList.load('TeamSetUp', self.get_staff_list(team), TeamSetUpBase.StaffWidget, 6)
+        team.PlayersList.scroll(start_index, end_index, TeamSetUpBase.StaffWidget, 6)
 
     def load_players_list(self, team, start_index, end_index):
 
@@ -947,7 +966,12 @@ class TeamSetUpBase(Screen):
                         team_set_up_children[i].append(gui.get('MatchWindowRefereeTeamSetUpTabTeam' + ('A' if index == 0 else 'B') + 'PLAYERSLIST').children[i].children[j])
         
         elif mode == 'staff':
-            pass
+
+            for i in range(len(gui.get('MatchWindowRefereeTeamSetUpTabTeam' + ('A' if index == 0 else 'B') + 'STAFFLIST').children)):
+                team_set_up_children.append([])
+                for j in range(len(gui.get('MatchWindowRefereeTeamSetUpTabTeam' + ('A' if index == 0 else 'B') + 'STAFFLIST').children[i].children)):
+                    if j != 6:
+                        team_set_up_children[i].append(gui.get('MatchWindowRefereeTeamSetUpTabTeam' + ('A' if index == 0 else 'B') + 'STAFFLIST').children[i].children[j])
 
         return team_set_up_children
 
@@ -984,7 +1008,7 @@ class TeamSetUpBase(Screen):
         '''
 
         from DVA import match, frontend_references as gui
-        from gfx.visual_elements import TeamSetUp, TeamName
+        from gfx.visual_elements import TeamSetUp, TeamSetUpStaff, TeamName
        
         if mode == 'players':
         
@@ -1065,9 +1089,18 @@ class TeamSetUpBase(Screen):
         from DVA import match, frontend_references as gui
 
         if gui.get('MatchWindowRefereeTeamSetUpTabHeader').current_tab == gui.get('MatchWindowRefereeTeamSetUpTabTeamATab'):
-            match.left_team.SetUp.clear(button)
+            
+            if gui.get('MatchWindowRefereeTeamSetUpTabTeamATabHeader').current_tab == gui.get('MatchWindowRefereeTeamSetUpTabTeamATabPlayersTab'):
+                match.left_team.SetUp.clear(button)
+            elif gui.get('MatchWindowRefereeTeamSetUpTabTeamATabHeader').current_tab == gui.get('MatchWindowRefereeTeamSetUpTabTeamATabStaffTab'):
+                match.left_team.SetUpStaff.clear(button)
+        
         else:
-            match.right_team.SetUp.clear(button)
+
+            if gui.get('MatchWindowRefereeTeamSetUpTabTeamBTabHeader').current_tab == gui.get('MatchWindowRefereeTeamSetUpTabTeamBTabPlayersTab'):
+                match.right_team.SetUp.clear(button)
+            elif gui.get('MatchWindowRefereeTeamSetUpTabTeamATabHeader').current_tab == gui.get('MatchWindowRefereeTeamSetUpTabTeamBTabStaffTab'):
+                match.right_team.SetUpStaff.clear(button)
 
     def save_button(self, button):  # TODO change for non-referee
 
@@ -1098,9 +1131,9 @@ class TeamSetUpBase(Screen):
             elif  gui.get('MatchWindowRefereeTeamSetUpTabTeamATabHeader').current_tab == gui.get('MatchWindowRefereeTeamSetUpTabTeamAStaffTab'):
         
                 if match.left_team.head_coach != '':
-                    match.left_team.head_coach.staff_team_set_up(match.left_team, button)
+                    match.left_team.head_coach.team_set_up_staff(match.left_team, button)
                 else:
-                    HeadCoach.staff_team_set_up('', match.left_team, button)
+                    HeadCoach.team_set_up_staff('', match.left_team, button)
 
         else:
 
@@ -1114,9 +1147,10 @@ class TeamSetUpBase(Screen):
             elif  gui.get('MatchWindowRefereeTeamSetUpTabTeamBTabHeader').current_tab == gui.get('MatchWindowRefereeTeamSetUpTabTeamBStaffTab'):
         
                 if match.right_team.head_coach != '':
-                    match.right_team.head_coach.staff_team_set_up(match.right_team, button)
+                    match.right_team.head_coach.team_set_up_staff(match.right_team, button)
                 else:
-                    HeadCoach.staff_team_set_up('', match.right_team, button)
+                    HeadCoach.team_set_up_staff('', match.right_team, button)
+
 
 class TeamSetUpWindowReferee(TeamSetUpBase):  # TODO either save button disabled or popup when not all conditions are met for ALL THE TABS
 

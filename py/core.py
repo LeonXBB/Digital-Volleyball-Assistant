@@ -95,7 +95,7 @@ def authorization_successful():  # TODO This function should deal with calculati
             pass
 
 
-def get_people_list(team, with_staff=False, with_expulsed_players=False, with_disqualified_staff=False, with_disqualified_players=False, with_liberos=True, with_absent_players=False, with_numbers=False, start_index=None, end_index=None, rv_format='bin'):
+def get_people_list(team, with_players=True, with_staff=False, with_expulsed_players=False, with_disqualified_staff=False, with_disqualified_players=False, with_liberos=True, with_absent_players=False, with_numbers=False, start_index=None, end_index=None, rv_format='bin'):
 
     from meta.localization import statuses
     from meta.app_config import language_code
@@ -109,12 +109,14 @@ def get_people_list(team, with_staff=False, with_expulsed_players=False, with_di
         for _staff_ in team.staff:
             if _staff_ not in team.disqualified_staff or with_disqualified_staff: people_list.append(_staff_)
 
-    for i in range((start_index if start_index is not None else 0), (end_index if (end_index is not None and end_index < len(team.players)) else len(team.players))):
-        if team.players[i] not in team.disqualified_players or with_disqualified_players: 
-            if team.players[i] not in team.expulsed_players or with_expulsed_players:
-                if not team.players[i].libero or with_liberos:
-                    if team.players[i].present or with_absent_players:
-                        people_list.append(team.players[i])
+    
+    if with_players:
+        for i in range((start_index if start_index is not None else 0), (end_index if (end_index is not None and end_index < len(team.players)) else len(team.players))):
+            if team.players[i] not in team.disqualified_players or with_disqualified_players: 
+                if team.players[i] not in team.expulsed_players or with_expulsed_players:
+                    if not team.players[i].libero or with_liberos:
+                        if team.players[i].present or with_absent_players:
+                            people_list.append(team.players[i])
 
     if rv_format == 'bin':
         return people_list

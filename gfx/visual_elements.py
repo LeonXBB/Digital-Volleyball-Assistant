@@ -478,11 +478,21 @@ class TeamSetUpStaff(VisualElement):
 
         self.map_values = []
 
+        if team.head_coach != '':
+            self.map_values.append(team.head_coach.name_string)
+            self.map_values.append(False)
+            self.map_values.append(False)
+            self.map_values.append(False)
+            self.map_values.append(False)
+            self.map_values.append(False)
+            self.map_values.append(False)
+
+
         for staff in team.staff:
             
             if staff not in team.disqualified_staff:
 
-                self.map_values.append(player.name_string)
+                self.map_values.append(staff.name_string)
                 self.map_values.append(False)
                 self.map_values.append(False)
                 self.map_values.append(False)
@@ -498,7 +508,7 @@ class TeamSetUpStaff(VisualElement):
             
             if self.elements[i][0].opacity > 0:
 
-                index = self.elements[i][0].parent.children[4].text
+                index = self.elements[i][0].parent.children[6].text
                 for j in range(6):
                     self.elements[i][j].active = self.map_values[self.map_values.index(index) + j + 1]
 
@@ -509,8 +519,10 @@ class TeamSetUpStaff(VisualElement):
         for i in range(6):
 
             if self.elements[i][0].opacity > 0:
+                
+                print(self.map_values)
 
-                index = self.elements[i][0].parent.children[4].text
+                index = self.elements[i][0].parent.children[6].text
 
                 for j in range(6):
                     self.map_values[self.map_values.index(index) + j + 1] = self.elements[i][j].active

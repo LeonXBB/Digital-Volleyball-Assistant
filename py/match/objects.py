@@ -176,6 +176,7 @@ class Team:
     PlayersList = ''
     StaffList = ''
     SetUp = ''
+    SetUpStaff = ''
     LineUpSetUp = ''
     LineUp = ''
     Serve = ''
@@ -274,10 +275,12 @@ class HeadCoach(Person):
         super().__init__(data)
 
     def team_set_up(self, team, button):
-        
-        from DVA import match, frontend_references as gui
 
         team.SetUp.save(team, button)
+
+    def team_set_up_staff(self, team, button):
+
+        team.SetUpStaff.save(team, button)
 
     def line_up_set_up(self, team, letter):
         
