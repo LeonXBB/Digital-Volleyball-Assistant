@@ -811,15 +811,33 @@ class TeamSetUpBase(Screen):
             self.add_widget(self.is_doctor)
             self.add_widget(self.is_massagist)
 
+            self.is_present.bind(state=self.present_checkbox)
+            
+            self.is_headcoach.bind(on_release=self.role_checkbox)
+            self.is_assistant_one.bind(on_release=self.role_checkbox)
+            self.is_assistant_two.bind(on_release=self.role_checkbox)
+            self.is_doctor.bind(on_release=self.role_checkbox)
+            self.is_massagist.bind(on_release=self.role_checkbox)
+
         def present_checkbox(self, checkbox, *args):
             
             if checkbox.active:
-                for i in range(6):
+                for i in range(5):
                     checkbox.parent.children[i].disabled = False
             else:
-                for i in range(6):
+                for i in range(5):
                     checkbox.parent.children[i].disabled = True
 
+        def role_checkbox(self, checkbox, *args):
+
+            checkbox.active = True
+
+            if not multiple_positions_allowed:
+
+                for another_checkbox in checkbox.parent.children[:5]:
+                    if another_checkbox is not checkbox and hasattr(another_checkbox, 'active'):
+                        another_checkbox.active = False
+            
     class StaffHeader(BoxLayout):
         
         def __init__(self):

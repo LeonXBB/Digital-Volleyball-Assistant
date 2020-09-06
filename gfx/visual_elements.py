@@ -520,8 +520,6 @@ class TeamSetUpStaff(VisualElement):
 
             if self.elements[i][0].opacity > 0:
                 
-                print(self.map_values)
-
                 index = self.elements[i][0].parent.children[6].text
 
                 for j in range(6):
