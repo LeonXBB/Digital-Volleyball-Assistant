@@ -338,7 +338,7 @@ class TeamPeopleList(VisualElement):
         set_range_to_sliders()
 
         self.original_peoples_list = self.people_list
-        people_list = self.people_list[min(start_index, len(self.people_list)):min(end_index, len(self.people_list))]
+        people_list = self.people_list[min(start_index, len(self.people_list)):min(end_index+1, len(self.people_list))+1] # This +1 here is to fix bug with one of the stuff member no appearing if different roles. Probably wrong. #TODO fix this.
         self.load(self.window, people_list, widget_type, specific_child_index, with_numbers)
         self.people_list = self.original_peoples_list
 

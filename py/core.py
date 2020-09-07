@@ -47,8 +47,8 @@ def set_range_to_sliders():
     RANGE = [
         (len(match.team_A.players) - len(match.team_A.disqualified_players) - len(match.team_A.expulsed_players)),
         (len(match.team_B.players) - len(match.team_B.disqualified_players) - len(match.team_B.expulsed_players)),
-        10,
-        10,
+        (len(match.team_A.staff) - len(match.team_A.disqualified_staff)),
+        (len(match.team_B.staff) - len(match.team_B.disqualified_staff)),
         (len(match.team_A.players) - len(match.team_A.disqualified_players) - len(match.team_A.expulsed_players)) / 2,
         (len(match.team_B.players) - len(match.team_B.disqualified_players) - len(match.team_B.expulsed_players)) / 2,
         (len(match.team_A.players) - len(match.team_A.disqualified_players) + len(match.team_A.staff) + (1 if match.team_A.head_coach != '' else 0)),

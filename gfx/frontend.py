@@ -620,16 +620,15 @@ class TeamSetUpBase(Screen):
             letters = ['A', 'B']
 
             if gui.get('MatchWindowRefereeTeamSetUpTabHeader').current_tab == gui.get('MatchWindowRefereeTeamSetUpTabTeamATab'):
-            #if button.text == match.left_team.long_name:
                 index = 0
             else:
                 index = 1
 
-            if indexes[index] + 6 <= len(teams[index].staff) - len(teams[index].disqualified_staff):
-                gui.get('MatchWindowRefereeTeamSetUpTabContent').on_load_staff(letters[index], indexes[index], indexes[index] + 6)
+            if indexes[index + 2] + 6 <= len(teams[index].staff) - len(teams[index].disqualified_staff):
+                gui.get('MatchWindowRefereeTeamSetUpTabContent').on_load_staff(letters[index], indexes[index + 2], indexes[index] + 6)
 
             else:
-                gui.get('MatchWindowRefereeTeamSetUpTabContent').on_load_staff(letters[index], indexes[index], len(teams[index].staff) - len(teams[index].disqualified_staff))
+                gui.get('MatchWindowRefereeTeamSetUpTabContent').on_load_staff(letters[index], indexes[index + 2], len(teams[index].staff) - len(teams[index].disqualified_staff))
 
     class SharedAreaPlayers(GridLayout):
 
@@ -2246,7 +2245,7 @@ class SanctionsWindowReferee(Screen):
 
             match.left_team.PlayersList.load('Sanctions', self.apply_sanction_limitations(match.left_team), ToggleButton, with_numbers=True)
             match.left_team.PlayersList.scroll(0,6, ToggleButton, with_numbers=True, choice_data=self.person_chosen_A)
-            indexes[4] = 0
+            indexes[6] = 0
 
             self.set_save_button_state(match.left_team)
 
@@ -2260,7 +2259,7 @@ class SanctionsWindowReferee(Screen):
 
             match.right_team.PlayersList.load('Sanctions', self.apply_sanction_limitations(match.right_team), ToggleButton, with_numbers=True)
             match.right_team.PlayersList.scroll(0,6, ToggleButton, with_numbers=True, choice_data=self.person_chosen_B)
-            indexes[5] = 0
+            indexes[7] = 0
 
             self.set_save_button_state(match.right_team)
 
@@ -5236,7 +5235,7 @@ class ButtonLabel(ButtonBehavior, Label):
     pass
 
 
-indexes = [0, 0, 0, 0, 0, 0,  0, 0]
+indexes = [0, 0, 0, 0, 0, 0, 0, 0]
 
 
 def scroll__init(slider, movement):
@@ -5253,23 +5252,23 @@ def scroll__init(slider, movement):
     elif slider == gui.get('MatchWindowRefereeTeamSetUpTeamBPLAYERSSLIDER'):
         index = 1
         team = match.right_team
-    if slider == gui.get('MatchWindowRefereeTeamSetUpTeamASTAFFSLIDER'):
+    elif slider == gui.get('MatchWindowRefereeTeamSetUpTeamASTAFFSLIDER'):
         index = 2
         team = match.left_team
     elif slider == gui.get('MatchWindowRefereeTeamSetUpTeamBSTAFFSLIDER'):
         index = 3
         team = match.right_team
     elif slider == gui.get('MatchWindowRefereeSubstitutionsTabTeamASLIDER'):
-        index = 2
-        team = match.left_team
-    elif slider == gui.get('MatchWindowRefereeSubstitutionsTabTeamBSLIDER'):
-        index = 3
-        team = match.right_team
-    elif slider == gui.get('MatchWindowRefereeSanctionsTabTeamASLIDER'):
         index = 4
         team = match.left_team
-    elif slider == gui.get('MatchWindowRefereeSanctionsTabTeamBSLIDER'):
+    elif slider == gui.get('MatchWindowRefereeSubstitutionsTabTeamBSLIDER'):
         index = 5
+        team = match.right_team
+    elif slider == gui.get('MatchWindowRefereeSanctionsTabTeamASLIDER'):
+        index = 6
+        team = match.left_team
+    elif slider == gui.get('MatchWindowRefereeSanctionsTabTeamBSLIDER'):
+        index = 7
         team = match.right_team
 
     if movement.is_mouse_scrolling:
@@ -5298,10 +5297,12 @@ def scroll__init(slider, movement):
             elif index == 1:
                 gui.get('MatchWindowRefereeTeamSetUpTabContent').on_load_players('B', indexes[index], indexes[index] + 6)
             
-            elif index == 2: pass 
+            elif index == 2:
+                gui.get('MatchWindowRefereeTeamSetUpTabContent').on_load_staff('A', indexes[index], indexes[index] + 6)
 
-            elif index == 3: pass
-            
+            elif index == 3:
+                gui.get('MatchWindowRefereeTeamSetUpTabContent').on_load_staff('B', indexes[index], indexes[index] + 6)
+
             elif index == 4:
                 gui.get('MatchWindowRefereeSubstitutionsTabContent').on_load('A', indexes[index], indexes[index] + 6, gui.get('MatchWindowRefereeSubstitutionsTabContent').forced_A, is_scrolling=True)
 
@@ -5317,9 +5318,15 @@ def scroll__init(slider, movement):
                 gui.get('MatchWindowRefereeTeamSetUpTabContent').on_load_players('B', indexes[index], (len(match.right_team.players) - (len(match.right_team.disqualified_players) + len(match.right_team.expulsed_players))))
         
             elif index == 2:
+                gui.get('MatchWindowRefereeTeamSetUpTabContent').on_load_staff('A', index[index], (len(match.left_team.staff) - len(match.left_team.disqualified_staff)))
+
+            elif index == 3:
+                gui.get('MatchWindowRefereeTeamSetUpTabContent').on_load_staff('B', index[index], (len(match.right_team.staff) - len(match.right_team.disqualified_staff)))
+
+            elif index == 4:
                 gui.get('MatchWindowRefereeSubstitutionsTabContent').on_load('A', indexes[index], (len(match.left_team.players) - (len(match.left_team.disqualified_players) + len(match.left_team.expulsed_players))), is_scrolling=True)
     
-            elif index == 3:
+            elif index == 5:
                 gui.get('MatchWindowRefereeSubstitutionsTabContent').on_load('B', indexes[index], (len(match.right_team.players) - (len(match.right_team.disqualified_players) + len(match.right_team.expulsed_players))), is_scrolling=True)
 
         elif index == 6 and indexes[index] + 6 <= len(team.players) + len(team.staff) + (1 if team.head_coach != '' else 0):
@@ -5345,7 +5352,7 @@ def scroll_get_indexes(window, team): # This function exists for when we call on
 
     set_range_to_sliders()
 
-    if window == 'TeamSetUp': # TODO fix for staff
+    if window == 'TeamSetUpPlayers':
         
         if team == 'A':
             index = 0
@@ -5359,13 +5366,27 @@ def scroll_get_indexes(window, team): # This function exists for when we call on
         else:
             rv = indexes[indexes], (len(team.players) - (len(team.disqualified_players) + len(team.expulsed_players)))
 
-    elif window == 'Substitutions':
-        
+    elif window == 'TeamSetUpStaff':
+
         if team == 'A':
             index = 2
             team = match.left_team
         else:
             index = 3
+            team = match.right_team
+        
+        if indexes[index] + 6 <= len(team.staff) - len(team.disqualified_staff):
+            rv = indexes[index], indexes[index] + 6
+        else:
+            rv = indexes[index], (len(team.staff) - (len(team.disqualified_staff)))
+
+    elif window == 'Substitutions':
+        
+        if team == 'A':
+            index = 4
+            team = match.left_team
+        else:
+            index = 5
             team = match.right_team
         
         if indexes[index] + 6 <= len(team.players) - (len(team.disqualified_players) + len(team.expulsed_players)):
@@ -5376,10 +5397,10 @@ def scroll_get_indexes(window, team): # This function exists for when we call on
     elif window == 'Sanctions':
 
         if team == 'A':
-            index = 4
+            index = 6
             team = match.left_team
         else:
-            index = 5
+            index = 7
             team = match.right_team
         
         if indexes[index] + 6 <= len(team.players) + len(team.staff) + (1 if team.head_coach != '' else 0):

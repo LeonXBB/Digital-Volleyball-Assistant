@@ -805,7 +805,6 @@ class LineUpConfirmed(Event):
     def delete(self):
 
         from DVA import match, frontend_references as gui
-        from gfx.frontend import scroll_get_indexes
 
         if len(match.sets) > 0:
 
