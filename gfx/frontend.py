@@ -611,7 +611,8 @@ class TeamSetUpBase(Screen):
             self.add_widget(self.people_tabs)
 
             self.people_tabs.staff.bind(on_release=self.staff_button)
-        
+            self.people_tabs.players.bind(on_release=self.players_button)
+
         def staff_button(self, button):
             
             from DVA import match, frontend_references as gui
@@ -629,6 +630,23 @@ class TeamSetUpBase(Screen):
 
             else:
                 gui.get('MatchWindowRefereeTeamSetUpTabContent').on_load_staff(letters[index], indexes[index + 2], len(teams[index].staff) - len(teams[index].disqualified_staff))
+
+        def players_button(self, button):
+            
+            from DVA import match, frontend_references as gui
+
+            teams = [match.left_team, match.right_team]
+            letters = ['A', 'B']
+
+            if button.text == match.left_team.long_name:
+                index = 0
+            else:
+                index = 1
+
+            if indexes[index] + 6 <= len(teams[index].players) - (len(teams[index].disqualified_players) + len(teams[index].expulsed_players)):
+                gui.get('MatchWindowRefereeTeamSetUpTabContent').on_load_players(letters[index], indexes[index], indexes[index] + 6)
+            else:
+                gui.get('MatchWindowRefereeTeamSetUpTabContent').on_load_players(letters[index], indexes[index], (len(teams[index].players) - (len(teams[index].disqualified_players) + len(teams[index].expulsed_players))))
 
     class SharedAreaPlayers(GridLayout):
 
@@ -828,8 +846,6 @@ class TeamSetUpBase(Screen):
                     checkbox.parent.children[i].disabled = True
 
         def role_checkbox(self, checkbox, *args):
-
-            checkbox.active = True
 
             if not multiple_positions_allowed:
 

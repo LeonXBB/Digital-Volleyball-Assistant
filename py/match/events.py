@@ -731,15 +731,75 @@ class StaffSetUpConfirmed(Event):
     
     def create(self):
 
+        from DVA import match, frontend_references as gui
+
         if self.mode == 'RESTORED':
             if self.create_data[1] == match.left_team.long_name:
                 self.create_data[1] = match.left_team
             else:
                 self.create_data[1] = match.right_team
 
-
+        print(self.create_data[0])
 
         self.create_data[1] = self.create_data[1].long_name
+
+        if gui.get('MatchWindowRefereeTeamSetUpTabHeader').current_tab == gui.get('MatchWindowRefereeTeamSetUpTabTeamATab'):
+            gui.get('MatchWindowRefereeTeamSetUpTabTeamAStaffTab').disabled = True
+              
+            if gui.get('MatchWindowRefereeTeamSetUpTabTeamAPlayersTab').disabled:
+                gui.get('MatchWindowRefereeTeamSetUpTabTeamATab').disabled = True 
+
+                if gui.get('MatchWindowRefereeTeamSetUpTabTeamBStaffTab').disabled:
+                    
+                    if gui.get('MatchWindowRefereeTeamSetUpTabTeamBPlayersTab').disabled:
+                                                
+                        gui.get('MatchWindowRefereeTabPanelLineUpSetUp').disabled = False
+                        #gui.get('MatchWindowRefereeTabPanelTeamSetUp').disabled = True
+                        gui.get('MatchWindowRefereeLineUpSetUpTabContent').on_load('A')
+                        gui.get('MatchWindowRefereeTabPanel').switch_to(gui.get('MatchWindowRefereeTabPanelLineUpSetUp'))
+
+                    else:
+                        gui.get('MatchWindowRefereeTeamSetUpTabHeader').switch_to(gui.get('MatchWindowRefereeTeamSetUpTabTeamBTab'))
+                        gui.get('MatchWindowRefereeTeamSetUpTabTeamBTabHeader').switch_to(gui.get('MatchWindowRefereeTeamSetUpTabTeamBPlayersTab'))
+                        gui.get('MatchWindowRefereeTeamSetUpTabTeamBPlayersTab').trigger_action()
+
+                else:
+                    gui.get('MatchWindowRefereeTeamSetUpTabHeader').switch_to(gui.get('MatchWindowRefereeTeamSetUpTabTeamBTab'))
+                    gui.get('MatchWindowRefereeTeamSetUpTabTeamBTabHeader').switch_to(gui.get('MatchWindowRefereeTeamSetUpTabTeamBPlayersTab'))
+                    gui.get('MatchWindowRefereeTeamSetUpTabTeamBPlayersTab').trigger_action()                  
+            
+            else: 
+                gui.get('MatchWindowRefereeTeamSetUpTabTeamATabHeader').switch_to(gui.get('MatchWindowRefereeTeamSetUpTabTeamAPlayersTab'))
+                gui.get('MatchWindowRefereeTeamSetUpTabTeamAPlayersTab').trigger_action()
+
+        else:
+            gui.get('MatchWindowRefereeTeamSetUpTabTeamBStaffTab').disabled = True
+              
+            if gui.get('MatchWindowRefereeTeamSetUpTabTeamBPlayersTab').disabled:
+                gui.get('MatchWindowRefereeTeamSetUpTabTeamBTab').disabled = True 
+
+                if gui.get('MatchWindowRefereeTeamSetUpTabTeamAStaffTab').disabled:
+                    
+                    if gui.get('MatchWindowRefereeTeamSetUpTabTeamAPlayersTab').disabled:
+                                                
+                        gui.get('MatchWindowRefereeTabPanelLineUpSetUp').disabled = False
+                        #gui.get('MatchWindowRefereeTabPanelTeamSetUp').disabled = True
+                        gui.get('MatchWindowRefereeLineUpSetUpTabContent').on_load('A')
+                        gui.get('MatchWindowRefereeTabPanel').switch_to(gui.get('MatchWindowRefereeTabPanelLineUpSetUp'))
+
+                    else:
+                        gui.get('MatchWindowRefereeTeamSetUpTabHeader').switch_to(gui.get('MatchWindowRefereeTeamSetUpTabTeamATab'))
+                        gui.get('MatchWindowRefereeTeamSetUpTabTeamATabHeader').switch_to(gui.get('MatchWindowRefereeTeamSetUpTabTeamAPlayersTab'))
+                        gui.get('MatchWindowRefereeTeamSetUpTabTeamAStaffTab').trigger_action()
+
+                else:
+                    gui.get('MatchWindowRefereeTeamSetUpTabHeader').switch_to(gui.get('MatchWindowRefereeTeamSetUpTabTeamATab'))
+                    gui.get('MatchWindowRefereeTeamSetUpTabTeamATabHeader').switch_to(gui.get('MatchWindowRefereeTeamSetUpTabTeamAPlayersTab'))
+                    gui.get('MatchWindowRefereeTeamSetUpTabTeamAPlayersTab').trigger_action()                  
+            
+            else: 
+                gui.get('MatchWindowRefereeTeamSetUpTabTeamBTabHeader').switch_to(gui.get('MatchWindowRefereeTeamSetUpTabTeamBPlayersTab'))
+                gui.get('MatchWindowRefereeTeamSetUpTabTeamBPlayersTab').trigger_action()
 
     def delete(self):
         pass

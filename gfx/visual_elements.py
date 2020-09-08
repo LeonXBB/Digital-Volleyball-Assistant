@@ -581,14 +581,14 @@ class TeamSetUpStaff(VisualElement):
         if assistant_two_present > max_amount_assistant_two:
             errors.append(team_set_up_errors[language_code][8])
 
-        if assistant_one_present > max_amount_doctor:
+        if doctor_present > max_amount_doctor:
             errors.append(team_set_up_errors[language_code][9])
 
         if massagist_present > max_amount_massagist:
             errors.append(team_set_up_errors[language_code][10])
 
         if len(errors) == 0:
-            match_events_dispatch.run(SetUpConfirmed, [self.map_values, team], 'NEW')
+            match_events_dispatch.run(StaffSetUpConfirmed, [self.map_values, team], 'NEW')
         else:
             PopUpWindow().show_pop_up('\n'.join(errors))
 
