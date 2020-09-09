@@ -739,7 +739,20 @@ class StaffSetUpConfirmed(Event):
             else:
                 self.create_data[1] = match.right_team
 
-        print(self.create_data[0])
+        for i in range(0, len(self.create_data[0]), 7):
+
+            if self.create_data[0][i + 6]:
+                   
+                if self.create_data[1].head_coach.name_string == self.create_data[0][i]:
+                    
+                    if self.create_data[0][i + 5]:
+                        self.create_data[0]
+
+                else:
+                    for staff_member in self.create_data[1].staff:
+                        if staff_member.name_string == self.create_data[0][i]:
+                            pass 
+
 
         self.create_data[1] = self.create_data[1].long_name
 
