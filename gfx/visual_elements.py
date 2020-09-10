@@ -281,14 +281,14 @@ class TeamPeopleList(VisualElement):
                 if not with_numbers:
                     self.people_list[i].Name.load(self.people_list[i].name_string)
                 else:
-                    self.people_list[i].Name.load(statuses[language_code][0] + ' ' + self.people_list[i].name_string)
+                    self.people_list[i].Name.load(self.people_list[i].Status.join(' / ') + self.people_list[i].name_string)
 
             elif i < len(self.people_list) and self.people_list[i].status == 'Staff':
                 self.people_list[i].Name = StaffName([self.get_labels_list(widget_type, specific_child_index)[i]])
                 if not with_numbers:
                     self.people_list[i].Name.load(self.people_list[i].name_string)
                 else:
-                    self.people_list[i].Name.load(statuses[language_code][1] + ' ' + self.people_list[i].name_string)
+                    self.people_list[i].Name.load(self.people_list[i].Status.join(' / ') + self.people_list[i].name_string)
 
     def unfull_list_format(self, widget_type, specific_child_index):
         

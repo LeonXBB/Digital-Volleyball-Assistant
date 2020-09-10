@@ -733,6 +733,8 @@ class StaffSetUpConfirmed(Event):
 
         from DVA import match, frontend_references as gui
 
+        from meta.localization import statuses
+
         if self.mode == 'RESTORED':
             if self.create_data[1] == match.left_team.long_name:
                 self.create_data[1] = match.left_team
@@ -743,16 +745,52 @@ class StaffSetUpConfirmed(Event):
 
             if self.create_data[0][i + 6]:
                    
-                if self.create_data[1].head_coach.name_string == self.create_data[0][i]:
+                if self.create_data[1].head_coach != '' and self.create_data[1].head_coach.name_string == self.create_data[0][i]:
                     
-                    if self.create_data[0][i + 5]:
-                        self.create_data[0]
+                    if self.create_data[0][i + 4]:
+                        self.create_data[1].staff.append(self.create_data[1].head_coach)
+                        self.create_data[1].head_coach.Status.append(statuses[language_code][1])
+
+                    if self.create_data[0][i + 3]:
+                        self.create_data[1].staff.append(self.create_data[1].head_coach)
+                        self.create_data[1].head_coach.Status.append(statuses[language_code][2])
+
+                    if self.create_data[0][i + 2]:
+                        self.create_data[1].staff.append(self.create_data[1].head_coach)
+                        self.create_data[1].head_coach.Status.append(statuses[language_code][3])
+
+                    if self.create_data[0][i + 1]:
+                        self.create_data[1].staff.append(self.create_data[1].head_coach)
+                        self.create_data[1].head_coach.Status.append(statuses[language_code][4])
+
+                    if not self.create_data[0][i + 5]:
+                        self.create_data[1].head_coach = ''
+                    else:
+                        self.create_data[1].head_coach.Status.insert(0, statuses[language_code][0])
+
 
                 else:
                     for staff_member in self.create_data[1].staff:
-                        if staff_member.name_string == self.create_data[0][i]:
-                            pass 
-
+                        if staff_member != '' and staff_member.name_string == self.create_data[0][i]:
+                            
+                            if self.create_data[0][i + 5]:
+                                self.create_data[1].head_coach = staff_member
+                                staff_member.Status.append(statuses[language_code][0])
+                            if self.create_data[0][i + 4]:
+                                staff_member.Status.append(statuses[language_code][1])
+                            if self.create_data[0][i + 3]:
+                                staff_member.Status.append(statuses[language_code][2])                            
+                            if self.create_data[0][i + 2]:
+                                staff_member.Status.append(statuses[language_code][3])                            
+                            if self.create_data[0][i + 1]:
+                                staff_member.Status.append(statuses[language_code][4])
+            else:
+                if self.create_data[1].head_coach != '' and self.create_data[1].head_coach.name_string == self.create_data[0][i]:
+                    self.create_data[1].head_coach = ''
+                else:
+                    for staff_member in self.create_data[1].staff:
+                        if staff_member != '' and staff_member.name_string == self.create_data[0][i]:
+                            self.create_data[1].staff.remove(staff_member)
 
         self.create_data[1] = self.create_data[1].long_name
 
@@ -815,7 +853,78 @@ class StaffSetUpConfirmed(Event):
                 gui.get('MatchWindowRefereeTeamSetUpTabTeamBPlayersTab').trigger_action()
 
     def delete(self):
-        pass
+
+        from DVA import match, frontend_references as gui
+
+        self.create_data[1].head_coach.Status = []
+
+        for staff_member in self.create_data[1].staff:
+            staff_member.Status = []
+
+        for tab in gui.get('MatchWindowRefereeTabPanel').tab_list:
+            tab.disabled = True
+            
+        if self.create_data == match.left_team.long_name:
+            
+            gui.get('MatchWindowRefereeTeamSetUpTabTeamATabHeader').disabled = False
+            gui.get('MatchWindowRefereeTeamSetUpTabTeamAStaffTab').disabled = False
+
+            if not gui.get('MatchWindowRefereeTeamSetUpTabTeamAPlayersTab').disabled:
+                
+                if not gui.get('MatchWindowRefereeTeamSetUpTabTeamBStaffTab').disabled:
+                    
+                    if not gui.get('MatchWindowRefereeTeamSetUpTabTeamBPlayersTab').disabled:
+                    
+                        gui.get('MatchWindowRefereeTabPanelCoinToss').disabled = False
+                        gui.get('MatchWindowRefereeTabPanel').switch_to(gui.get('MatchWindowRefereeTabPanelCoinToss'))
+
+                    else:
+                        gui.get('MatchWindowRefereeTeamSetUpTabTeamBTabHeader').disabled = False
+                        gui.get('MatchWindowRefereeTeamSetUpTabTeamBTabHeader').switch_to(gui.get('MatchWindowRefereeTeamSetUpTabTeamBPlayersTab'))
+                        gui.get('MatchWindowRefereeTeamSetUpTabTeamBPlayersTab').disabled = False
+                        gui.get('MatchWindowRefereeTeamSetUpTabTeamBPlayersTab').trigger_action()
+
+                else:
+                        gui.get('MatchWindowRefereeTeamSetUpTabTeamBTabHeader').disabled = False
+                        gui.get('MatchWindowRefereeTeamSetUpTabTeamBTabHeader').switch_to(gui.get('MatchWindowRefereeTeamSetUpTabTeamBStaffTab'))
+                        gui.get('MatchWindowRefereeTeamSetUpTabTeamBStaffTab').disabled = False
+                        gui.get('MatchWindowRefereeTeamSetUpTabTeamBStaffTab').trigger_action()
+
+            else:
+                gui.get('MatchWindowRefereeTeamSetUpTabTeamATabHeader').switch_to(gui.get('MatchWindowRefereeTeamSetUpTabTeamAPlayersTab'))
+                gui.get('MatchWindowRefereeTeamSetUpTabTeamAPlayersTab').disabled = False
+                gui.get('MatchWindowRefereeTeamSetUpTabTeamAPlayersTab').trigger_action()
+        
+        else:
+
+            gui.get('MatchWindowRefereeTeamSetUpTabTeamBTabHeader').disabled = False
+            gui.get('MatchWindowRefereeTeamSetUpTabTeamBStaffTab').disabled = False
+
+            if not gui.get('MatchWindowRefereeTeamSetUpTabTeamBPlayersTab').disabled:
+                
+                if not gui.get('MatchWindowRefereeTeamSetUpTabTeamAStaffTab').disabled:
+                    
+                    if not gui.get('MatchWindowRefereeTeamSetUpTabTeamAPlayersTab').disabled:
+                    
+                        gui.get('MatchWindowRefereeTabPanelCoinToss').disabled = False
+                        gui.get('MatchWindowRefereeTabPanel').switch_to(gui.get('MatchWindowRefereeTabPanelCoinToss'))
+
+                    else:
+                        gui.get('MatchWindowRefereeTeamSetUpTabTeamATabHeader').disabled = False
+                        gui.get('MatchWindowRefereeTeamSetUpTabTeamATabHeader').switch_to(gui.get('MatchWindowRefereeTeamSetUpTabTeamAPlayersTab'))
+                        gui.get('MatchWindowRefereeTeamSetUpTabTeamAPlayersTab').disabled = False
+                        gui.get('MatchWindowRefereeTeamSetUpTabTeamAPlayersTab').trigger_action()
+
+                else:
+                        gui.get('MatchWindowRefereeTeamSetUpTabTeamATabHeader').disabled = False
+                        gui.get('MatchWindowRefereeTeamSetUpTabTeamATabHeader').switch_to(gui.get('MatchWindowRefereeTeamSetUpTabTeamAStaffTab'))
+                        gui.get('MatchWindowRefereeTeamSetUpTabTeamAStaffTab').disabled = False
+                        gui.get('MatchWindowRefereeTeamSetUpTabTeamAStaffTab').trigger_action()
+
+            else:
+                gui.get('MatchWindowRefereeTeamSetUpTabTeamBTabHeader').switch_to(gui.get('MatchWindowRefereeTeamSetUpTabTeamBPlayersTab'))
+                gui.get('MatchWindowRefereeTeamSetUpTabTeamBPlayersTab').disabled = False
+                gui.get('MatchWindowRefereeTeamSetUpTabTeamBPlayersTab').trigger_action()
 
 
 class LineUpConfirmed(Event):

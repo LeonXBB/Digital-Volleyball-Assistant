@@ -268,6 +268,7 @@ class HeadCoach(Person):
 
     # sanctions = []  # list of events # Moved to self.__init__ TODO finish every function
     Name = ''
+    Status = []
 
     def __init__(self, data):
 
@@ -319,7 +320,7 @@ class Staff(Person):
 
     # sanctions = [] Moved to self.__init__
     Name = ''
-    Status = ''
+    Status = []
 
     def __init__(self, data):
         data.append('Staff')

@@ -128,10 +128,8 @@ def get_people_list(team, with_players=True, with_staff=False, with_expulsed_pla
             for i in range(len(people_list)):
                 if people_list[i] in team.players:
                     prefixes[i] = (str(people_list[i].number) + ' ')
-                elif people_list[i] in team.staff:
-                    prefixes[i] = (statuses[language_code][1] + ' ')
-                elif people_list[i] == team.head_coach:
-                    prefixes[i] = (statuses[language_code][0] + ' ')
+                else:
+                    prefixes[i] = people_list[i].Status.join(' / ')
 
         rv = [prefixes[i] + people_list[i].name_string for i in range(len(people_list))]
         return rv
