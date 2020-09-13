@@ -1,7 +1,7 @@
 import os
 
 app_title = 'Digital Volleyball Assistant'
-app_version = '0.1.0'
+app_version = '0.2.0'
 app_resizable = False
 app_width = 700
 app_height = 500
