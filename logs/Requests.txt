@@ -4,9 +4,4 @@
 3#1598828139.851447#MatchPoolSend#get#('MatchStart', '', True)#<Response [200]>#0
 4#1598950621.385851#VersionControl#get##0.1.0#None
 5#1598950624.3752756#MatchPoolSend#get#('CoinTossResultsConfirmed', ['Олімп', 'ДЮСШ-10', 'Олімп', 'ДЮСШ-10'], True)#<Response [200]>#1
-6#1599608434.1690204#VersionControl#get##0.1.0#None
-7#1599608443.542342#MatchPoolSend#get#('SetUpConfirmed', [['Другов Грігорій', '1', False, True, True, 'Кулініч Максим', '2', False, False, True, 'Кіляров Микита', '3', False, False, True, 'Оліфер Олег', '4', False, False, True, 'Поволяшко Євген', '5', False, False, True, 'Піскунов Костянтин', '6', False, False, True, 'Руденко Олександр', '', False, False, False, 'Федоренко Дмитро', '', False, False, False, 'Хижняк Іван', '', False, False, False, 'Чілібі Антон', '', False, False, False, 'Шляхов Максим', '', False, False, False], 'Олімп'], True)#<Response [200]>#2
-
-8#1599781311.7173502#VersionControl#get##0.1.0#None
-9#1599781330.3546772#MatchPoolSend#get#('StaffSetUpConfirmed', [['Шпаченко Віктор', False, False, False, False, False, True, 'Ільков Сергій', False, False, False, False, False, True], 'ДЮСШ-10'], True)#<Response [200]>#3
-10#1599781339.512438#VersionControl#get##0.1.0#None
+6#1599932417.2595687#VersionControl#get##0.1.0#None
